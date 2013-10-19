@@ -21,6 +21,12 @@ Autoloader::add_namespaces(array(
     'Gasoline'  => GASPATH . 'classes/',
 ));
 
+Autoloader::add_classes(array(
+    'Auth_Acl_Gasauth'      => __DIR__ . '/classes/auth/acl/gasacl.php',
+    'Auth_Group_Gasauth'    => __DIR__ . '/classes/auth/group/gasgroup.php',
+    'Auth_Login_Gasauth'    => __DIR__ . '/classes/auth/login/gasauth.php',
+));
+
 // We also need to add the GASPATH to the finder-instance so we can load config
 //  and other stuff from there
 Finder::instance()->add_path(GASPATH, 1);
@@ -30,7 +36,7 @@ Finder::instance()->add_path(GASPATH, 1);
 //  if there's been a change between pages so we won't set the last_page to the
 //  current page if the user hits reload
 Event::register('shutdown', function() {
-    ( \Uri::current() != \Session::get('last_page') ) && Session::set('last_page', \Uri::current());
+    ( Uri::current() != Session::get('last_page') ) && Session::set('last_page', Uri::current());
 });
 
 /* End of file bootstrap.php */

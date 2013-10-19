@@ -238,7 +238,8 @@ return array(
 	 * Paths MUST end with a directory separator (the DS constant)!
 	 */
 	'module_paths' => array(
-		APPPATH.'modules'.DS
+		GASPATH.'modules'.DS,
+		APPPATH.'modules'.DS,
 	),
 
 	/**
@@ -250,7 +251,7 @@ return array(
 	 * Paths MUST end with a directory separator (the DS constant)!
 	 */
 	'package_paths' => array(
-		PKGPATH
+		PKGPATH,
 	),
 
 

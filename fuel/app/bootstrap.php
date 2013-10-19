@@ -11,8 +11,7 @@ require COREPATH.'bootstrap.php';
 define('GASPATH', realpath(__DIR__ . '/../gasoline/') . DIRECTORY_SEPARATOR);
 
 Autoloader::add_classes(array(
-	// Add classes you want to override here
-	// Example: 'View' => APPPATH.'classes/view.php',
+	'Str'      => __DIR__.'/classes/str.php',
 ));
 
 // Register the autoloader

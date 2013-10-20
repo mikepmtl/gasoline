@@ -11,7 +11,7 @@ require COREPATH.'bootstrap.php';
 define('GASPATH', realpath(__DIR__ . '/../gasoline/') . DIRECTORY_SEPARATOR);
 
 Autoloader::add_classes(array(
-    'Html'  => __DIR__'/classes/html.php',
+    'Html'  => __DIR__.'/classes/html.php',
     'Lang'  => __DIR__.'/classes/lang.php',
     'Str'   => __DIR__.'/classes/str.php',
     

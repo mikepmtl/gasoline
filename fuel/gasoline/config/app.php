@@ -36,7 +36,7 @@ return array(
              * Default timeformat for the app. Can be any valid format that works
              * for \Fuel\Core\Date::format
              */
-            'time' => '%H:%M';
+            'time' => '%H:%M',
         ),
         
         /**

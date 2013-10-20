@@ -16,11 +16,15 @@
  * and also adds Gasoline to the finder search paths, amongst other things
  */
 
-// Add the namespace for the gasoline-package to the autoloader
-Autoloader::add_namespaces(array(
-    'Gasoline'  => GASPATH . 'classes/',
-));
+// Add the namespace for the gasoline-package as a core namespace to the autoloader.
+//  The second argument allows the namespace to be added as the first core namespace.
+Autoloader::add_core_namespace('Gasoline', true);
 
+// Also add the whole namespace
+Autoloader::add_namespace('Gasoline', GASPATH . 'classes/');
+
+// This is needed because these classes would actually reside under namespace Gasoline
+//  but since they need to be globally accessible, we add them here as classes
 Autoloader::add_classes(array(
     'Auth_Acl_Gasauth'      => __DIR__ . '/classes/auth/acl/gasacl.php',
     'Auth_Group_Gasauth'    => __DIR__ . '/classes/auth/group/gasgroup.php',

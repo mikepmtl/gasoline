@@ -26,9 +26,29 @@ Autoloader::add_namespace('Gasoline', GASPATH . 'classes/');
 // This is needed because these classes would actually reside under namespace Gasoline
 //  but since they need to be globally accessible, we add them here as classes
 Autoloader::add_classes(array(
-    'Auth_Acl_Gasacl'       => __DIR__ . '/classes/auth/acl/gasacl.php',
-    'Auth_Group_Gasgroup'   => __DIR__ . '/classes/auth/group/gasgroup.php',
-    'Auth_Login_Gasauth'    => __DIR__ . '/classes/auth/login/gasauth.php',
+    // Classes for the auth package cannot be added with the gasoline namespace
+    // as they must be within the global namespace to be accessible
+    'Auth_Acl_Gasacl'       => GASPATH . '/classes/auth/acl/gasacl.php',
+    'Auth_Group_Gasgroup'   => GASPATH . '/classes/auth/group/gasgroup.php',
+    'Auth_Login_Gasauth'    => GASPATH . '/classes/auth/login/gasauth.php',
+    
+    'Gasoline\\Model\\Base' => GASPATH . '/classes/model/base.php',
+    
+    'Gasoline\\Model\\Auth_Group'               => GASPATH . '/classes/model/auth/group.php',
+    'Gasoline\\Model\\Auth_Group_Permission'    => GASPATH . '/classes/model/auth/group/permission.php',
+    'Gasoline\\Model\\Auth_Metadata'            => GASPATH . '/classes/model/auth/metadata.php',
+    'Gasoline\\Model\\Auth_Permission'          => GASPATH . '/classes/model/auth/permission.php',
+    'Gasoline\\Model\\Auth_Role'                => GASPATH . '/classes/model/auth/role.php',
+    'Gasoline\\Model\\Auth_Role_Permission'     => GASPATH . '/classes/model/auth/role/permission.php',
+    'Gasoline\\Model\\Auth_User'                => GASPATH . '/classes/model/auth/user.php',
+    'Gasoline\\Model\\Auth_User_Permission'     => GASPATH . '/classes/model/auth/user/permission.php',
+    
+    'Gasoline\\DataContainer'   => GASPATH . '/classes/datacontainer.php',
+    'Gasoline\\Helpers'         => GASPATH . '/classes/helpers.php',
+    'Gasoline\\Html'            => GASPATH . '/classes/html.php',
+    'Gasoline\\Lang'            => GASPATH . '/classes/lang.php',
+    'Gasoline\\Str'             => GASPATH . '/classes/str.php',
+    'Gasoline\\Validation'      => GASPATH . '/classes/validation.php',
 ));
 
 // We also need to add the GASPATH to the finder-instance so we can load config

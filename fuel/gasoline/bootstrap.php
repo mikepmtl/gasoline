@@ -26,8 +26,8 @@ Autoloader::add_namespace('Gasoline', GASPATH . 'classes/');
 // This is needed because these classes would actually reside under namespace Gasoline
 //  but since they need to be globally accessible, we add them here as classes
 Autoloader::add_classes(array(
-    'Auth_Acl_Gasauth'      => __DIR__ . '/classes/auth/acl/gasacl.php',
-    'Auth_Group_Gasauth'    => __DIR__ . '/classes/auth/group/gasgroup.php',
+    'Auth_Acl_Gasacl'       => __DIR__ . '/classes/auth/acl/gasacl.php',
+    'Auth_Group_Gasgroup'   => __DIR__ . '/classes/auth/group/gasgroup.php',
     'Auth_Login_Gasauth'    => __DIR__ . '/classes/auth/login/gasauth.php',
 ));
 

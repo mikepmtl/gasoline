@@ -26,21 +26,47 @@ return array(
      * General configuration of your app
      */
     'general'   => array(
+        /**
+         * Collection of formats
+         */
         'formats' => array(
+            /**
+             * Formats for dates displayed throughout the app. This is also used
+             * for allowing and formatting input from the user when they are allowed
+             * to enter dates.
+             * Please refer to the docs for supported arguments
+             */
             'date'  => array(
-                'short'     => '',
-                'long'      => '',
+                /**
+                 * Short format for dates. This should usually only display the
+                 * day of the month, month, and year.
+                 * Can be any valid format that works for \Fuel\Core\Date::format
+                 * 
+                 * @var   string
+                 */
+                'short'     => '%m/%d/%Y',
+                
+                /**
+                 * Long format for dates. This should usually display time and date
+                 * information.
+                 * Can be any valid format that works for \Fuel\Core\Date::format
+                 * 
+                 * @var string
+                 */
+                'long'      => '%I:%M %p, %B %d %Y',
             ),
             
             /**
-             * Default timeformat for the app. Can be any valid format that works
-             * for \Fuel\Core\Date::format
+             * Default timeformat for the app.
+             * Can be any valid format that works for \Fuel\Core\Date::format
+             * 
+             * @var string
              */
-            'time' => '%H:%M',
+            'time' => '%I:%M %p',
         ),
         
         /**
-         * Section for links from, to, and on your app
+         * Section for links from, to, and within your app
          */
         'links' => array(
             /**

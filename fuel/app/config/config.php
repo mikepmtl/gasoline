@@ -274,6 +274,7 @@ return array(
 		'packages'  => array(
 			'orm',
 			'auth',
+			'seed',
 		),
 
 		/**
@@ -302,6 +303,7 @@ return array(
 		'config'  => array(
 			'orm',  // This is added to fix some bugs with \Orm\Model_Temporal setting temporal_end to NULL
 					// because the ORM config isn't loaded properly
+			'app',
 		),
 
 		/**

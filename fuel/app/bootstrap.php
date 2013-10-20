@@ -11,21 +11,23 @@ require COREPATH.'bootstrap.php';
 define('GASPATH', realpath(__DIR__ . '/../gasoline/') . DIRECTORY_SEPARATOR);
 
 Autoloader::add_classes(array(
+    'Html'  => __DIR__'/classes/html.php',
     'Lang'  => __DIR__.'/classes/lang.php',
     'Str'   => __DIR__.'/classes/str.php',
     
     // Gasauth related models aliased to the fuel app namespace so that they're
     //  overwriting the same files from package 'auth'
-    'Model\\Auth_User'              => __DIR__.'/classes/model/auth/user.php',
-    'Model\\Auth_Metadata'          => __DIR__.'/classes/model/auth/metadata.php',
     'Model\\Auth_Group'             => __DIR__.'/classes/model/auth/group.php',
-    'Model\\Auth_Role'              => __DIR__.'/classes/model/auth/role.php',
-    'Model\\Auth_Userpermission'    => __DIR__.'/classes/model/auth/user/permission.php',
-    'Model\\Auth_Rolepermission'    => __DIR__.'/classes/model/auth/role/permission.php',
     'Model\\Auth_Grouppermission'   => __DIR__.'/classes/model/auth/group/permission.php',
-    'Model\\Auth_User_Permission'   => __DIR__.'/classes/model/auth/user/permission.php',
-    'Model\\Auth_Role_Permission'   => __DIR__.'/classes/model/auth/role/permission.php',
     'Model\\Auth_Group_Permission'  => __DIR__.'/classes/model/auth/group/permission.php',
+    'Model\\Auth_Metadata'          => __DIR__.'/classes/model/auth/metadata.php',
+    'Model\\Auth_Permission'        => __DIR__.'/classes/model/auth/permission.php',
+    'Model\\Auth_Role'              => __DIR__.'/classes/model/auth/role.php',
+    'Model\\Auth_Rolepermission'    => __DIR__.'/classes/model/auth/role/permission.php',
+    'Model\\Auth_Role_Permission'   => __DIR__.'/classes/model/auth/role/permission.php',
+    'Model\\Auth_User'              => __DIR__.'/classes/model/auth/user.php',
+    'Model\\Auth_Userpermission'    => __DIR__.'/classes/model/auth/user/permission.php',
+    'Model\\Auth_User_Permission'   => __DIR__.'/classes/model/auth/user/permission.php',
 ));
 
 // Register the autoloader

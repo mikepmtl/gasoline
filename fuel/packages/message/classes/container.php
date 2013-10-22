@@ -34,6 +34,13 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
     protected static $instance = null;
     
     
+    /**
+     * Keeps the message storage driver (a session driver)
+     * 
+     * @static
+     * @access  protected
+     * @var     \Fuel\Core\Session
+     */
     protected static $storage = null;
     
     
@@ -134,6 +141,14 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
     }
     
     
+    /**
+     * Static shutdown that loops through all containers and tells them to shut down
+     * 
+     * @static
+     * @access  public
+     * 
+     * @return  void
+     */
     public static function shutdown_event()
     {
         if ( count(static::$instances) )
@@ -179,6 +194,22 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
      */
     protected $name;
     
+    /**
+     * Storage for regular messages and flash messages read on construct
+     * 
+     * @access  protected
+     * @var     array
+     */
+    protected $messages = array();
+    
+    /**
+     * Keeps new flash messages that will be stored on shutdown
+     * 
+     * @access  protected
+     * @var     array
+     */
+    protected $flash = array();
+    
     
     /**
      * The class constructor
@@ -196,83 +227,85 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
         $this->name = $name;
         
         // Get the items from our storage driver
-        $items = static::$storage->get_flash($this->name, array());
-        $messages = array();
+        $flash = static::$storage->get_flash($this->name, array());
         
-        foreach ( $items as $type => $items )
+        // Loop over all flash messages
+        foreach ( $flash as $message )
         {
-            isset($messages[$type]) OR $messages[$type] = array();
-            
-            foreach ( $items as $item )
+            // And convert them to message item objects, with these defaults
+            $message = \Arr::merge(array('type' => null, 'message' => null, 'heading' => null, 'attributes' => array()), $message);
+            if ( $message['type'] && $messsage['message'] )
             {
-                $item = \Arr::merge(array('type' => null, 'message' => null, 'heading' => null, 'attributes' => array()), $item);
-                
-                if ( $item['type'] && $item['message'] )
-                {
-                    $messages[$type][] = new \Message\Item($item['type'], $item['message'], $item['heading'], $item['attributes']);
-                }
+                $this->messages[] = new \Message\Item($message['type'], $message['message'], $message['heading'], $message['attributes']);
             }
         }
         
-        // And call the parent's constructor with the items as the container's data
-        parent::__construct($messages, $readonly);
+        // Finally, call the parent's constructor with the items as the container's data
+        parent::__construct($data, $readonly);
     }
     
-    
-    public function render($type, $tag = null, $attributes = array())
+    /**
+     * Render the container by rendering all messages one by one
+     * 
+     * @access  public
+     * @param   string  $tag        A tag to wrap the result in. Only applicable
+     *                              if theme support is disabled
+     * @param   array  $attributes  Attributes to set on the tag
+     * 
+     * @return  string              Returns parsed string of messages
+     */
+    public function render($tag = null, $attributes = array())
     {
-        // Don't allow rendering flash messages
-        if ( $type == 'flash' )
-        {
-            logger(\Fuel::L_DEBUG, 'Message container will not render flash messages');
-            
-            return '';
-        }
-        
         // Get a theme instance
-        try
-        {
-            $theme = \Theme::instance();
-        }
-        // Or fail...
-        catch ( \Exception $e )
-        {
-            // ... with a log
-            logger(\Fuel::L_DEBUG, 'Message container [' . $this->name . '] was unable to get the instance of the theme class');
-            
-            return '';
-        }
+        $theme = \Theme::instance();
         
         // That'll keep the parsed messages
         $parsed = '';
         
+        // Merge the already set attributes with the provided attributes
+        $attributes = \Arr::merge($this->get_data(), $attributes);
+        
         // Get the messages of the given type
-        if ( $messages = $this->get($type) )
+        if ( $this->messages )
         {
+            // Use views?
             if ( \Config::get('message.use_views', true) === true )
             {
-                $parsed = $theme->view(\Config::get('message.view_path', '_templates/messages/') . $type, array('messages' => $messages), false);
+                // Then pass messages to the theme to find the view
+                $parsed = $theme->view(
+                    \Config::get('message.view_file', '_templates/messages'),
+                    array(
+                        'messages'      => $this->messages,
+                        'attributes'    => $attributes,
+                    ),
+                    false
+                );
             }
+            // No views, pure HTML! 4tw
             else
             {
-                $html_container = \Config::get('message.html.container', '<div class="message :type"><dl>:messages</dl></div>');
-                $html_message   = \Config::get('message.html.message', '{<dt>:heading</dt>}<dd>:message</dd>');
+                // Html to use for the container and message
+                $html_container = \Config::get('message.html.container', '<div id="messages">:messages</div>');
+                $html_message   = \Config::get('message.html.message', '<div class="message :type">{<h1>:heading</h1>}<p>:message</p></div>');
                 
-                foreach ( $messages as $message )
+                // Loop over all messages
+                foreach ( $this->messages as $message )
                 {
                     // We will do some regex to see if the heading is requested
                     // in the message HTML. If so, get the tags and replace just
                     // :heading with the heading of the message
                     $msg    = preg_replace('/{(.*)?(:heading)(.*)?}(.*)/', ( ( $heading = $message->get_heading() ) ? '$1' . $heading . '$3$4' : '$4' ), $html_message);
                     
-                    $parsed .= str_replace(':message', $message->get_message(), $msg);
+                    // And parse the message
+                    $parsed .= str_replace(array(':message', ':type'), array($message->get_message(), $message->get_type()), $msg);
                 }
                 
-                $parsed = str_replace(array(':type', ':messages'), array($type, $parsed), $html_container);
+                // Use html_container to parse the type and all messages
+                $parsed = str_replace(':messages', $parsed, $html_container);
             }
             
             // And unset the messages that we have just parsed
-            $this->offsetUnset($type);
+            \Config::get('message.unset_after_render', true) === true && $this->messages = array();
         }
         
         return $tag ? html_tag($tag, $attributes, $parsed) : $parsed;
@@ -290,21 +323,10 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
         if ( ! static::$storage->get_flash($this->name, false) )
         {
             $to_store = array();
-            $types = $this->get('flash');
             
-            foreach ( $types as $type => &$items )
+            foreach ( $this->flash as $item )
             {
-                if ( ! $items )
-                {
-                    continue;
-                }
-                
-                isset($to_store[$type]) OR $to_store[$type] = array();
-                
-                foreach ( $items as &$item )
-                {
-                    $to_store[$type][] = $item->to_array();
-                }
+                $to_store[] = $item->to_array();
             }
             
             static::$storage->set_flash($this->name, $to_store);
@@ -313,51 +335,44 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
     
     
     /**
-     * Set a specific item of the data
+     * Setter to set either container attributes or messages
+     * 
+     * Messages can be added like to $container[] = \Message\Item::forge() or
+     * $container[] = $message_item
      * 
      * @access  public
-     * @param   mixed   $key    The key to set the data to
-     * @param   mixed   $value  The value to set
+     * @param   mixed   $key    The key to set the property to
+     * @param   mixed   $value  Value for $key to set to. If it's an instance of
+     *                          \Message\Item, it will automatically push the message
+     *                          onto the stack of messages
      * 
-     * @throws  RuntimeException    If the data container is read only
-     * 
-     * @return  Datacontainer
+     * @return  \Message\Container
      */
-    public function offsetSet($offset, $value)
+    public function set($key, $value = null)
     {
-        // If a message item is assigned to this container, we will have to change
-        // the offset accordingly
+        // Pushing a message item to the container?
         if ( $value instanceof Item )
         {
-            // Automatically get the type of the message to set it as the base-offset
-            $type = $value->get_type();
-            $flash = $value->is_flash();
+            $this->messages[] =& $value;
             
-            // Offset is null? That happens with $container[] = $item
-            if ( $offset === null )
-            {
-                // And then append the type's counter because we're using \Arr::set which
-                // would otherwise overwrite previous entries if no key is set after the dot
-                $offset = ( $flash ? 'flash.' : '' ) . $type . '.' . count($this->get($type));
-            }
-            // Otherwise the offset is given
-            else
-            {
-                // See if the offset was set to be "flash:" or "flash:"
-                if ( preg_match('/^flash:.*/', $offset) && $flash )
-                {
-                    $offset = preg_replace('/^flash:/', '', $offset);
-                }
-                
-                // We want to allow overriding messages so we will only generate
-                // a new offset, if the given offset does not contain a dot (meaning
-                // it's not given as <type>.<counter>)
-                strpos($offset, '.') === false && $offset = ( $flash ? 'flash.' : '' ) . $offset . '.' . count($this->get($type));
-            }
+            return $this;
         }
-        
-        // Preparation done, call the parent's set method
-        return parent::set($offset, $value);
+        // No, just something else
+        else
+        {
+            return parent::set($key, $value);
+        }
+    }
+    
+    /**
+     * To magically echo the container!
+     * 
+     * @access  public
+     * @return  string              Returns parsed string of messages
+     */
+    public function __toString()
+    {
+        return $this->render();
     }
     
 }

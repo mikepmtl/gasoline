@@ -65,19 +65,14 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
         {
             static::$storage = \Session::forge(\Config::get('message.storage', array(
                 'driver'    => 'cookie',
-                // 'driver'    => 'db',
                 'cookie'    => array(
-                    'cookie_name' => 'msg', # \Config::get('message.cookie_name', 'msg'),
+                    'cookie_name' => 'msg',
                 ),
-                // 'db'        => array(
-                //     'cookie_name'   => 'msg',
-                //     'table'         => 'sessions',
-                // ),
                 'encrypt_cookie'            => true,
                 'expire_on_close'           => true,
                 'flash_auto_expire'         => true,
                 'flash_expire_after_get'    => true,
-                'expiration_time'           => \Config::get('message.expiration', 60*60*24*1),
+                'expiration_time'           => 60*60*24*1,
             )));
         }
         catch ( \Exception $e )
@@ -269,7 +264,7 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
         if ( $this->messages )
         {
             // Use views?
-            if ( \Config::get('message.use_views', true) === true )
+            if ( \Config::get('message.render_html', false) === false )
             {
                 // Then pass messages to the theme to find the view
                 $parsed = $theme->view(
@@ -286,7 +281,7 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
             {
                 // Html to use for the container and message
                 $html_container = \Config::get('message.html.container', '<div id="messages">:messages</div>');
-                $html_message   = \Config::get('message.html.message', '<div class="message :type">{<h1>:heading</h1>}<p>:message</p></div>');
+                $html_item      = \Config::get('message.html.item', '<div class="message :type">{<h5>:heading</h5>}<p>:message</p></div>');
                 
                 // Loop over all messages
                 foreach ( $this->messages as $message )
@@ -294,7 +289,7 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
                     // We will do some regex to see if the heading is requested
                     // in the message HTML. If so, get the tags and replace just
                     // :heading with the heading of the message
-                    $msg    = preg_replace('/{(.*)?(:heading)(.*)?}(.*)/', ( ( $heading = $message->get_heading() ) ? '$1' . $heading . '$3$4' : '$4' ), $html_message);
+                    $msg    = preg_replace('/{(.*)?(:heading)(.*)?}(.*)/', ( ( $heading = $message->get_heading() ) ? '$1' . $heading . '$3$4' : '$4' ), $html_item);
                     
                     // And parse the message
                     $parsed .= str_replace(array(':message', ':type'), array($message->get_message(), $message->get_type()), $msg);

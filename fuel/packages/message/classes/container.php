@@ -4,7 +4,7 @@
  * Part of the Gasoline framework
  *
  * @package     Gasoline\Message
- * @version     0.1-dev
+ * @version     1.0-dev
  * @author      Gasoline Development Teams
  * @license     MIT License
  * @copyright   2013 Gasoline Development Team
@@ -353,7 +353,16 @@ class Container extends \Gasoline\DataContainer implements ArrayAccess {
         // Pushing a message item to the container?
         if ( $value instanceof Item )
         {
-            $this->messages[] =& $value;
+            // Flash messages are stored somewhere else
+            if ( $value->is_flash() )
+            {
+                $this->flash[] =& $value;
+            }
+            // than non-flash messages
+            else
+            {
+                $this->messages[] =& $value;
+            }
             
             return $this;
         }

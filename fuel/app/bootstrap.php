@@ -11,9 +11,13 @@ require COREPATH.'bootstrap.php';
 define('GASPATH', realpath(__DIR__ . '/../gasoline/') . DIRECTORY_SEPARATOR);
 
 Autoloader::add_classes(array(
-    'Html'  => __DIR__.'/classes/html.php',
-    'Lang'  => __DIR__.'/classes/lang.php',
-    'Str'   => __DIR__.'/classes/str.php',
+    // Overwriting some classes from \Fuel\Core
+    'Asset_Instance'    => __DIR__ . '/classes/asset/instance.php',
+    'Html'              => __DIR__ . '/classes/html.php',
+    'Lang'              => __DIR__ . '/classes/lang.php',
+    'Str'               => __DIR__ . '/classes/str.php',
+    'Validation'        => __DIR__ . '/classes/validation.php',
+    'ViewModel'         => __DIR__ . '/classes/viewmodel.php',
     
     // Gasauth related models aliased to the fuel app namespace so that they're
     //  overwriting the same files from package 'auth'

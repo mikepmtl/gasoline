@@ -51,6 +51,7 @@ Autoloader::add_classes(array(
     'Gasoline\\Model\\Auth_User'                => GASPATH . '/classes/model/auth/user.php',
     'Gasoline\\Model\\Auth_User_Permission'     => GASPATH . '/classes/model/auth/user/permission.php',
     
+    'Gasoline\\Orm\\Observer_Id'    => GASPATH . '/classes/orm/observer/id.php',
     'Gasoline\\Orm\\Observer_Slug'  => GASPATH . '/classes/orm/observer/slug.php',
 ));
 

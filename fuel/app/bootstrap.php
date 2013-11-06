@@ -33,6 +33,7 @@ Autoloader::add_classes(array(
     'Model\\Auth_Userpermission'    => __DIR__.'/classes/model/auth/user/permission.php',
     'Model\\Auth_User_Permission'   => __DIR__.'/classes/model/auth/user/permission.php',
     
+    'Orm\\Observer_Id'      => __DIR__ . '/classes/orm/observer/id.php',
     'Orm\\Observer_Slug'    => __DIR__ . '/classes/orm/observer/slug.php',
 ));
 

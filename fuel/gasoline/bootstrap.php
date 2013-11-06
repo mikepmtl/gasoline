@@ -32,7 +32,15 @@ Autoloader::add_classes(array(
     'Auth_Group_Gasgroup'   => GASPATH . '/classes/auth/group/gasgroup.php',
     'Auth_Login_Gasauth'    => GASPATH . '/classes/auth/login/gasauth.php',
     
-    'Gasoline\\Model\\Base' => GASPATH . '/classes/model/base.php',
+    'Gasoline\\DataContainer'   => GASPATH . '/classes/datacontainer.php',
+    'Gasoline\\Helpers'         => GASPATH . '/classes/helpers.php',
+    'Gasoline\\Html'            => GASPATH . '/classes/html.php',
+    'Gasoline\\Lang'            => GASPATH . '/classes/lang.php',
+    'Gasoline\\Str'             => GASPATH . '/classes/str.php',
+    'Gasoline\\Validation'      => GASPATH . '/classes/validation.php',
+    'Gasoline\\ViewModel'       => GASPATH . '/classes/viewmodel.php',
+    
+    'Gasoline\\Model\\Base'     => GASPATH . '/classes/model/base.php',
     
     'Gasoline\\Model\\Auth_Group'               => GASPATH . '/classes/model/auth/group.php',
     'Gasoline\\Model\\Auth_Group_Permission'    => GASPATH . '/classes/model/auth/group/permission.php',
@@ -43,12 +51,7 @@ Autoloader::add_classes(array(
     'Gasoline\\Model\\Auth_User'                => GASPATH . '/classes/model/auth/user.php',
     'Gasoline\\Model\\Auth_User_Permission'     => GASPATH . '/classes/model/auth/user/permission.php',
     
-    'Gasoline\\DataContainer'   => GASPATH . '/classes/datacontainer.php',
-    'Gasoline\\Helpers'         => GASPATH . '/classes/helpers.php',
-    'Gasoline\\Html'            => GASPATH . '/classes/html.php',
-    'Gasoline\\Lang'            => GASPATH . '/classes/lang.php',
-    'Gasoline\\Str'             => GASPATH . '/classes/str.php',
-    'Gasoline\\Validation'      => GASPATH . '/classes/validation.php',
+    'Gasoline\\Orm\\Observer_Slug'  => GASPATH . '/classes/orm/observer/slug.php',
 ));
 
 // We also need to add the GASPATH to the finder-instance so we can load config

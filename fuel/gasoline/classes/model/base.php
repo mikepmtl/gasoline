@@ -210,7 +210,7 @@ abstract class Base extends \Orm\Model {
             }
         }
         
-        static::$_forms_cached[$me] = $form
+        static::$_forms_cached[$me] = $form;
         
         return $form->populate($this);
     }

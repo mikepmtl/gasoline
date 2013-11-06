@@ -1,6 +1,6 @@
 <?php namespace Gasoline\Orm;
 
-class Observer_Slug extends \Orm\Observer {
+class Observer_Slug extends \Orm\Observer_Slug {
     
     
     

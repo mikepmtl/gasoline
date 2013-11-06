@@ -4,12 +4,10 @@
  * Part of the Gasoline framework
  *
  * @package     Gasoline
- * @version     0.1-dev
+ * @version     1.0-dev
  * @author      Gasoline Development Teams
- * @author      Fuel Development Team
  * @license     MIT License
  * @copyright   2013 Gasoline Development Team
- * @copyright   2010 - 2013 Fuel Development Team
  * @link        http://hubspace.github.io/gasoline
  */
 
@@ -97,6 +95,7 @@ class Lang extends \Fuel\Core\Lang {
         else
         {
             $group = ( $group === true ) ? $file : $group;
+            isset(static::$lines[$language]) OR static::$lines[$language] = array();
             
             if ( strpos($group, DS) !== false )
             {
@@ -117,6 +116,7 @@ class Lang extends \Fuel\Core\Lang {
             }
             else
             {
+                isset(static::$lines[$language][$group]) or static::$lines[$language][$group] = array();
                 static::$lines[$language][$group] = $overwrite ? array_merge(static::$lines[$language][$group], $lang) : \Arr::merge(static::$lines[$language][$group], $lang);
             }
         }

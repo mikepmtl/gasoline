@@ -4,7 +4,7 @@
  * Part of the Gasoline framework
  *
  * @package     Gasoline
- * @version     0.1-dev
+ * @version     1.0-dev
  * @author      Gasoline Development Teams
  * @license     MIT License
  * @copyright   2013 Gasoline Development Team

@@ -4,7 +4,7 @@
  * Part of the Gasoline framework
  *
  * @package     Gasoline
- * @version     0.1-dev
+ * @version     1.0-dev
  * @author      Gasoline Development Teams
  * @author      Fuel Development Team
  * @license     MIT License
@@ -179,6 +179,11 @@ class Auth_User extends Base {
             'cascade_save'      => false,
             'cascade_delete'    => true,
         ),
+        'posts' => array(
+            'key_from'          => 'id',
+            'key_to'            => 'author',
+            'model_to'          => '\\Model\\Post',
+        ),
     );
     
     /**
@@ -201,6 +206,13 @@ class Auth_User extends Base {
             'key_to'            => 'id',
             'model_to'          => 'Model\\Auth_Permission',
         ),
+    );
+    
+    protected static $_form_element_support = true;
+    
+    protected static $_form_element_options = array(
+        'content'   => 'username',
+        'value'     => 'id',
     );
     
     

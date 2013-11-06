@@ -1,4 +1,4 @@
-<?php
+<?php namespace Model;
 
 /**
  * Part of the Gasoline framework
@@ -11,7 +11,7 @@
  * @link        http://hubspace.github.io/gasoline
  */
 
-class Lang extends \Gasoline\Lang {}
+class Base extends \Gasoline\Model\Base {}
 
-/* End of file lang.php */
-/* Location: ./fuel/app/classes/lang.php */
+/* End of file base.php */
+/* Location: ./fuel/app/classes/model/base.php */

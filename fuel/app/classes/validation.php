@@ -11,7 +11,7 @@
  * @link        http://hubspace.github.io/gasoline
  */
 
-class Lang extends \Gasoline\Lang {}
+class Validation extends \Gasoline\Validation {}
 
-/* End of file lang.php */
-/* Location: ./fuel/app/classes/lang.php */
+/* End of file validation.php */
+/* Location: ./fuel/app/classes/validation.php */

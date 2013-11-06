@@ -4,12 +4,10 @@
  * Part of the Gasoline framework
  *
  * @package     Gasoline
- * @version     0.1-dev
+ * @version     1.0-dev
  * @author      Gasoline Development Teams
- * @author      Fuel Development Team
  * @license     MIT License
  * @copyright   2013 Gasoline Development Team
- * @copyright   2010 - 2013 Fuel Development Team
  * @link        http://hubspace.github.io/gasoline
  */
 

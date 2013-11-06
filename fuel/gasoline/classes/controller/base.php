@@ -125,7 +125,7 @@ abstract class Base extends \Controller {
      * @access  public
      * @var     \Fuel\Core\View
      */
-    protected $view = '';
+    protected $view;
     
     
     /**

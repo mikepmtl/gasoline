@@ -102,7 +102,7 @@ abstract class Base extends \Orm\Model {
         
         if ( isset(static::$_forms_cached[$me]) )
         {
-            return static::$_forms_cached[$me]->populate($this);
+            return static::$_forms_cached[$me]->populate($this->to_array());
         }
         
         \Package::load('gasform');
@@ -210,9 +210,9 @@ abstract class Base extends \Orm\Model {
             }
         }
         
-        static::$_forms_cached[$me] = $form;
+        static::$_forms_cached[$me] =& $form;
         
-        return $form->populate($this);
+        return $form->populate($this->to_array());
     }
     
     public static function to_form_element($content = null, $value = null)

@@ -188,11 +188,23 @@ abstract class Base extends \Controller {
             // Request was no HVMC request?
             if ( ! \Request::is_hmvc() )
             {
+                if ( ! is_string($response) )
+                {
+                    // Check we have an object and a render method on that object
+                    if ( ! ( is_object($response) && is_callable(array($response, 'render') ) ) )
+                    {
+                        // Nope, don't have one
+                        throw new \FuelException(get_class(\Request::main()->controller_instance).' must return a string or an object with a render() method .');
+                    }
+                    
+                    $response = $response->render();
+                }
+                
                 // Set variable $content of the template to have the content of
                 // the controller's view already rendered
                 static::$theme
                     ->get_template()
-                    ->set('content', $response->render(), false);
+                    ->set('content', $response , false);
                 
                 // Create the response to be the rendered theme
                 $response = static::$theme->render();

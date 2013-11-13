@@ -275,6 +275,8 @@ return array(
 			'orm',
 			'auth',
 			'seed',
+			'message',
+			'gasform',
 		),
 
 		/**

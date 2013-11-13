@@ -221,7 +221,7 @@ abstract class Base extends \Orm\Model {
         
         if ( ! ( isset(static::$_form_element_support) && static::$_form_element_support === true ) )
         {
-            throw new \Exception('Model ' . $me . ' does not support method to_form_element');
+            throw new \RuntimeException('Model ' . $me . ' does not support method to_form_element');
         }
         
         $content OR $content = static::$_form_element_options['content'];

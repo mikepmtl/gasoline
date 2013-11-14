@@ -22,6 +22,7 @@ class Auth_create_permissiontables {
                 'area'          => array('type' => 'varchar', 'constraint' => 255),
                 'permission'    => array('type' => 'varchar', 'constraint' => 255),
                 'description'   => array('type' => 'varchar', 'constraint' => 255),
+                'actions'       => array('type' => 'text', 'null' => true),
                 'user_id'       => array('type' => 'bigint', 'constraint' => 16, 'default' => 0, 'unsigned' => true),
                 'created_at'    => array('type' => 'int', 'constraint' => 11, 'default' => 0, 'unsigned' => true),
                 'updated_at'    => array('type' => 'int', 'constraint' => 11, 'null' => true, 'unsigned' => true),
@@ -34,7 +35,7 @@ class Auth_create_permissiontables {
             \DBUtil::create_table($table . '_user_permissions', array(
                 'user_id'       => array('type' => 'bigint', 'constraint' => 16, 'unsigned' => true),
                 'perms_id'      => array('type' => 'bigint', 'constraint' => 16, 'unsigned' => true),
-                'actions'       => arary('type' => 'text', 'null' => true),
+                'actions'       => array('type' => 'text', 'null' => true),
                 'created_at'    => array('type' => 'int', 'constraint' => 11, 'default' => 0, 'unsigned' => true),
                 'updated_at'    => array('type' => 'int', 'constraint' => 11, 'null' => true, 'unsigned' => true),
             ), array('user_id', 'perms_id'));
@@ -43,7 +44,7 @@ class Auth_create_permissiontables {
             \DBUtil::create_table($table . '_group_permissions', array(
                 'group_id'      => array('type' => 'int', 'constraint' => 11, 'unsigned' => true),
                 'perms_id'      => array('type' => 'bigint', 'constraint' => 16, 'unsigned' => true),
-                'actions'       => arary('type' => 'text', 'null' => true),
+                'actions'       => array('type' => 'text', 'null' => true),
                 'created_at'    => array('type' => 'int', 'constraint' => 11, 'default' => 0, 'unsigned' => true),
                 'updated_at'    => array('type' => 'int', 'constraint' => 11, 'null' => true, 'unsigned' => true),
             ), array('group_id', 'perms_id'));
@@ -52,7 +53,7 @@ class Auth_create_permissiontables {
             \DBUtil::create_table($table . '_role_permissions', array(
                 'role_id'       => array('type' => 'int', 'constraint' => 11, 'unsigned' => true),
                 'perms_id'      => array('type' => 'bigint', 'constraint' => 16, 'unsigned' => true),
-                'actions'       => arary('type' => 'text', 'null' => true),
+                'actions'       => array('type' => 'text', 'null' => true),
                 'created_at'    => array('type' => 'int', 'constraint' => 11, 'default' => 0, 'unsigned' => true),
                 'updated_at'    => array('type' => 'int', 'constraint' => 11, 'null' => true, 'unsigned' => true),
             ), array('role_id', 'perms_id'));

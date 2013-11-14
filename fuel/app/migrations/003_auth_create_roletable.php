@@ -20,6 +20,7 @@ class Auth_create_roletable {
             \DBUtil::create_table($table . '_roles', array(
                 'id'            => array('type' => 'int', 'constraint' => 11, 'auto_increment' => true, 'unsigned' => true),
                 'name'          => array('type' => 'varchar', 'constraint' => 255),
+                'slug'          => array('type' => 'varchar', 'constraint' => 255),
                 'filter'        => array('type' => 'enum', 'constraint' => "'', 'A', 'D', 'R'", 'default' => ''),
                 'user_id'       => array('type' => 'bigint', 'constraint' => 16, 'default' => 0, 'unsigned' => true),
                 'created_at'    => array('type' => 'int', 'constraint' => 11, 'default' => 0, 'unsigned' => true),

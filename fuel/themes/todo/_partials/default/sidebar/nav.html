@@ -1,0 +1,49 @@
+<section>
+  <div class="lter nav-user hidden-xs pos-rlt">
+    <div class="nav-avatar pos-rlt">
+      <a href="#" class="" data-toggle="dropdown">
+        <?php echo e(\Auth::get('username')); ?>
+        <span class="caret caret-white"></span>
+      </a>
+      <ul class="dropdown-menu m-t-sm animated fadeInLeft">
+        <span class="arrow top"></span>
+        <li>
+          <a href="#">Settings</a>
+        </li>
+        <li>
+          <a href="#">Profile</a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="badge bg-danger pull-right">3</span>
+            Notifications
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li><?php echo \Html::anchor(\Router::get('auth.logout'), __('auth.sign_off')); ?></li>
+      </ul>
+      <div class="visible-xs m-t m-b">
+        <a href="#" class="h3">John.Smith</a>
+      </div>
+    </div>
+  </div>
+  <nav class="nav-primary hidden-xs">
+    <ul class="nav">
+      <li class="<?php echo ( ( ( ! \Uri::segment(2) ) OR \Str::starts_with(\Uri::string(), 'admin/dashboard') ) ? 'active' : '' );  ?>">
+      <?php echo \Html::anchor(\Router::get('dashboard.admin'), '<i class="icon-home"></i><span>Dashboard</span>'); ?>
+      </li>
+      <li class="dropdown-submenu<?php echo ( \Str::starts_with(\Uri::string(), 'admin/auth') ? ' active' : '' );  ?>">
+        <?php echo \Html::anchor('admin/auth', '<i class="icon-lock"></i><span>Auth</span>', array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown')); ?>
+        <ul class="dropdown-menu">
+          <li><?php echo \Html::anchor('admin/auth/users', '<i class="icon-user icon"></i>Users'); ?></li>
+          <li><?php echo \Html::anchor('admin/auth/groups', '<i class="icon-group icon"></i>Groups'); ?></li>
+          <li><?php echo \Html::anchor('admin/auth/roles', '<i class="icon-male icon"></i>Roles'); ?></li>
+          <li><?php echo \Html::anchor('admin/auth/permissions', '<i class="icon-key icon"></i>Permissions'); ?></li>
+        </ul>
+      </li>
+      <li class="<?php echo ( \Str::starts_with(\Uri::string(), 'admin/settings') ? 'active' : '' );  ?>">
+      <?php echo \Html::anchor('admin/settings', '<i class="icon-cogs"></i><span>Settings</span>'); ?>
+      </li>
+    </ul>
+  </nav>
+</section>

@@ -1,0 +1,9 @@
+<header class="dker nav-bar">
+  <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
+    <i class="icon-reorder"></i>
+  </a>
+  <?php echo \Html::anchor(\Router::get('dashboard.admin'), 'GAS', array('class' => 'nav-brand', 'data-toggle' => 'fullscreen')); ?>
+  <a class="btn btn-link visible-xs" data-toggle="class:show" data-target=".nav-user">
+    <i class="icon-comment-alt"></i>
+  </a>
+</header>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title><?php echo ( isset($title) ? $title : 'Gasoline' ); ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <?php echo \Theme::instance()->asset->render('header.css'); ?>
+  
+  <!--[if lt IE 9]>
+    <?php echo \Theme::instance()->asset->js('ie/respond.min.js', array('cache' => 'false')); ?>
+    <?php echo \Theme::instance()->asset->js('ie/html5.js', array('cache' => 'false')); ?>
+    <?php echo \Theme::instance()->asset->js('ie/fix.js', array('cache' => 'false')); ?>
+  <![endif]-->
+</head>
+
+<body>
+
+  <section class="hbox stretch">
+    <!-- .aside -->
+    <aside class="bg-dark aside-sm" id="nav">
+      <section class="vbox">
+        <?php echo \Theme::instance()->view('_partials/default/sidebar/header')->render(); ?>
+        
+        <?php echo \Theme::instance()->view('_partials/default/sidebar/nav')->render(); ?>
+        
+        <?php echo \Theme::instance()->view('_partials/default/sidebar/footer')->render(); ?>
+      </section>
+    </aside>
+    <!-- /.aside -->
+    <!-- .vbox -->
+    <section id="content">
+      <section class="vbox">
+        <?php echo ( isset($partials['page-header']) ? $partials['page-header'] : '' ); ?>
+        
+        <!-- .breadcrumb -->
+        
+        <!-- /.breadcrumb -->
+        
+        <!-- #messages -->
+        
+        <?php echo \Message\Container::instance()->render(); ?>
+        
+        <!-- /#messages -->
+        
+        <section class="scrollable wrapper">
+          <?php echo $content; ?>
+        </section>
+      </section>
+    </section>
+    <!-- /.vbox -->
+  </section>
+  
+  <?php echo \Theme::instance()->asset->render('footer.js'); ?>
+</body>
+</html>

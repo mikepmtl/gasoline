@@ -25,3 +25,6 @@
 [submodule "fuel/packages/gasform"]
 	path = fuel/packages/gasform
 	url = https://github.com/hubspace/gasform.git
+[submodule "fuel/packages/table"]
+	path = fuel/packages/table
+	url = https://github.com/hubspace/fuel-tables.git

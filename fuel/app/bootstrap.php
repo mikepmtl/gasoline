@@ -17,6 +17,7 @@ Autoloader::add_classes(array(
     'Lang'              => __DIR__ . '/classes/lang.php',
     'Str'               => __DIR__ . '/classes/str.php',
     'Validation'        => __DIR__ . '/classes/validation.php',
+    'View'              => __DIR__ . '/classes/view.php',
     'ViewModel'         => __DIR__ . '/classes/viewmodel.php',
     
     // Gasauth related models aliased to the fuel app namespace so that they're
@@ -33,6 +34,7 @@ Autoloader::add_classes(array(
     'Model\\Auth_Userpermission'    => __DIR__.'/classes/model/auth/user/permission.php',
     'Model\\Auth_User_Permission'   => __DIR__.'/classes/model/auth/user/permission.php',
     
+    // Overwriting some classes from the ORM package
     'Orm\\Observer_Id'      => __DIR__ . '/classes/orm/observer/id.php',
     'Orm\\Observer_Slug'    => __DIR__ . '/classes/orm/observer/slug.php',
 ));

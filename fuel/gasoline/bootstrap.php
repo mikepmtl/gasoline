@@ -39,9 +39,13 @@ Autoloader::add_classes(array(
     'Gasoline\\Lang'            => __DIR__ . '/classes/lang.php',
     'Gasoline\\Str'             => __DIR__ . '/classes/str.php',
     'Gasoline\\Validation'      => __DIR__ . '/classes/validation.php',
+    'Gasoline\\View'            => __DIR__ . '/classes/view.php',
     'Gasoline\\ViewModel'       => __DIR__ . '/classes/viewmodel.php',
     
-    'Gasoline\\Controller\\Base'    => __DIR__ . '/classes/controller/base.php',
+    'Gasoline\\Controller\\Admin'           => __DIR__ . '/classes/controller/admin.php',
+    'Gasoline\\Controller\\Authenticated'   => __DIR__ . '/classes/controller/authenticated.php',
+    'Gasoline\\Controller\\Base'            => __DIR__ . '/classes/controller/base.php',
+    'Gasoline\\Controller\\Widget'          => __DIR__ . '/classes/controller/widget.php',
     
     'Gasoline\\Model\\Base'     => __DIR__ . '/classes/model/base.php',
     

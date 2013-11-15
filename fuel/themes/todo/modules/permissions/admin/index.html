@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-md-4">
+    <section class="panel hbox">
+      <aside class="bg-primary lter r-l text-center v-middle">
+        <div class="wrapper">
+          <i class="icon-user icon-4x"></i>                      
+        </div>
+      </aside>
+      <aside class="v-middle text-center">
+        <div class="wrapper">
+          <p class="h4"><?php echo \Html::anchor('admin/auth/permissions/users', __('global.manage_', array('item' => __('auth.breadcrumb.permission.user')))) ?></p>
+        </div>
+      </aside>
+    </section>
+  </div>
+  
+  <div class="col-md-4">
+    <section class="panel hbox">
+      <aside class="bg-primary lter r-l text-center v-middle">
+        <div class="wrapper">
+          <i class="icon-group icon-4x"></i>                      
+        </div>
+      </aside>
+      <aside class="v-middle text-center">
+        <div class="wrapper">
+          <p class="h4"><?php echo \Html::anchor('admin/auth/permissions/groups', __('global.manage_', array('item' => __('auth.breadcrumb.permission.group')))) ?></p>
+        </div>
+      </aside>
+    </section>
+  </div>
+  
+  <div class="col-md-4">
+    <section class="panel hbox">
+      <aside class="bg-primary lter r-l text-center v-middle">
+        <div class="wrapper">
+          <i class="icon-shield icon-4x"></i>                      
+        </div>
+      </aside>
+      <aside class="v-middle text-center">
+        <div class="wrapper">
+          <p class="h4"><?php echo \Html::anchor('admin/auth/permissions/roles', __('global.manage_', array('item' => __('auth.breadcrumb.permission.role')))) ?></p>
+        </div>
+      </aside>
+    </section>
+  </div>
+</div>

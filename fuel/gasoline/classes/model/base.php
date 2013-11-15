@@ -107,9 +107,19 @@ abstract class Base extends \Orm\Model {
         
         \Package::load('gasform');
         
-        $properties = $me::properties();
+        $properties = static::properties();
         
         $form = new \Gasform\Form();
+        
+        if ( ! $this->is_new() )
+        {
+            foreach ( static::primary_key() as $pk )
+            {
+                $hidden = new \Gasform\Input_Hidden($pk, array(), $this->{$pk});
+                
+                $form[$pk] = $hidden;
+            }
+        }
         
         foreach ( $properties as $p => $options )
         {
@@ -145,7 +155,9 @@ abstract class Base extends \Orm\Model {
                         $el = $el->set_attribute('required', 'required');
                     }
                     
-                    $form[] = $el->set_name($p)->set_label($label);
+                    ( $help = \Arr::get($options, 'form.help', false) ) && $el->set_meta('help', \Lang::get($help, array(), false) ? : $help);
+                    
+                    $form[$p] = $el->set_name($p)->set_label($label);
                 break;
                 
                 case 'select':
@@ -164,22 +176,36 @@ abstract class Base extends \Orm\Model {
                             $el->allow_multiple(true);
                         }
                     }
-                    elseif ( $options = \Arr::get($options, 'form.options', false) )
+                    elseif ( $_options = \Arr::get($options, 'form.options', false) )
                     {
                         $el = new \Gasform\Input_Select();
                         
-                        foreach ( $options as $value => $content )
+                        foreach ( $_options as $value => $content )
                         {
-                            $el[] = new \Gasform\Input_Option( \Lang::get($content, array(), false) ? : $content , array(), $value);
+                            $el[$value] = new \Gasform\Input_Option( \Lang::get($content, array(), false) ? : $content , array(), $value);
                         }
                     }
+                    else
+                    {
+                        continue;
+                    }
+                    
+                    /**
+                     * @todo  We should fix this, it isn't correct to do it like this
+                     */
+                    if ( ! isset($el) )
+                    {
+                        continue;
+                    }
+                    
+                    ( $help = \Arr::get($options, 'form.help', false) ) && $el->set_meta('help', $help);
                     
                     if ( in_array('required', \Arr::get($options, 'validation', array())) )
                     {
                         $el = $el->set_attribute('required', 'required');
                     }
                     
-                    $form[] = $el->set_name($p)->set_label($label);
+                    $form[$p] = $el->set_name($p)->set_label($label);
                 break;
                 
                 case 'checkbox':
@@ -188,23 +214,25 @@ abstract class Base extends \Orm\Model {
                     {
                         $group_class = '\\Gasform\\Input_' . ucwords($type) . 'Group';
                         $toggle_class = '\\Gasform\\Input_' . ucwords($type);
-                        $group = new $group_class;
+                        $group = new $group_class();
                         
                         foreach ( $_options as $value => $content )
                         {
                             $item = new $toggle_class(null, array(), $value);
                             $item->set_label( \Lang::get($content, array(), false) ? : $content );
-                            $group[] = $item;
+                            $group[$value] = $item;
                         }
                         
                         $group->set_name($p)->set_label($label);
+                        
+                        ( $help = \Arr::get($options, 'form.help', false) ) && $group->set_meta('form.help', $help);
                         
                         if ( false !== ( $default = \Arr::get($options, 'default', false) ) )
                         {
                             $group->populate(array($group->get_name() => $default));
                         }
                         
-                        $form[] = $group;
+                        $form[$p] = $group;
                     }
                 break;
             }
@@ -215,6 +243,17 @@ abstract class Base extends \Orm\Model {
         return $form->populate($this->to_array());
     }
     
+    
+    /**
+     * Makes the data for the object to a form element (a select) if allowed
+     * 
+     * @access  public
+     * @static
+     * @param   string  $content    Column of data to use as the displayed value
+     * @param   string  $value      Column of data to use as the value submitted
+     * 
+     * @return  \Gasform\Input_Select
+     */
     public static function to_form_element($content = null, $value = null)
     {
         $me = get_called_class();
@@ -245,12 +284,17 @@ abstract class Base extends \Orm\Model {
         // Default order by on the model? Then apply it
         if ( $order_by = static::condition('order_by') )
         {
-            $query = $query->order_by($order_by);
+            foreach ( $order_by as $col => $dirn )
+            {
+                $query = $query->order_by($col, $dirn);
+            }
         }
         
         // Get the options
-        if ( $options = $query->execute()->as_array($content, $value) )
+        if ( $options = $query->execute() )
         {
+            $options = $options->as_array($content, $value);
+            
             // And parse them
             foreach ( $options as $_content => $_value )
             {

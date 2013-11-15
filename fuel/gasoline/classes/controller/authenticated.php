@@ -11,13 +11,18 @@
  * @link        http://hubspace.github.io/gasoline
  */
 
-class Authenticated extends Base {
+abstract class Authenticated extends Base {
     
     public function before()
     {
         if ( ! \Auth::check() )
         {
-            return \Response::redirect_back(\Router::get('_root_'));
+            if ( \Request::is_hmvc() )
+            {
+                return false;
+            }
+            
+            return \Response::redirect(\Uri::create(\Router::get('auth.login'), array(), array('redirect' => \Uri::string())));
         }
         
         parent::before();

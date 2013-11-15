@@ -2,6 +2,7 @@
 
 return array(
     'name'          => 'Name',
+    'slug'          => 'Slug',
     'filter'        => 'Permissions filter',
     'user_id'       => 'Updated by',
     'created_at'    => 'Created',
@@ -14,6 +15,11 @@ return array(
             'D' => 'Deny all access',
             'R' => 'Revoke assigned permissions',
         ),
+    ),
+    
+    'help'  => array(
+        'name'      => 'A unique name for a role',
+        'filter'    => 'Each role can have a filter applied which will be checked before checking the role\'s permissions',
     ),
 );
 

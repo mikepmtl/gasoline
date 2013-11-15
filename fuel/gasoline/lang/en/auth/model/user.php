@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'id'                => 'User-ID',
+    'id'                => 'User ID',
     'username'          => 'Username',
     'email'             => 'Email address',
     'group_id'          => 'Group',
@@ -11,7 +11,7 @@ return array(
     'login_hash'        => 'Login hash',
     'user_id'           => 'Updated by',
     'created_at'        => 'Created',
-    'updated_at'        => 'updated',
+    'updated_at'        => 'Updated',
 );
 
 /* End of file user.php */

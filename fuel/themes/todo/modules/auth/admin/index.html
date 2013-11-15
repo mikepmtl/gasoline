@@ -1,0 +1,63 @@
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/index')); ?>
+
+<div class="row">
+  <div class="col-md-3">
+    <section class="panel no-borders hbox">
+      <aside class="bg-info r-l text-center v-middle">
+        <div class="wrapper">
+          <?php echo \Html::anchor('admin/users', '<i class="icon-user icon-4x"></i>'); ?>
+        </div>
+      </aside>
+      <aside class="r-l text-center v-middle">
+        <div class="wrapper">
+          <p class="h5"><?php echo \Html::anchor('admin/users', 'Manage Users'); ?></p>
+        </div>
+      </aside>
+    </section>
+  </div>
+  
+  <div class="col-md-3">
+    <section class="panel no-borders hbox">
+      <aside class="bg-info r-l text-center v-middle">
+        <div class="wrapper">
+          <?php echo \Html::anchor('admin/groups', '<i class="icon-group icon-4x"></i>'); ?>
+        </div>
+      </aside>
+      <aside class="r-l text-center v-middle">
+        <div class="wrapper">
+          <p class="h5"><?php echo \Html::anchor('admin/groups', 'Manage Groups'); ?></p>
+        </div>
+      </aside>
+    </section>
+  </div>
+  
+  <div class="col-md-3">
+    <section class="panel no-borders hbox">
+      <aside class="bg-info r-l text-center v-middle">
+        <div class="wrapper">
+          <?php echo \Html::anchor('admin/roles', '<i class="icon-shield icon-4x"></i>'); ?>
+        </div>
+      </aside>
+      <aside class="r-l text-center v-middle">
+        <div class="wrapper">
+          <p class="h5"><?php echo \Html::anchor('admin/roles', 'Manage Roles'); ?></p>
+        </div>
+      </aside>
+    </section>
+  </div>
+  
+  <div class="col-md-3">
+    <section class="panel no-borders hbox">
+      <aside class="bg-info r-l text-center v-middle">
+        <div class="wrapper">
+          <?php echo \Html::anchor('admin/permissions', '<i class="icon-legal icon-4x"></i>'); ?>
+        </div>
+      </aside>
+      <aside class="r-l text-center v-middle">
+        <div class="wrapper">
+          <p class="h5"><?php echo \Html::anchor('admin/permissions', 'Manage Permissions'); ?></p>
+        </div>
+      </aside>
+    </section>
+  </div>
+</div>

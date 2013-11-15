@@ -30,6 +30,13 @@ class Auth_Group extends Base {
      */
     protected static $_primary_key = array('id');
     
+    protected static $_form_element_support = true;
+    
+    protected static $_form_element_options = array(
+        'content'   => 'name',
+        'value'     => 'id',
+    );
+    
     /**
      * @var array   model properties
      */
@@ -43,6 +50,20 @@ class Auth_Group extends Base {
                 'required',
                 'max_length' => array(255)
             ),
+            'form'  => array(
+                'type'  => 'text',
+            ),
+        ),
+        'slug'     => array(
+            'label'       => 'auth.model.group.slug',
+            'default'     => '',
+            'null'        => false,
+            'validation'  => array(
+                'max_length' => array(255)
+            ),
+            'form'  => array(
+                'type'  => false,
+            ),
         ),
         'user_id'         => array(
             'label'       => 'auth.model.group.user_id',
@@ -50,6 +71,9 @@ class Auth_Group extends Base {
             'null'        => false,
             'form'        => array(
                 'type' => false
+            ),
+            'form'  => array(
+                'type'  => false,
             ),
         ),
         'created_at'      => array(
@@ -88,6 +112,20 @@ class Auth_Group extends Base {
         'Orm\\Observer_Self' => array(
             'events'    => array('before_insert', 'before_update'),
             'property'  => 'user_id'
+        ),
+        'Orm\\Observer_Slug' => array(
+            'events'    => array('before_insert'),
+            'source'    => 'name',
+        ),
+    );
+    
+    protected static $_belongs_to = array(
+        'auditor' => array(
+            'key_from'          => 'user_id',
+            'model_to'          => 'Model\\Auth_User',
+            'key_to'            => 'id',
+            'cascade_save'      => false,
+            'cascade_delete'    => false,
         ),
     );
     
@@ -137,6 +175,12 @@ class Auth_Group extends Base {
         ),
     );
     
+    protected static $_conditions = array(
+        'order_by'  => array(
+            'name'  => 'asc',
+        ),
+    );
+    
     /**
      * init the class
      */
@@ -161,6 +205,12 @@ class Auth_Group extends Base {
     
     
     
+    
+    
+    public function is_deletable()
+    {
+        return ( count($this->users) == 0 );
+    }
     
     
     /**

@@ -1,0 +1,151 @@
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/details')); ?>
+
+<div class="row">
+  <div class="col-md-9">
+    <section class="panel">
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('group.page-title.details', array('name' => e($group->name)))); ?></header>
+      <?php
+      
+      \Package::load('table');
+      
+      $table = \Table\Table::forge()->set_attribute('class', 'table table-striped table-hover');
+      
+      $table->get_body()->add_row(array(
+        \Table\Cell::forge(__('auth.model.group.name'), array(), \Table\Cell::HEADER),
+        \Table\Cell::forge(e($group->name), array(), \Table\Cell::BODY)
+      ));
+      
+      $table->get_body()->add_row(array(
+        \Table\Cell::forge(__('auth.model.group.slug'), array(), \Table\Cell::HEADER),
+        \Table\Cell::forge(e($group->slug), array(), \Table\Cell::BODY)
+      ));
+      
+      $table->get_body()->add_row(array(
+        \Table\Cell::forge(__('auth.model.group.created_at'), array(), \Table\Cell::HEADER),
+        \Table\Cell::forge(\Date::time_ago($group->created_at), array(), \Table\Cell::BODY)
+      ));
+      
+      $table->get_body()->add_row(array(
+        \Table\Cell::forge(__('auth.model.group.updated_at'), array(), \Table\Cell::HEADER),
+        \Table\Cell::forge(
+          $group->updated_at
+          ? \Date::time_ago($group->updated_at)
+            . ' '
+            . __('global.by')
+            . ' '
+            . (
+              \Auth::has_access('users.admin[read]')
+              ? ( $group->auditor
+                ? \Html::anchor('admin/users/details/' . $group->auditor->id, e($group->auditor->username) . '&nbsp;<i class="icon-share-alt"></i>', array('class' => 'text-primary'))
+                : __('global.n/a')
+              )
+              : ( $group->auditor
+                ? e($group->auditor->username)
+                : __('global.n/a')
+              )
+            )
+          : __('global.never'),
+          array(),
+          \Table\Cell::BODY
+        )
+      ));
+      
+      echo $table;
+      
+      ?>
+    </section>
+  </div>
+  <div class="col-md-3">
+    <section class="panel">
+      <header class="panel-heading bg-primary lter"><?php echo html_tag('span', array('class' => 'h5'), __('global.navigation')); ?></header>
+      <div class="list-group">
+        <?php
+          echo \Html::anchor(
+            'admin/groups',
+            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.list'),
+            array(
+              'class'   => 'list-group-item',
+            )
+          );
+        ?>
+        <?php
+          echo \Html::anchor(
+            'admin/groups/create',
+            '<i class="icon-plus icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.new'),
+            array(
+              'class'   => 'list-group-item',
+            )
+          );
+        ?>
+        <?php
+          echo \Html::anchor(
+            'admin/groups/update/' . $group->id,
+            '<i class="icon-pencil icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.edit'),
+            array(
+              'class'   => 'list-group-item',
+            )
+          );
+        ?>
+        <?php
+          echo \Html::anchor(
+            'admin/groups/delete/' . $group->id,
+            '<i class="icon-trash icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.delete'),
+            array(
+              'class'   => 'list-group-item',
+            )
+          );
+        ?>
+        <?php
+          echo \Html::anchor(
+            'admin/permissions/group/' . $group->id,
+            '<i class="icon-legal icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.permissions'),
+            array(
+              'class'   => 'list-group-item',
+            )
+          );
+        ?>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <section class="panel">
+      <header class="panel-heading bg-light dk"><i class="icon-user icon-fixed-width"></i>&nbsp;&nbsp;<span class="h4">Members</span></header>
+      <div class="panel-body scrollable">
+        <?php if ( $group->users ) : ?>
+          
+        <?php else : ?>
+          <p>No users assigned this group.</p>
+        <?php endif; ?>
+      </div>
+    </section>
+  </div>
+  
+  <div class="col-md-4">
+    <section class="panel">
+      <header class="panel-heading bg-light dk"><i class="icon-group icon-fixed-width"></i>&nbsp;&nbsp;<span class="h4">Roles</span></header>
+      <div class="panel-body scrollable">
+        <?php if ( $group->roles ) : ?>
+          
+        <?php else : ?>
+          <p>No roles assigned this group.</p>
+        <?php endif; ?>
+      </div>
+    </section>
+  </div>
+  
+  <div class="col-md-4">
+    <section class="panel">
+      <header class="panel-heading bg-light dk"><i class="icon-legal icon-fixed-width"></i>&nbsp;&nbsp;<span class="h4">Permissions</span></header>
+      <div class="panel-body scrollable">
+        <?php if ( $group->permissions ) : ?>
+          
+        <?php else : ?>
+          <p>No permissions assigned this group.</p>
+        <?php endif; ?>
+      </div>
+    </section>
+  </div>
+</div>

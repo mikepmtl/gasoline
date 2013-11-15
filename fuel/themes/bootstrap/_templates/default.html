@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title><?php echo ( isset($title) ? $title : ''); ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <!-- CSS -->
+  <?php echo \Theme::instance()->asset->render('header.css'); ?>
+  
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <?php echo \Theme::instance()->asset->js('html5shiv.js'); ?>
+  <![endif]-->
+</head>
+
+<body>
+  <noscript>
+    <div class="no-js-alert">Please enable JavaScript to view this website.</div>
+  </noscript>
+  
+  <div id="wrap">
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <?php echo ( isset($partials['topbar']) ? $partials['topbar'] : '' ); ?>
+      </div>
+    </div>
+    
+    <!-- Begin page content -->
+    <div class="container">
+      
+      <div class="row">
+        <div class="col-md-10 col-sm-6" id="messages">
+          <?php echo \Message\Container::instance('_default_')->render(); ?>
+        </div>
+      </div>
+      
+      <?php if ( isset($page_title) ) : ?>
+      <!-- Page-header -->
+      <div class="page-header">
+        <h1><?php echo $page_title; ?></h1>
+      </div>
+      <!-- /Page-header -->
+      <?php endif; ?>
+      <!-- Breadcrumb -->
+        <?php #echo Breadcrumb::render(); ?>
+      <!-- /Breadcrumb -->
+      
+      <?php echo ( isset($content) ? $content : '' ); ?>
+    </div>
+    <div id="push"></div>
+  </div>
+  
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted credit"><span class="credit">&copy; 2013 <a href="//philipptempel.github.io">Philipp Tempel</a>.</span> <?php echo __('general.execution_stats'); ?></p>
+    </div>
+  </div>
+  
+  <!-- Le javascript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  
+  <!-- Get in jQuery from code.jQuery.com as the minified version -->
+  <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+  
+  <script type="text/javascript">
+  if ( typeof jQuery == 'undefined' ) {
+    // Use a local copy of minified jQuery (located at js/jquery.min.js)
+    document.write(unescape('%3Cscript src="<?php echo \Theme::instance()->asset->get_file('jquery.min.js', 'js'); ?>" type="text/javascript"%3E%3C/script%3E'));
+  }
+  </script>
+  
+  <?php echo \Theme::instance()->asset->render('footer.js'); ?>
+  
+</body>
+
+</html>

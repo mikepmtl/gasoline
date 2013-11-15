@@ -97,9 +97,9 @@ class Lang extends \Fuel\Core\Lang {
             $group = ( $group === true ) ? $file : $group;
             isset(static::$lines[$language]) OR static::$lines[$language] = array();
             
-            if ( strpos($group, DS) !== false )
+            if ( strpos($group, DS) !== false OR strpos($group, '.') !== false )
             {
-                $sections = explode('/', $group);
+                $sections = explode( strpos($group, DS) !== false ? DS : '.', $group);
                 
                 $lines =& static::$lines[$language];
                 

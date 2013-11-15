@@ -31,18 +31,21 @@
     <section id="content">
       <section class="vbox">
         <?php echo ( isset($partials['page-header']) ? $partials['page-header'] : '' ); ?>
-        
-        <!-- .breadcrumb -->
-        
-        <!-- /.breadcrumb -->
-        
-        <!-- #messages -->
-        
-        <?php echo \Message\Container::instance()->render(); ?>
-        
-        <!-- /#messages -->
-        
         <section class="scrollable wrapper">
+          <!-- .breadcrumb -->
+          <?php
+          $engine = new \Breadcrumb\Render_Bootstrap();
+          
+          echo $engine->render(\Breadcrumb\Container::instance());
+          ?>
+          <!-- /.breadcrumb -->
+          
+          <!-- #messages -->
+          
+          <?php echo \Message\Container::instance()->render(); ?>
+          
+          <!-- /#messages -->
+          
           <?php echo $content; ?>
         </section>
       </section>

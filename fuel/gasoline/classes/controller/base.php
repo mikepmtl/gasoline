@@ -67,10 +67,7 @@ abstract class Base extends \Controller {
      */
     protected function _init_theme()
     {
-        if ( static::$theme )
-        {
-            return ;
-        }
+        $active = ( is_string(static::$theme) ? static::$theme : null );
         
         // Assign a theme-instance
         static::$theme = \Theme::instance();
@@ -78,7 +75,7 @@ abstract class Base extends \Controller {
         try
         {
             // Get the active theme's info
-            $theme_info = static::$theme->active();
+            $theme_info = static::$theme->active($active);
             
             // Set the template
             static::$theme->set_template($this->template);
@@ -125,7 +122,7 @@ abstract class Base extends \Controller {
      * @access  public
      * @var     \Fuel\Core\View
      */
-    protected $view;
+    protected $view = '';
     
     
     /**
@@ -171,7 +168,7 @@ abstract class Base extends \Controller {
         // Check the type of the given response. If response is empty, then the
         // controller called did not return anything, so we will set $response to
         // the view set by the controller;
-        $response = ( empty($response) ? $this->view : $response );
+        $response = ( is_null($response) ? $this->view : $response );
         
         // If the response is no \Response object...
         if ( ! $response instanceof \Response )

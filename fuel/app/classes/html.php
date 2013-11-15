@@ -11,7 +11,7 @@
  * @link        http://hubspace.github.io/gasoline
  */
 
-class Html extends \Gasoline\Core\Html {}
+class Html extends \Gasoline\Html {}
 
 /* End of file html.php */
 /* Location: ./fuel/app/classes/html.php */

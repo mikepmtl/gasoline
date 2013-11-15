@@ -1,0 +1,50 @@
+<section class="panel">
+  <header class="panel-heading bg-primary lter"><div class="h5">Most recent users</div></header>
+  <section class="panel-body">
+    <?php if ( isset($recent) && $recent ) : ?>
+      <div class="list-group">
+      <?php foreach ( $recent as $_recent ) : ?>
+        <?php
+        echo \Html::anchor(
+          'admin/users/details/'
+          . $_recent->id,
+          '<i class="icon-chevron-right"></i>'
+          . html_tag(
+            'span',
+            array('class' => 'badge'),
+            \Date::time_ago($_recent->created_at)
+          )
+          . e($_recent->username),
+          array(
+            'class' => 'list-group-item'
+          )
+        );
+        ?>
+      <?php endforeach; ?>
+      </div>
+    <?php else : ?>
+      <p>No recent</p>
+    <?php endif; ?>
+  </section>
+  <footer class="panel-footer">
+    <?php
+      echo html_tag(
+        'span',
+        array(
+          'class' => 'clearfix',
+        ),
+        html_tag(
+          'span',
+          array(
+            'class' => 'btn btn-white btn-xs pull-right',
+          ),
+          \Html::anchor(
+            'admin/users',
+            '<i class="icon-user"></i>'
+            . 'Manage users'
+          )
+        )
+      );
+    ?>
+  </footer>
+</section>

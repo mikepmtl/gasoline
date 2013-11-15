@@ -37,11 +37,27 @@ class Auth_Role extends Base {
         'id',
         'name'            => array(
             'label'       => 'auth.model.role.name',
-            'default'     => 0,
+            'default'     => '',
             'null'        => false,
             'validation'  => array(
                 'required',
-                'max_length' => array(255)
+                'max_length'    => array(255),
+                'unique'        => null,
+            ),
+            'form'  => array(
+                'type'  => 'text',
+                'help'  => 'auth.model.role.help.name',
+            ),
+        ),
+        'slug'     => array(
+            'label'       => 'auth.model.role.slug',
+            'default'     => '',
+            'null'        => false,
+            'validation'  => array(
+                'max_length' => array(255),
+            ),
+            'form'  => array(
+                'type'  => false,
             ),
         ),
         'filter'          => array(
@@ -53,7 +69,13 @@ class Auth_Role extends Base {
                 '', 'A', 'D', 'R'
             ),
             'form'        => array(
-                'type' => 'select'
+                'type' => 'select',
+                'options'   => array(
+                    ''  => 'auth.model.role.options.filter.',
+                    'A' => 'auth.model.role.options.filter.A',
+                    'D' => 'auth.model.role.options.filter.D',
+                    'R' => 'auth.model.role.options.filter.R',
+                ),
             ),
             'validation'  => array(),
         ),
@@ -101,6 +123,20 @@ class Auth_Role extends Base {
         'Orm\\Observer_Self' => array(
             'events'    => array('before_insert', 'before_update'),
             'property'  => 'user_id'
+        ),
+        'Orm\\Observer_Slug' => array(
+            'events'    => array('before_insert'),
+            'source'    => 'name',
+        ),
+    );
+    
+    protected static $_belongs_to = array(
+        'auditor' => array(
+            'key_from'          => 'user_id',
+            'model_to'          => 'Model\\Auth_User',
+            'key_to'            => 'id',
+            'cascade_save'      => false,
+            'cascade_delete'    => false,
         ),
     );
 
@@ -160,27 +196,35 @@ class Auth_Role extends Base {
     {
         // auth config
         \Config::load('ormauth', true);
-
+        
         // set the connection this model should use
         static::$_connection = \Config::get('ormauth.db_connection');
-
+        
         // set the models table name
         static::$_table_name = \Config::get('ormauth.table_name', 'users').'_roles';
-
+        
         // set the relations through table names
         static::$_many_many['users']['table_through'] = \Config::get('ormauth.table_name', 'users').'_user_roles';
         static::$_many_many['groups']['table_through'] = \Config::get('ormauth.table_name', 'users').'_group_roles';
         static::$_many_many['permissions']['table_through'] = \Config::get('ormauth.table_name', 'users').'_role_permissions';
-
+        
         // set the filter options from the language file
         // static::$_properties['filter']['form']['options'] = \Lang::get('auth.model.role.permissions');
-
+        
+        static::$_properties['name']['validation']['unique'] = array(\Config::get('ormauth.table_name', 'users').'_roles.name', '\\Model\\Auth_Role');
+        
         // model language file
         \Lang::load('auth/model/role', true);
     }
     
     
     
+    
+    
+    public function is_deletable()
+    {
+        return ( count($this->users) == 0 );
+    }
     
     
     /**

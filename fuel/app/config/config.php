@@ -179,6 +179,8 @@ return array(
 			'Fuel\\Core\\View',
 			'Fuel\\Core\\ViewModel',
 			'Closure',
+			'Gasform\\Form',
+			'Gasform\\Fieldset',
 		),
 	),
 
@@ -277,6 +279,7 @@ return array(
 			'seed',
 			'message',
 			'gasform',
+			'breadcrumb',
 		),
 
 		/**
@@ -287,7 +290,9 @@ return array(
 		 *
 		 * A path must be set in module_paths for this to work.
 		 */
-		// 'modules'  => array(),
+		'modules'  => array(
+			'auth',
+		),
 
 		/**
 		 * Classes to autoload & initialize even when not used
@@ -316,7 +321,11 @@ return array(
 		 * add it like 'validation' => 'forms'.
 		 * If you don't want the lang in a group use null as groupname.
 		 */
-		// 'language'  => array(),
+		'language'  => array(
+			'auth::auth'	=> 'auth',
+			'button',
+			'global',
+		),
 	),
 
 );

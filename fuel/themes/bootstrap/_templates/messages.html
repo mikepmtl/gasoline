@@ -1,0 +1,13 @@
+<div id="messages">
+<?php if ( $messages ) : ?>
+  <?php foreach ( $messages as $message ) : ?>
+    <div class="alert alert-<?php echo $message->get_type(); ?> alert-dismissable<?php echo ( $message->get_heading() ? ' alert-block' : ''); ?>">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <?php if ( $heading = $message->get_heading() ) : ?>
+        <h4><?php echo $heading; ?></h4>
+      <?php endif; ?>
+      <?php echo $message->get_message(); ?>
+    </div>
+  <?php endforeach; ?>
+<?php endif; ?>
+</div>

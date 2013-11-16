@@ -112,12 +112,25 @@
 <div class="row">
   <div class="col-md-4">
     <section class="panel">
-      <header class="panel-heading bg-light dk"><i class="icon-user icon-fixed-width"></i>&nbsp;&nbsp;<span class="h4">Members</span></header>
-      <div class="panel-body scrollable">
+      <header class="panel-heading bg-light dk"><span class="h4"><i class="icon-user icon-fixed-width"></i>&nbsp;&nbsp;Members</span></header>
+      <div class="list-group scrollable">
         <?php if ( $role->users ) : ?>
-          
+          <?php foreach ( $role->users as $user ) : ?>
+            <?php
+            echo \Html::anchor(
+              'admin/users/details/'
+              . $user->id,
+              '<i class="icon-chevron-right"></i>'
+              . e($user->username),
+              array(
+                'class' => 'list-group-item'
+              )
+            );
+            ?>
+            
+          <?php endforeach; ?>
         <?php else : ?>
-          <p>No users assigned this role.</p>
+          <?php echo html_tag('span', array('class' => 'list-group-item',), 'No users assigned this role.'); ?>
         <?php endif; ?>
       </div>
     </section>
@@ -125,12 +138,25 @@
   
   <div class="col-md-4">
     <section class="panel">
-      <header class="panel-heading bg-light dk"><i class="icon-group icon-fixed-width"></i>&nbsp;&nbsp;<span class="h4">Groups</span></header>
-      <div class="panel-body scrollable">
+      <header class="panel-heading bg-light dk"><span class="h4"><i class="icon-group icon-fixed-width"></i>&nbsp;&nbsp;Groups</span></header>
+      <div class="list-group scrollable">
         <?php if ( $role->groups ) : ?>
-          
+          <?php foreach ( $role->groups as $group ) : ?>
+            <?php
+            echo \Html::anchor(
+              'admin/groups/details/'
+              . $group->id,
+              '<i class="icon-chevron-right"></i>'
+              . e($group->name),
+              array(
+                'class' => 'list-group-item'
+              )
+            );
+            ?>
+            
+          <?php endforeach; ?>
         <?php else : ?>
-          <p>No groups assigned this role.</p>
+          <?php echo html_tag('span', array('class' => 'list-group-item',), 'No groups assigned this role.'); ?>
         <?php endif; ?>
       </div>
     </section>
@@ -138,12 +164,15 @@
   
   <div class="col-md-4">
     <section class="panel">
-      <header class="panel-heading bg-light dk"><i class="icon-legal icon-fixed-width"></i>&nbsp;&nbsp;<span class="h4">Permissions</span></header>
-      <div class="panel-body scrollable">
-        <?php if ( $role->permissions ) : ?>
-          
+      <header class="panel-heading bg-light dk"><span class="h4"><i class="icon-legal icon-fixed-width"></i>&nbsp;&nbsp;Permissions</span></header>
+      <div class="list-group scrollable">
+        <?php if ( $role->rolepermissions ) : ?>
+          <?php foreach ( $role->rolepermissions as $role_perm ) : ?>
+            <?php echo html_tag('span', array('class' => 'list-group-item'), e($role_perm->permission->area) . '<i class="icon-chevron-right"></i>' . e($role_perm->permission->permission)); ?>
+            
+          <?php endforeach; ?>
         <?php else : ?>
-          <p>No permissions assigned this role.</p>
+          <?php echo html_tag('span', array('class' => 'list-group-item',), 'No permissions assigned this role.'); ?>
         <?php endif; ?>
       </div>
     </section>

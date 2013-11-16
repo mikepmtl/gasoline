@@ -12,6 +12,9 @@ return array(
     'user_id'           => 'Updated by',
     'created_at'        => 'Created',
     'updated_at'        => 'Updated',
+    
+    'metadata'  => array(
+    ),
 );
 
 /* End of file user.php */

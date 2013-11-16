@@ -157,6 +157,8 @@ abstract class Base extends \Orm\Model {
                     
                     ( $help = \Arr::get($options, 'form.help', false) ) && $el->set_meta('help', \Lang::get($help, array(), false) ? : $help);
                     
+                    \Arr::get($options, 'validation', false) && $el->set_meta('validation', \Arr::get($options, 'validation'));
+                    
                     $form[$p] = $el->set_name($p)->set_label($label);
                 break;
                 
@@ -200,6 +202,8 @@ abstract class Base extends \Orm\Model {
                     
                     ( $help = \Arr::get($options, 'form.help', false) ) && $el->set_meta('help', $help);
                     
+                    \Arr::get($options, 'validation', false) && $el->set_meta('validation', \Arr::get($options, 'validation'));
+                    
                     if ( in_array('required', \Arr::get($options, 'validation', array())) )
                     {
                         $el = $el->set_attribute('required', 'required');
@@ -225,7 +229,9 @@ abstract class Base extends \Orm\Model {
                         
                         $group->set_name($p)->set_label($label);
                         
-                        ( $help = \Arr::get($options, 'form.help', false) ) && $group->set_meta('form.help', $help);
+                        ( $help = \Arr::get($options, 'form.help', false) ) && $group->set_meta('help', $help);
+                        
+                        \Arr::get($options, 'validation', false) && $group->set_meta('validation', \Arr::get($options, 'validation'));
                         
                         if ( false !== ( $default = \Arr::get($options, 'default', false) ) )
                         {

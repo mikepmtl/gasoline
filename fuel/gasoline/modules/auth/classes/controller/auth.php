@@ -72,6 +72,8 @@ class Auth extends \Controller\Base {
             return \Response::redirect_back('/');
         }
         
+        \Auth::dont_remember_me();
+        
         if ( \Auth::logout() )
         {
             \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Logout successful', 'Bye bye'));
@@ -81,7 +83,7 @@ class Auth extends \Controller\Base {
             \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'Logout failed', 'Somehow!'));
         }
         
-        return \Response::redirect_back('/');
+        return \Response::redirect('/');
     }
     
     

@@ -1,7 +1,7 @@
 <?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/_form')->set('action', $action)); ?>
 
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-10">
     <section class="panel">
       <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('group.page-title.' . $action)); ?></header>
       <div class="panel-body">
@@ -13,7 +13,7 @@
       </div>
     </section>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-2">
     <section class="panel">
       <header class="panel-heading bg-primary bg-lighter"><?php echo html_tag('span', array('class' => 'h5'), __('global.navigation')); ?></header>
       <div class="list-group">

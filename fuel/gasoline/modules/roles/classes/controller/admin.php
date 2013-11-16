@@ -122,19 +122,27 @@ class Admin extends \Controller\Admin {
                     
                     $role->save();
                     
+                    \Message\Container::instance()->set(null, new \Message\Item('success', 'Yes!', 'Created!'));
+                    
                     return \Response::redirect('admin/roles/details/' . $role->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
+                    \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Validation Failed!'));
+                    
                     die('orm validation failed');
                 }
                 catch ( \Exception $e )
                 {
+                    \Message\Container::instance()->set(null, new \Message\Item('danger', 'No!', 'Some weird error occured!'));
+                    
                     die('some other error');
                 }
             }
             else
             {
+                \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Validation Failed!'));
+                
                 $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
@@ -183,14 +191,20 @@ class Admin extends \Controller\Admin {
                     
                     $role->save();
                     
+                    \Message\Container::instance()->set(null, new \Message\Item('success', 'Yes!', 'Updated!'));
+                    
                     return \Response::redirect('admin/roles/details/' . $role->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
+                    \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Validation Failed!'));
+                    
                     die('orm validation failed');
                 }
                 catch ( \Exception $e )
                 {
+                    \Message\Container::instance()->set(null, new \Message\Item('danger', 'No!', 'Some weird error occured!'));
+                    
                     die('some other error');
                 }
             }
@@ -211,6 +225,65 @@ class Admin extends \Controller\Admin {
         $this->view = static::$theme
             ->view('admin/_form')
             ->set('action', 'update')
+            ->set('form', $form)
+            ->set('role', $role);
+    }
+    
+    
+    public function action_delete($id)
+    {
+        static::restrict('roles.admin[delete]');
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/roles/delete', __('role.breadcrumb.delete'));
+        
+        if ( ! ( $role = \Model\Auth_Role::find($id) ) )
+        {
+            throw new \HttpNotFoundException();
+        }
+        
+        $form = $role->to_form();
+        
+        $form->disable_fields();
+        
+        if ( \Input::method() === "POST" )
+        {
+            if ( \Input::post('confirm') === 'yes' )
+            {
+                try
+                {
+                    $role->delete();
+                    
+                    \Message\Container::instance()->set(null, new \Message\Item('success', 'Yes!', 'Deleted!'));
+                }
+                catch ( \Exception $e )
+                {
+                    logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
+                    
+                    \Message\Container::instance()->set(null, new \Message\Item('danger', 'No!', 'Failure!'));
+                }
+            }
+            else
+            {
+                \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Not confirmed!'));
+            }
+            
+            return \Response::redirect('admin/roles');
+        }
+        
+        $cbx_group = new \Gasform\Input_CheckboxGroup();
+        $cbx = new \Gasform\Input_Checkbox('confirm', array(), 'yes');
+        $cbx_group['yes'] = $cbx->set_label(__('global.confirm_delete'));
+        $form['confirm'] = $cbx_group->set_label(__('global.confirmation'));
+        
+        $btn_group = new \Gasform\Input_ButtonGroup();
+        $submit = new \Gasform\Input_Submit('submit', array(), __('button.delete'));
+        $btn_group['submit'] = $submit;
+        
+        $form['btn-group'] = $btn_group;
+        
+        $this->view = static::$theme
+            ->view('admin/_form')
+            ->set('action', 'delete')
             ->set('form', $form)
             ->set('role', $role);
     }

@@ -35,7 +35,7 @@ class Admin extends \Controller\Admin {
         
         if ( $id ) 
         {
-            return $this->list_permissins('group', $id);
+            return $this->list_permissions('group', $id);
         }
         
         return $this->choice('groups');
@@ -48,7 +48,7 @@ class Admin extends \Controller\Admin {
         
         if ( $id ) 
         {
-            return $this->list_permissins('role', $id);
+            return $this->list_permissions('role', $id);
         }
         
         return $this->choice('roles');
@@ -61,10 +61,37 @@ class Admin extends \Controller\Admin {
         
         if ( $id ) 
         {
-            return $this->list_permissins('user', $id);
+            return $this->list_permissions('user', $id);
         }
         
         return $this->choice('users');
+    }
+    
+    
+    protected function list_permissions($scope, $id)
+    {
+        switch ( $scope )
+        {
+            default:
+                throw new \HttpServerErrorException();
+            break;
+            
+            case 'user':
+                
+            break;
+            
+            case 'role':
+                
+            break;
+            
+            case 'group':
+                
+            break;
+        }
+        
+        $this->view = static::$theme
+            ->view('admin/permissions/list')
+            ->set('table', $table, false);
     }
     
 }

@@ -1,7 +1,7 @@
 <?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/details')); ?>
 
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-10">
     <section class="panel">
       <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('user.page-title.details', array('name' => e($user->username)))); ?></header>
       <?php
@@ -80,7 +80,7 @@
       ?>
     </section>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-2">
     <section class="panel">
       <header class="panel-heading bg-primary lter"><?php echo html_tag('span', array('class' => 'h5'), __('global.navigation')); ?></header>
       <div class="list-group">
@@ -125,7 +125,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/permissions/user/' . $user->id,
+            'admin/permissions/users/' . $user->id,
             '<i class="icon-legal icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.permissions'),
             array(
               'class'   => 'list-group-item',

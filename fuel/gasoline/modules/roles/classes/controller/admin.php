@@ -293,7 +293,15 @@ class Admin extends \Controller\Admin {
     {
         static::restrict('roles.admin[read]');
         
-        if ( ! ( $role = \Model\Auth_Role::find($id) ) )
+        $query = \Model\Auth_Role::query()
+            ->related('auditor')
+            ->related('rolepermissions')
+            ->related('users')
+            ->related('groups')
+            ->related('permissions')
+            ->where('id', '=', $id);
+        
+        if ( ! ( $role = $query->get_one() ) )
         {
             throw new \HttpNotFoundException();
         }

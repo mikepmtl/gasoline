@@ -216,7 +216,15 @@ class Admin extends \Controller\Admin {
     {
         static::restrict('groups.admin[read]');
         
-        if ( ! ( $group = \Model\Auth_Group::find($id) ) )
+        $query = \Model\Auth_Group::query()
+            ->related('auditor')
+            ->related('users')
+            ->related('grouppermissions')
+            ->related('roles')
+            ->related('permissions')
+            ->where('id', '=', $id);
+        
+        if ( ! ( $group = $query->get_one() ) )
         {
             throw new \HttpNotFoundException();
         }

@@ -220,7 +220,16 @@ class Admin extends \Controller\Admin {
     {
         static::restrict('users.admin[read]');
         
-        if ( ! ( $user = \Model\Auth_User::find($id) ) )
+        $query = \Model\Auth_User::query()
+            ->related('group')
+            ->related('auditor')
+            ->related('metadata')
+            ->related('userpermissions')
+            ->related('roles')
+            ->related('permissions')
+            ->where('id', '=', $id);
+        
+        if ( ! ( $user = $query->get_one() ) )
         {
             throw new \HttpNotFoundException();
         }

@@ -1,0 +1,24 @@
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/index')); ?>
+
+<div class="row">
+  <?php if ( $widgets ) : ?>
+    <?php $counter = 1; ?>
+    <?php foreach ( $widgets as $widget ) : ?>
+      <div class="col-md-3">
+        <?php echo \Html::anchor('admin/settings/' . $widget['module'], $widget['body']); ?>
+      </div>
+      <?php if ( ++$counter % 3 == 0 ) : ?>
+        </div>
+        <div class="row">
+      <?php endif; ?>
+    <?php endforeach; ?>
+  <?php else : ?>
+    <div class="col-md-4 col-md-offset-2">
+      <section class="panel">
+        <div class="panel-body text-center">
+          <p><?php echo __('global.no_data'); ?></p>
+        </div>
+      </section>
+    </div>
+  <?php endif; ?>
+</div>

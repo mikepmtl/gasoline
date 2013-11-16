@@ -40,7 +40,7 @@ class Admin extends \Controller\Admin {
                         ->set_method(\Request::active()->get_method())
                         ->execute();
                     
-                    return $request->response()->body;
+                    return $this->view = $request->response()->body;
                 }
                 // catch ( \HttpNotFoundException $e )
                 // {
@@ -53,8 +53,46 @@ class Admin extends \Controller\Admin {
             }
         }
         
-        // if not, we got ourselfs a genuine 404!
         throw new \HttpNotFoundException();
+    }
+    
+    
+    public function action_index()
+    {
+        $widgets = array();
+        
+        // Loop through all modules and display their settings widget
+        foreach ( \Config::get('module_paths') as $module_path )
+        {
+            $controllers = glob($module_path . '*/classes/controller/widget.php');
+            
+            if ( ! $controllers )
+            {
+                continue;
+            }
+            
+            foreach ( $controllers as $controller )
+            {
+                $path = explode(DS, str_replace($module_path, '', $controller));
+                
+                $module = $path[0];
+                
+                try
+                {
+                    $response = \Request::forge($module . '/widget/settings/admin', false)->execute()->response();
+                    
+                    $widgets[] = array(
+                        'module'    => $module,
+                        'body'      => $response->body,
+                    );
+                }
+                catch ( \Exception $e ) {}
+            }
+        }
+        
+        $this->view = static::$theme
+            ->view('admin/index')
+            ->set('widgets', $widgets);
     }
     
 }

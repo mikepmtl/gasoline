@@ -1,6 +1,6 @@
-<?php namespace Permissions\Controller;
+<?php namespace Auth\Controller;
 
-class Admin extends \Controller\Admin {
+class Admin_Permissions extends \Controller\Admin {
     
     public function before()
     {
@@ -15,6 +15,7 @@ class Admin extends \Controller\Admin {
         \Lang::load('auth/breadcrumb/user', true);
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions', __('auth.breadcrumb.permission.section'));
     }
     

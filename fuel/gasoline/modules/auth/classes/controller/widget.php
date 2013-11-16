@@ -39,7 +39,7 @@ class Widget extends \Controller\Widget {
     {
         return '';
     }
-    
+  
 }
 
 /* End of file dashboard.php */

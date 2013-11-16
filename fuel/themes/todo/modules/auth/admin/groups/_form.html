@@ -1,9 +1,9 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/_form')->set('action', $action)); ?>
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/groups/page-headers/_form')->set('action', $action)); ?>
 
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('user.page-title.create')); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('group.page-title.' . $action)); ?></header>
       <div class="panel-body">
         <?php
         $engine = new \Gasform\Render_Bootstrap();
@@ -20,7 +20,7 @@
         <?php
           echo \Html::anchor(
             \Uri::create(
-              'admin/users'
+              'admin/auth/groups'
             ),
             '<i class="icon-double-angle-left icon-fixed-width"></i>' . __('button.cancel'),
             array(

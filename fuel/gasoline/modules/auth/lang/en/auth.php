@@ -12,4 +12,8 @@ return array(
     'breadcrumb'    => array(
         'section'   => 'Auth',
     ),
+    
+    'page-title'    => array(
+        'section'   => 'Auth',
+    ),
 );

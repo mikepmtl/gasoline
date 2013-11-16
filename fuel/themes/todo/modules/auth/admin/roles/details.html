@@ -1,4 +1,4 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/details')); ?>
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/roles/page-headers/details')); ?>
 
 <div class="row">
   <div class="col-md-10">
@@ -36,7 +36,7 @@
             . (
               \Auth::has_access('users.admin[read]')
               ? ( $role->auditor
-                ? \Html::anchor('admin/users/details/' . $role->auditor->id, e($role->auditor->username) . '&nbsp;<i class="icon-share-alt"></i>', array('class' => 'text-primary'))
+                ? \Html::anchor('admin/auth/users/details/' . $role->auditor->id, e($role->auditor->username) . '&nbsp;<i class="icon-share-alt"></i>', array('class' => 'text-primary'))
                 : __('global.n/a')
               )
               : ( $role->auditor
@@ -61,7 +61,7 @@
       <div class="list-group">
         <?php
           echo \Html::anchor(
-            'admin/roles',
+            'admin/auth/roles',
             '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.list'),
             array(
               'class'   => 'list-group-item',
@@ -70,7 +70,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/roles/create',
+            'admin/auth/roles/create',
             '<i class="icon-plus icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.new'),
             array(
               'class'   => 'list-group-item',
@@ -79,7 +79,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/roles/update/' . $role->id,
+            'admin/auth/roles/update/' . $role->id,
             '<i class="icon-pencil icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.edit'),
             array(
               'class'   => 'list-group-item',
@@ -88,7 +88,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/roles/delete/' . $role->id,
+            'admin/auth/roles/delete/' . $role->id,
             '<i class="icon-trash icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.delete'),
             array(
               'class'   => 'list-group-item',
@@ -97,7 +97,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/permissions/roles/' . $role->id,
+            'admin/auth/permissions/roles/' . $role->id,
             '<i class="icon-legal icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.permissions'),
             array(
               'class'   => 'list-group-item',
@@ -118,7 +118,7 @@
           <?php foreach ( $role->users as $user ) : ?>
             <?php
             echo \Html::anchor(
-              'admin/users/details/'
+              'admin/auth/users/details/'
               . $user->id,
               '<i class="icon-chevron-right"></i>'
               . e($user->username),
@@ -144,7 +144,7 @@
           <?php foreach ( $role->groups as $group ) : ?>
             <?php
             echo \Html::anchor(
-              'admin/groups/details/'
+              'admin/auth/groups/details/'
               . $group->id,
               '<i class="icon-chevron-right"></i>'
               . e($group->name),

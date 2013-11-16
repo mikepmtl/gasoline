@@ -1,6 +1,6 @@
-<?php namespace Groups\Controller;
+<?php namespace Auth\Controller;
 
-class Admin extends \Controller\Admin {
+class Admin_Users extends \Controller\Admin {
     
     public $default_action = 'list';
     
@@ -8,21 +8,22 @@ class Admin extends \Controller\Admin {
     {
         parent::before();
         
-        \Lang::load('group', true);
+        \Lang::load('user', true);
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/groups', __('group.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users', __('user.breadcrumb.section'));
     }
     
     public function action_list()
     {
-        static::restrict('groups.admin[list]');
+        static::restrict('users.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/groups/list', __('group.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/list', __('user.breadcrumb.list'));
         
         // $pagination_config = array(
-        //     'pagination_url' => \Uri::create('admin/groups'),
-        //     'total_items'    => \Model\Auth_Group::count(),
+        //     'pagination_url' => \Uri::create('admin/auth/users'),
+        //     'total_items'    => \Model\Auth_User::count(),
         //     'per_page'       => \Input::get('per_page', 5),
         //     'uri_segment'    => 'page',
         // );
@@ -60,7 +61,7 @@ class Admin extends \Controller\Admin {
         
         $offset = ( $page - 1 ) * $limit;
         
-        $groups = \Model\Auth_Group::query()
+        $users = \Model\Auth_User::query()
             ->limit($limit)
             ->offset($offset)
             ->get();
@@ -69,29 +70,29 @@ class Admin extends \Controller\Admin {
         
         $table = \Table\Table::forge()->headers(array(
             '',
-            __('auth.model.group.name'),
-            __('auth.model.group.slug'),
+            __('auth.model.user.username'),
+            __('auth.model.user.email'),
             __('global.tools'),
         ));
         
-        if ( $groups )
+        if ( $users )
         {
-            foreach ( $groups as &$group )
+            foreach ( $users as &$user )
             {
                 $row = $table->get_body()->add_row();
+                $cbx = new \Gasform\Input_Checkbox('user_id', array(), $user->id);
                 
-                $row->set_meta('group', $group);
-                
-                $row->add_cell('')
-                    ->add_cell( \Auth::has_access('groups.admin[read]') ? \Html::anchor('admin/groups/details/' . $group->id, e($group->name)) : e($group->name) )
-                    ->add_cell(e($group->slug))
+                $row->set_meta('user', $user)
+                    ->add_cell($cbx)
+                    ->add_cell( \Auth::has_access('users.admin[read]') ? \Html::anchor('admin/auth/users/details/' . $user->id, e($user->username)) : e($user->username) )
+                    ->add_cell(e($user->email))
                     ->add_cell('');
             }
         }
         
         $this->view = static::$theme
-            ->view('admin/list')
-            ->set('groups', $groups)
+            ->view('admin/users/list')
+            ->set('users', $users)
             // ->set('pagination', $pagination, false)
             ->set('table', $table, false);
     }
@@ -99,29 +100,30 @@ class Admin extends \Controller\Admin {
     
     public function action_create()
     {
-        static::restrict('groups.admin[create]');
+        static::restrict('users.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/groups/create', __('group.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/create', __('user.breadcrumb.create'));
         
-        $group = \Model\Auth_Group::forge();
+        $user = \Model\Auth_User::forge();
         
-        $form = $group->to_form();
+        $form = $user->to_form();
         
         if ( \Input::method() === "POST" )
         {
-            $val = \Validation::forge()->add_model($group);
+            $val = \Validation::forge()->add_model($user);
             
             if ( $val->run() )
             {
                 try
                 {
-                    $group->from_array(array(
-                        'name'  => $val->validated('name'),
+                    $user->from_array(array(
+                        'name'      => $val->validated('name'),
+                        'filter'    => $val->validated('filter'),
                     ));
                     
-                    $group->save();
+                    $user->save();
                     
-                    return \Response::redirect('admin/groups/details/' . $group->id);
+                    return \Response::redirect('admin/auth/users/details/' . $user->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
@@ -135,6 +137,8 @@ class Admin extends \Controller\Admin {
             else
             {
                 $form->repopulate(\Input::post());
+                
+                $form->set_errors($val->error());
             }
         }
         
@@ -145,41 +149,42 @@ class Admin extends \Controller\Admin {
         $form['btn-group'] = $btn_group;
         
         $this->view = static::$theme
-            ->view('admin/_form')
+            ->view('admin/users/_form')
             ->set('action', 'create')
             ->set('form', $form)
-            ->set('group', $group);
+            ->set('user', $user);
     }
     
     
     public function action_update($id)
     {
-        static::restrict('groups.admin[update]');
+        static::restrict('users.admin[update]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/groups/update', __('group.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update', __('user.breadcrumb.update'));
         
-        if ( ! ( $group = \Model\Auth_Group::find($id) ) )
+        if ( ! ( $user = \Model\Auth_User::find($id) ) )
         {
             throw new \HttpNotFoundException();
         }
         
-        $form = $group->to_form();
+        $form = $user->to_form();
         
         if ( \Input::method() === "POST" )
         {
-            $val = \Validation::forge()->add_model($group);
+            $val = \Validation::forge()->add_model($user);
             
             if ( $val->run() )
             {
                 try
                 {
-                    $group->from_array(array(
+                    $user->from_array(array(
                         'name'      => $val->validated('name'),
+                        'filter'    => $val->validated('filter'),
                     ));
                     
-                    $group->save();
+                    $user->save();
                     
-                    return \Response::redirect('admin/groups/details/' . $group->id);
+                    return \Response::redirect('admin/auth/users/details/' . $user->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
@@ -205,36 +210,37 @@ class Admin extends \Controller\Admin {
         $form['btn-group'] = $btn_group;
         
         $this->view = static::$theme
-            ->view('admin/_form')
+            ->view('admin/users/_form')
             ->set('action', 'update')
             ->set('form', $form)
-            ->set('group', $group);
+            ->set('user', $user);
     }
     
     
     public function action_details($id)
     {
-        static::restrict('groups.admin[read]');
+        static::restrict('users.admin[read]');
         
-        $query = \Model\Auth_Group::query()
+        $query = \Model\Auth_User::query()
+            ->related('group')
             ->related('auditor')
-            ->related('users')
-            ->related('grouppermissions')
+            ->related('metadata')
+            ->related('userpermissions')
             ->related('roles')
             ->related('permissions')
             ->where('id', '=', $id);
         
-        if ( ! ( $group = $query->get_one() ) )
+        if ( ! ( $user = $query->get_one() ) )
         {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/groups/', __('group.breadcrumb.details'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/groups/details/' . $group->id, e($group->name));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/', __('user.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/details/' . $user->id, e($user->username));
         
         $this->view = static::$theme
-            ->view('admin/details')
-            ->set('group', $group);
+            ->view('admin/users/details')
+            ->set('user', $user);
     }
     
 }

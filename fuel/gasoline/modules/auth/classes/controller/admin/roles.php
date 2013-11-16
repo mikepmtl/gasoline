@@ -1,6 +1,6 @@
-<?php namespace Roles\Controller;
+<?php namespace Auth\Controller;
 
-class Admin extends \Controller\Admin {
+class Admin_Roles extends \Controller\Admin {
     
     public $default_action = 'list';
     
@@ -11,17 +11,18 @@ class Admin extends \Controller\Admin {
         \Lang::load('role', true);
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/roles', __('role.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles', __('role.breadcrumb.section'));
     }
     
     public function action_list()
     {
         static::restrict('roles.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/roles/list', __('role.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/list', __('role.breadcrumb.list'));
         
         // $pagination_config = array(
-        //     'pagination_url' => \Uri::create('admin/roles'),
+        //     'pagination_url' => \Uri::create('admin/auth/roles'),
         //     'total_items'    => \Model\Auth_Role::count(),
         //     'per_page'       => \Input::get('per_page', 5),
         //     'uri_segment'    => 'page',
@@ -83,14 +84,14 @@ class Admin extends \Controller\Admin {
                 
                 $row->set_meta('role', $role)
                     ->add_cell('')
-                    ->add_cell( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/roles/details/' . $role->id, e($role->name)) : e($role->name) )
+                    ->add_cell( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->id, e($role->name)) : e($role->name) )
                     ->add_cell(e($role->slug))
                     ->add_cell('');
             }
         }
         
         $this->view = static::$theme
-            ->view('admin/list')
+            ->view('admin/roles/list')
             ->set('roles', $roles)
             // ->set('pagination', $pagination, false)
             ->set('table', $table, false);
@@ -101,7 +102,7 @@ class Admin extends \Controller\Admin {
     {
         static::restrict('roles.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/roles/create', __('role.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/create', __('role.breadcrumb.create'));
         
         $role = \Model\Auth_Role::forge();
         
@@ -124,7 +125,7 @@ class Admin extends \Controller\Admin {
                     
                     \Message\Container::instance()->set(null, new \Message\Item('success', 'Yes!', 'Created!'));
                     
-                    return \Response::redirect('admin/roles/details/' . $role->id);
+                    return \Response::redirect('admin/auth/roles/details/' . $role->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
@@ -156,7 +157,7 @@ class Admin extends \Controller\Admin {
         $form['btn-group'] = $btn_group;
         
         $this->view = static::$theme
-            ->view('admin/_form')
+            ->view('admin/roles/_form')
             ->set('action', 'create')
             ->set('form', $form)
             ->set('role', $role);
@@ -167,7 +168,7 @@ class Admin extends \Controller\Admin {
     {
         static::restrict('roles.admin[update]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/roles/update', __('role.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update', __('role.breadcrumb.update'));
         
         if ( ! ( $role = \Model\Auth_Role::find($id) ) )
         {
@@ -193,7 +194,7 @@ class Admin extends \Controller\Admin {
                     
                     \Message\Container::instance()->set(null, new \Message\Item('success', 'Yes!', 'Updated!'));
                     
-                    return \Response::redirect('admin/roles/details/' . $role->id);
+                    return \Response::redirect('admin/auth/roles/details/' . $role->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
@@ -223,7 +224,7 @@ class Admin extends \Controller\Admin {
         $form['btn-group'] = $btn_group;
         
         $this->view = static::$theme
-            ->view('admin/_form')
+            ->view('admin/roles/_form')
             ->set('action', 'update')
             ->set('form', $form)
             ->set('role', $role);
@@ -234,7 +235,7 @@ class Admin extends \Controller\Admin {
     {
         static::restrict('roles.admin[delete]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/roles/delete', __('role.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete', __('role.breadcrumb.delete'));
         
         if ( ! ( $role = \Model\Auth_Role::find($id) ) )
         {
@@ -267,7 +268,7 @@ class Admin extends \Controller\Admin {
                 \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Not confirmed!'));
             }
             
-            return \Response::redirect('admin/roles');
+            return \Response::redirect('admin/auth/roles');
         }
         
         $cbx_group = new \Gasform\Input_CheckboxGroup();
@@ -282,7 +283,7 @@ class Admin extends \Controller\Admin {
         $form['btn-group'] = $btn_group;
         
         $this->view = static::$theme
-            ->view('admin/_form')
+            ->view('admin/roles/_form')
             ->set('action', 'delete')
             ->set('form', $form)
             ->set('role', $role);
@@ -306,11 +307,11 @@ class Admin extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/roles/', __('role.breadcrumb.details'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/roles/details/' . $role->id, e($role->name));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/', __('role.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/details/' . $role->id, e($role->name));
         
         $this->view = static::$theme
-            ->view('admin/details')
+            ->view('admin/roles/details')
             ->set('role', $role);
     }
     

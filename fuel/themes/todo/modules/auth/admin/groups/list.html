@@ -1,4 +1,4 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/list')); ?>
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/groups/page-headers/list')); ?>
 
 <div class="row">
   <div class="col-md-10">
@@ -20,7 +20,7 @@
             if ( \Auth::has_access('groups.admin[read]') )
             {
               $tools[] = \Html::anchor(
-                'admin/groups/details/' . $group->id,
+                'admin/auth/groups/details/' . $group->id,
                 '<i class="icon-eye-open"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -31,7 +31,7 @@
             if ( \Auth::has_access('groups.admin[update]') )
             {
               $tools[] = \Html::anchor(
-                'admin/groups/update/' . $group->id,
+                'admin/auth/groups/update/' . $group->id,
                 '<i class="icon-pencil"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -42,7 +42,7 @@
             if ( $group->is_deletable() && \Auth::has_access('groups.admin[delete]') )
             {
               $tools[] = \Html::anchor(
-                'admin/groups/delete/' . $group->id,
+                'admin/auth/groups/delete/' . $group->id,
                 '<i class="icon-trash"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -91,8 +91,17 @@
       <header class="panel-heading bg-primary lter"><?php echo html_tag('span', array('class' => 'h5'), __('global.navigation')); ?></header>
       <div class="list-group">
         <?php
+        echo \Html::anchor(
+            'admin/auth',
+            '<i class="icon-double-angle-left icon-fixed-width"></i>' . __('auth.page-title.section'),
+            array(
+              'class'   => 'list-group-item',
+            )
+          );
+        ?>
+        <?php
           echo \Html::anchor(
-            'admin/groups/create',
+            'admin/auth/groups/create',
             '<i class="icon-plus icon-fixed-width"></i>' . __('button.new'),
             array(
               'class'   => 'list-group-item',

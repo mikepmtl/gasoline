@@ -16,6 +16,10 @@ return array(
     
     'actions'       => 'Actions',
     
+    'confirm'           => 'Confirm',
+    'confirm_delete'    => 'Confirm delete',
+    'confirmation'      => 'Confirmation',
+    
     'dashboard'     => 'Dashboard',
     
     'n/a'           => 'n/a',

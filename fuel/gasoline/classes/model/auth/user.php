@@ -38,7 +38,8 @@ class Auth_User extends Base {
             ),
             'validation'  => array(
                 'required',
-                'max_length' => array(255),
+                'max_length'    => array(255),
+                'unique'        => null,
             ),
         ),
         'email' => array(
@@ -260,6 +261,9 @@ class Auth_User extends Base {
         // Set the validation rules that require the base table name
         static::$_properties['email']['validation']['unique'] = array(\Config::get('gasauth.table_name', 'users') . '.email',);
         static::$_properties['group_id']['validation']['exists'] = array(\Config::get('gasauth.table_name', 'users') . '_groups.id',);
+        
+        static::$_properties['username']['validation']['unique'] = array(\Config::get('ormauth.table_name', 'users').'.username', '\\Model\\Auth_User');
+        static::$_properties['email']['validation']['unique'] = array(\Config::get('ormauth.table_name', 'users').'.email', '\\Model\\Auth_User');
 
         // model language file
         \Lang::load('auth/model/user', true);

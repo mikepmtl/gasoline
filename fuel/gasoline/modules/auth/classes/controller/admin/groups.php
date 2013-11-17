@@ -122,20 +122,30 @@ class Admin_Groups extends \Controller\Admin {
                     
                     $group->save();
                     
+                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Created!')->is_flash());
+                    
                     return \Response::redirect('admin/auth/groups/details/' . $group->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
+                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
+                    
                     die('orm validation failed');
                 }
                 catch ( \Exception $e )
                 {
+                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'General error!'));
+                    
                     die('some other error');
                 }
             }
             else
             {
+                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
+                
                 $form->repopulate(\Input::post());
+                
+                $form->set_errors($val->error());
             }
         }
         
@@ -157,12 +167,13 @@ class Admin_Groups extends \Controller\Admin {
     {
         static::restrict('groups.admin[update]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update', __('group.breadcrumb.update'));
-        
         if ( ! ( $group = \Model\Auth_Group::find($id) ) )
         {
             throw new \HttpNotFoundException();
         }
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update', __('group.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update/' . $group->id, e($group->name));
         
         $form = $group->to_form();
         
@@ -180,19 +191,27 @@ class Admin_Groups extends \Controller\Admin {
                     
                     $group->save();
                     
+                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Updated!')->is_flash());
+                    
                     return \Response::redirect('admin/auth/groups/details/' . $group->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
+                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
+                    
                     die('orm validation failed');
                 }
                 catch ( \Exception $e )
                 {
+                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'General error!'));
+                    
                     die('some other error');
                 }
             }
             else
             {
+                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
+                
                 $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
@@ -208,6 +227,66 @@ class Admin_Groups extends \Controller\Admin {
         $this->view = static::$theme
             ->view('admin/groups/_form')
             ->set('action', 'update')
+            ->set('form', $form)
+            ->set('group', $group);
+    }
+    
+    
+    public function action_delete($id)
+    {
+        static::restrict('groups.admin[delete]');
+        
+        if ( ! ( $group = \Model\Auth_Group::find($id) ) )
+        {
+            throw new \HttpNotFoundException();
+        }
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/delete', __('group.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/delete/' . $group->id, e($group->name));
+        
+        $form = $group->to_form();
+        
+        $form->disable_fields();
+        
+        if ( \Input::method() === "POST" )
+        {
+            if ( \Input::post('confirm') === 'yes' )
+            {
+                try
+                {
+                    $group->delete();
+                    
+                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Deleted!')->is_flash());
+                }
+                catch ( \Exception $e )
+                {
+                    logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
+                    
+                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Failure!')->is_flash());
+                }
+            }
+            else
+            {
+                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Not confirmed!')->is_flash());
+            }
+            
+            return \Response::redirect('admin/auth/groups');
+        }
+        
+        $cbx_group = new \Gasform\Input_CheckboxGroup();
+        $cbx = new \Gasform\Input_Checkbox('confirm', array(), 'yes');
+        $cbx_group['yes'] = $cbx->set_label(__('global.confirm_delete'));
+        $form['confirm'] = $cbx_group->set_label(__('global.confirmation'));
+        
+        $btn_group = new \Gasform\Input_ButtonGroup();
+        $submit = new \Gasform\Input_Submit('submit', array(), __('button.delete'));
+        $btn_group['submit'] = $submit;
+        
+        $form['btn-group'] = $btn_group;
+        
+        $this->view = static::$theme
+            ->view('admin/groups/_form')
+            ->set('action', 'delete')
             ->set('form', $form)
             ->set('group', $group);
     }

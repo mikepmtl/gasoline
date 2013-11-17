@@ -13,6 +13,8 @@ return array(
     'created_at'        => 'Created',
     'updated_at'        => 'Updated',
     
+    'roles'             => 'Roles',
+    
     'metadata'  => array(
     ),
 );

@@ -29,6 +29,13 @@ class Auth_Role extends Base {
      * @var array   primary key of the model
      */
     protected static $_primary_key = array('id');
+    
+    protected static $_form_element_support = true;
+    
+    protected static $_form_element_options = array(
+        'content'   => 'name',
+        'value'     => 'id',
+    );
 
     /**
      * @var array   model properties

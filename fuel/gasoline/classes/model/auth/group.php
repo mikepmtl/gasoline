@@ -48,7 +48,8 @@ class Auth_Group extends Base {
             'null'        => false,
             'validation'  => array(
                 'required',
-                'max_length' => array(255)
+                'max_length'    => array(255),
+                'unique'        => null,
             ),
             'form'  => array(
                 'type'  => 'text',
@@ -198,6 +199,8 @@ class Auth_Group extends Base {
         // set the relations through table names
         static::$_many_many['roles']['table_through'] = \Config::get('gasauth.table_name', 'users').'_group_roles';
         static::$_many_many['permissions']['table_through'] = \Config::get('gasauth.table_name', 'users').'_group_permissions';
+        
+        static::$_properties['name']['validation']['unique'] = array(\Config::get('ormauth.table_name', 'users').'_groups.name', '\\Model\\Auth_Group');
 
         // model language file
         \Lang::load('auth/model/group', true);

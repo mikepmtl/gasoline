@@ -1,4 +1,12 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/users/page-headers/_form')->set('action', $action)); ?>
+<?php
+
+\Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/users/page-headers/_form')->set('action', $action));
+
+// \Theme::instance()->asset->js('select2/select2.min.js', array('jquery.min.js'), 'footer.js');
+// \Theme::instance()->asset->js('select2/select2.init.js', array('select2/select2.min.js'), 'footer.js');
+// \Theme::instance()->asset->css('select2/select2.css', array(), 'header.css');
+
+?>
 
 <div class="row">
   <div class="col-md-10">

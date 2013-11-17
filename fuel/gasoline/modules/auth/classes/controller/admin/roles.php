@@ -123,26 +123,26 @@ class Admin_Roles extends \Controller\Admin {
                     
                     $role->save();
                     
-                    \Message\Container::instance()->set(null, new \Message\Item('success', 'Yes!', 'Created!'));
+                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Created!')->is_flash());
                     
                     return \Response::redirect('admin/auth/roles/details/' . $role->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
-                    \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Validation Failed!'));
+                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation Failed!'));
                     
                     die('orm validation failed');
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance()->set(null, new \Message\Item('danger', 'No!', 'Some weird error occured!'));
+                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Some weird error occured!'));
                     
                     die('some other error');
                 }
             }
             else
             {
-                \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Validation Failed!'));
+                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation Failed!'));
                 
                 $form->repopulate(\Input::post());
                 
@@ -168,12 +168,13 @@ class Admin_Roles extends \Controller\Admin {
     {
         static::restrict('roles.admin[update]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update', __('role.breadcrumb.update'));
-        
         if ( ! ( $role = \Model\Auth_Role::find($id) ) )
         {
             throw new \HttpNotFoundException();
         }
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update', __('role.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update/' . $role->id, e($role->name));
         
         $form = $role->to_form();
         
@@ -192,19 +193,19 @@ class Admin_Roles extends \Controller\Admin {
                     
                     $role->save();
                     
-                    \Message\Container::instance()->set(null, new \Message\Item('success', 'Yes!', 'Updated!'));
+                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Updated!')->is_flash());
                     
                     return \Response::redirect('admin/auth/roles/details/' . $role->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
-                    \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Validation Failed!'));
+                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation Failed!'));
                     
                     die('orm validation failed');
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance()->set(null, new \Message\Item('danger', 'No!', 'Some weird error occured!'));
+                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Some weird error occured!'));
                     
                     die('some other error');
                 }
@@ -235,12 +236,13 @@ class Admin_Roles extends \Controller\Admin {
     {
         static::restrict('roles.admin[delete]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete', __('role.breadcrumb.delete'));
-        
         if ( ! ( $role = \Model\Auth_Role::find($id) ) )
         {
             throw new \HttpNotFoundException();
         }
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete', __('role.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete/' . $role->id, e($role->name));
         
         $form = $role->to_form();
         
@@ -254,18 +256,18 @@ class Admin_Roles extends \Controller\Admin {
                 {
                     $role->delete();
                     
-                    \Message\Container::instance()->set(null, new \Message\Item('success', 'Yes!', 'Deleted!'));
+                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Deleted!')->is_flash());
                 }
                 catch ( \Exception $e )
                 {
                     logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
                     
-                    \Message\Container::instance()->set(null, new \Message\Item('danger', 'No!', 'Failure!'));
+                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Failure!')->is_flash());
                 }
             }
             else
             {
-                \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Not confirmed!'));
+                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Not confirmed!')->is_flash());
             }
             
             return \Response::redirect('admin/auth/roles');

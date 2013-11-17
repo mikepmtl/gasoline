@@ -108,30 +108,24 @@ class Admin_Users extends \Controller\Admin {
         
         $form = $user->to_form();
         
+        $roles = \Model\Auth_Role::to_form_element();
+        $form['roles'] = $roles->set_name('roles[]')->set_label(__('auth.model.user.roles'))->allow_multiple(true);
+        
         if ( \Input::method() === "POST" )
         {
             $val = \Validation::forge()->add_model($user);
             
             if ( $val->run() )
             {
-                try
+                if ( $user_id = \Auth::create_user($val->validated('username'), $val->validated('password'), $val->validated('email'), $val->validated('group_id'), array()) )
                 {
-                    $user->from_array(array(
-                        'name'      => $val->validated('name'),
-                        'filter'    => $val->validated('filter'),
-                    ));
+                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Created!')->is_flash());
                     
-                    $user->save();
-                    
-                    return \Response::redirect('admin/auth/users/details/' . $user->id);
+                    return \Response::redirect('admin/auth/users/details/' . $user_id);
                 }
-                catch ( \Orm\ValidationFailed $e )
+                else
                 {
-                    die('orm validation failed');
-                }
-                catch ( \Exception $e )
-                {
-                    die('some other error');
+                    \Message\Container::instance()->set(null, new \Message\Item('danger', 'No!', 'Failed!'));
                 }
             }
             else
@@ -139,6 +133,8 @@ class Admin_Users extends \Controller\Admin {
                 $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
+                
+                \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Validation Failed!'));
             }
         }
         
@@ -177,21 +173,27 @@ class Admin_Users extends \Controller\Admin {
             {
                 try
                 {
-                    $user->from_array(array(
-                        'name'      => $val->validated('name'),
-                        'filter'    => $val->validated('filter'),
-                    ));
+                    // $user->from_array(array(
+                    //     'name'      => $val->validated('name'),
+                    //     'filter'    => $val->validated('filter'),
+                    // ));
                     
                     $user->save();
+                    
+                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Updated!')->is_flash());
                     
                     return \Response::redirect('admin/auth/users/details/' . $user->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
+                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
+                    
                     die('orm validation failed');
                 }
                 catch ( \Exception $e )
                 {
+                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'General error!'));
+                    
                     die('some other error');
                 }
             }
@@ -200,6 +202,8 @@ class Admin_Users extends \Controller\Admin {
                 $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
+                
+                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
             }
         }
         

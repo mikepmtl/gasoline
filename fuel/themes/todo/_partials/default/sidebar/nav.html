@@ -29,7 +29,7 @@
   </div>
   <nav class="nav-primary hidden-xs">
     <ul class="nav">
-      <li class="<?php echo ( ( ( ! \Uri::segment(2) ) OR \Str::starts_with(\Uri::main(), \Uri::create('admin/dashboard')) ) ? 'active' : '' );  ?>">
+      <li class="<?php echo ( ( \Str::starts_with(\Uri::main(), \Uri::create('admin/dashboard')) OR \Str::ends_with(\Uri::main(), 'admin') ) ? 'active' : '' );  ?>">
       <?php echo \Html::anchor(\Router::get('dashboard.admin'), '<i class="icon-home"></i><span>Dashboard</span>'); ?>
       </li>
       <li class="dropdown-submenu<?php echo ( \Str::starts_with(\Uri::main(), \Uri::create('admin/auth')) ? ' active' : '' );  ?>">

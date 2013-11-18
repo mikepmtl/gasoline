@@ -9,13 +9,19 @@
           <?php
           $table->set_attribute('class', 'table table-striped table-hover');
           
+          $engine = new \Gasform\Render_Bootstrap();
+          
           foreach ( $table as $row )
           {
-            $tools = array();
+            $cbx = $row[0]->get_content();
+            $row[0]->set_content($cbx->render($engine));
+            
             if ( ! ( $group = $row->get_meta('group') ) )
             {
               continue;
             }
+            
+            $tools = array();
             
             if ( \Auth::has_access('groups.admin[read]') )
             {

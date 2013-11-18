@@ -21,36 +21,6 @@ class Admin_Groups extends \Controller\Admin {
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/list', __('auth.group.breadcrumb.list'));
         
-        // $limit = filter_var(
-        //     \Input::get(
-        //         'per_page',
-        //         5
-        //     ),
-        //     FILTER_SANITIZE_NUMBER_INT,
-        //     array(
-        //         'options' => array(
-        //             'default'   => 5,
-        //             'min_range' => 0
-        //         )
-        //     )
-        // );
-        
-        // $page = filter_var(
-        //     \Input::get(
-        //         'page',
-        //         1
-        //     ),
-        //     FILTER_SANITIZE_NUMBER_INT,
-        //     array(
-        //         'options' => array(
-        //             'default'   => 1,
-        //             'min_range' => 0
-        //         )
-        //     )
-        // );
-        
-        // $offset = ( $page - 1 ) * $limit;
-        
         $pagination_config = array(
             'pagination_url'    => \Uri::create('admin/auth/groups'),
             'total_items'       => \Model\Auth_Group::count(),
@@ -72,7 +42,7 @@ class Admin_Groups extends \Controller\Admin {
         \Package::load('table');
         
         $table = \Table\Table::forge()->headers(array(
-            '',
+            html_tag('input', array('type' => 'checkbox')),
             __('auth.model.group.name'),
             __('auth.model.group.slug'),
             __('global.tools'),
@@ -86,7 +56,7 @@ class Admin_Groups extends \Controller\Admin {
                 
                 $row->set_meta('group', $group);
                 
-                $row->add_cell('')
+                $row->add_cell(new \Gasform\Input_Checkbox('group_id', array(), $group->id))
                     ->add_cell( \Auth::has_access('groups.admin[read]') ? \Html::anchor('admin/auth/groups/details/' . $group->id, e($group->name)) : e($group->name) )
                     ->add_cell(e($group->slug))
                     ->add_cell('');

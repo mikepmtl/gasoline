@@ -16,12 +16,12 @@
             $cbx = $row[0]->get_content();
             $row[0]->set_content($cbx->render($engine));
             
-            $tools = array();
-            
             if ( ! ( $user = $row->get_meta('user') ) )
             {
               continue;
             }
+            
+            $tools = array();
             
             if ( \Auth::has_access('users.admin[read]') )
             {

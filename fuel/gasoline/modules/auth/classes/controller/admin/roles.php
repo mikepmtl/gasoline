@@ -21,36 +21,6 @@ class Admin_Roles extends \Controller\Admin {
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/list', __('auth.role.breadcrumb.list'));
         
-        // $limit = filter_var(
-        //     \Input::get(
-        //         'per_page',
-        //         5
-        //     ),
-        //     FILTER_SANITIZE_NUMBER_INT,
-        //     array(
-        //         'options' => array(
-        //             'default'   => 5,
-        //             'min_range' => 0
-        //         )
-        //     )
-        // );
-        
-        // $page = filter_var(
-        //     \Input::get(
-        //         'page',
-        //         1
-        //     ),
-        //     FILTER_SANITIZE_NUMBER_INT,
-        //     array(
-        //         'options' => array(
-        //             'default'   => 1,
-        //             'min_range' => 0
-        //         )
-        //     )
-        // );
-        
-        // $offset = ( $page - 1 ) * $limit;
-        
         $pagination_config = array(
             'pagination_url'    => \Uri::create('admin/auth/roles'),
             'total_items'       => \Model\Auth_Role::count(),
@@ -71,7 +41,7 @@ class Admin_Roles extends \Controller\Admin {
         \Package::load('table');
         
         $table = \Table\Table::forge()->headers(array(
-            '',
+            html_tag('input', array('type' => 'checkbox')),
             __('auth.model.role.name'),
             __('auth.model.role.slug'),
             __('global.tools'),
@@ -84,7 +54,7 @@ class Admin_Roles extends \Controller\Admin {
                 $row = $table->get_body()->add_row();
                 
                 $row->set_meta('role', $role)
-                    ->add_cell('')
+                    ->add_cell(new \Gasform\Input_Checkbox('role_id', array(), $role->id))
                     ->add_cell( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->id, e($role->name)) : e($role->name) )
                     ->add_cell(e($role->slug))
                     ->add_cell('');

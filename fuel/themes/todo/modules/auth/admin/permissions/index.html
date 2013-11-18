@@ -1,46 +1,141 @@
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/permissions/page-headers/index')); ?>
+
 <div class="row">
   <div class="col-md-4">
-    <section class="panel hbox">
-      <aside class="bg-primary lter r-l text-center v-middle">
-        <div class="wrapper">
-          <i class="icon-user icon-4x"></i>                      
-        </div>
-      </aside>
-      <aside class="v-middle text-center">
-        <div class="wrapper">
-          <p class="h4"><?php echo \Html::anchor('admin/auth/permissions/users', __('global.manage_', array('item' => __('auth.breadcrumb.permission.user')))) ?></p>
-        </div>
-      </aside>
-    </section>
+    <?php
+    echo \Html::anchor(
+      'admin/auth/permissions/users',
+      html_tag(
+        'section',
+        array(
+          'class' => 'panel no-borders hbox'
+        ),
+        html_tag(
+          'aside',
+          array(
+            'class' => 'bg-info dk text-center v-middle'
+          ),
+          html_tag(
+            'div',
+            array(
+              'class' => 'wrapper'
+            ),
+            '<i class="icon-user icon-4x"></i>'
+          )
+        )
+        . html_tag(
+          'aside',
+          array(
+            'class' => 'text-center v-middle'
+          ),
+          html_tag(
+            'div',
+            array(
+              'class' => 'wrapper'
+            ),
+            html_tag(
+              'p',
+              array(
+                'class' => 'h4'
+              ),
+              'User Permissions'
+            )
+          )
+        )
+      )
+    );
+    ?>
   </div>
   
   <div class="col-md-4">
-    <section class="panel hbox">
-      <aside class="bg-primary lter r-l text-center v-middle">
-        <div class="wrapper">
-          <i class="icon-group icon-4x"></i>                      
-        </div>
-      </aside>
-      <aside class="v-middle text-center">
-        <div class="wrapper">
-          <p class="h4"><?php echo \Html::anchor('admin/auth/permissions/groups', __('global.manage_', array('item' => __('auth.breadcrumb.permission.group')))) ?></p>
-        </div>
-      </aside>
-    </section>
+    <?php
+    echo \Html::anchor(
+      'admin/auth/permissions/groups',
+      html_tag(
+        'section',
+        array(
+          'class' => 'panel no-borders hbox'
+        ),
+        html_tag(
+          'aside',
+          array(
+            'class' => 'bg-info dk text-center v-middle'
+          ),
+          html_tag(
+            'div',
+            array(
+              'class' => 'wrapper'
+            ),
+            '<i class="icon-group icon-4x"></i>'
+          )
+        )
+        . html_tag(
+          'aside',
+          array(
+            'class' => 'text-center v-middle'
+          ),
+          html_tag(
+            'div',
+            array(
+              'class' => 'wrapper'
+            ),
+            html_tag(
+              'p',
+              array(
+                'class' => 'h4'
+              ),
+              'Group Permissions'
+            )
+          )
+        )
+      )
+    );
+    ?>
   </div>
   
   <div class="col-md-4">
-    <section class="panel hbox">
-      <aside class="bg-primary lter r-l text-center v-middle">
-        <div class="wrapper">
-          <i class="icon-shield icon-4x"></i>                      
-        </div>
-      </aside>
-      <aside class="v-middle text-center">
-        <div class="wrapper">
-          <p class="h4"><?php echo \Html::anchor('admin/auth/permissions/roles', __('global.manage_', array('item' => __('auth.breadcrumb.permission.role')))) ?></p>
-        </div>
-      </aside>
-    </section>
+    <?php
+    echo \Html::anchor(
+      'admin/auth/permissions/roles',
+      html_tag(
+        'section',
+        array(
+          'class' => 'panel no-borders hbox'
+        ),
+        html_tag(
+          'aside',
+          array(
+            'class' => 'bg-info dk text-center v-middle'
+          ),
+          html_tag(
+            'div',
+            array(
+              'class' => 'wrapper'
+            ),
+            '<i class="icon-shield icon-4x"></i>'
+          )
+        )
+        . html_tag(
+          'aside',
+          array(
+            'class' => 'text-center v-middle'
+          ),
+          html_tag(
+            'div',
+            array(
+              'class' => 'wrapper'
+            ),
+            html_tag(
+              'p',
+              array(
+                'class' => 'h4'
+              ),
+              'Role Permissions'
+            )
+          )
+        )
+      )
+    );
+    ?>
   </div>
 </div>

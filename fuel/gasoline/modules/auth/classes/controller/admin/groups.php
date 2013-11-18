@@ -8,62 +8,65 @@ class Admin_Groups extends \Controller\Admin {
     {
         parent::before();
         
-        \Lang::load('group', true);
+        \Lang::load('auth/group', 'auth.group');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups', __('group.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups', __('auth.group.breadcrumb.section'));
     }
     
     public function action_list()
     {
         static::restrict('groups.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/list', __('group.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/list', __('auth.group.breadcrumb.list'));
         
-        // $pagination_config = array(
-        //     'pagination_url' => \Uri::create('admin/auth/groups'),
-        //     'total_items'    => \Model\Auth_Group::count(),
-        //     'per_page'       => \Input::get('per_page', 5),
-        //     'uri_segment'    => 'page',
+        // $limit = filter_var(
+        //     \Input::get(
+        //         'per_page',
+        //         5
+        //     ),
+        //     FILTER_SANITIZE_NUMBER_INT,
+        //     array(
+        //         'options' => array(
+        //             'default'   => 5,
+        //             'min_range' => 0
+        //         )
+        //     )
         // );
         
+        // $page = filter_var(
+        //     \Input::get(
+        //         'page',
+        //         1
+        //     ),
+        //     FILTER_SANITIZE_NUMBER_INT,
+        //     array(
+        //         'options' => array(
+        //             'default'   => 1,
+        //             'min_range' => 0
+        //         )
+        //     )
+        // );
+        
+        // $offset = ( $page - 1 ) * $limit;
+        
+        $pagination_config = array(
+            'pagination_url'    => \Uri::create('admin/auth/groups'),
+            'total_items'       => \Model\Auth_Group::count(),
+            'per_page'          => 15,
+            'uri_segment'       => 'page',
+            'name'              => 'todo-sm',
+        );
+        
         // Create a pagination instance named 'mypagination'
-        // $pagination = \Pagination::forge('todo', $pagination_config);
-        
-        $limit = filter_var(
-            \Input::get(
-                'per_page',
-                5
-            ),
-            FILTER_SANITIZE_NUMBER_INT,
-            array(
-                'options' => array(
-                    'default'   => 5,
-                    'min_range' => 0
-                )
-            )
-        );
-        
-        $page = filter_var(
-            \Input::get(
-                'page',
-                1
-            ),
-            FILTER_SANITIZE_NUMBER_INT,
-            array(
-                'options' => array(
-                    'default'   => 1,
-                    'min_range' => 0
-                )
-            )
-        );
-        
-        $offset = ( $page - 1 ) * $limit;
+        $pagination = \Pagination::forge('todo', $pagination_config);
         
         $groups = \Model\Auth_Group::query()
-            ->limit($limit)
-            ->offset($offset)
+            ->limit($pagination->per_page)
+            ->offset($pagination->offset)
+            ->related('users')
+            ->related('roles')
             ->get();
         
         \Package::load('table');
@@ -93,7 +96,7 @@ class Admin_Groups extends \Controller\Admin {
         $this->view = static::$theme
             ->view('admin/groups/list')
             ->set('groups', $groups)
-            // ->set('pagination', $pagination, false)
+            ->set('pagination', $pagination, false)
             ->set('table', $table, false);
     }
     
@@ -102,7 +105,7 @@ class Admin_Groups extends \Controller\Admin {
     {
         static::restrict('groups.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/create', __('group.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/create', __('auth.group.breadcrumb.create'));
         
         $group = \Model\Auth_Group::forge();
         
@@ -172,7 +175,7 @@ class Admin_Groups extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update', __('group.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update', __('auth.group.breadcrumb.update'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update/' . $group->id, e($group->name));
         
         $form = $group->to_form();
@@ -241,7 +244,7 @@ class Admin_Groups extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/delete', __('group.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/delete', __('auth.group.breadcrumb.delete'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/delete/' . $group->id, e($group->name));
         
         $form = $group->to_form();
@@ -309,7 +312,7 @@ class Admin_Groups extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/', __('group.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/', __('auth.group.breadcrumb.details'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/details/' . $group->id, e($group->name));
         
         $this->view = static::$theme

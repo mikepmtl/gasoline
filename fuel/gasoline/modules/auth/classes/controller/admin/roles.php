@@ -8,62 +8,63 @@ class Admin_Roles extends \Controller\Admin {
     {
         parent::before();
         
-        \Lang::load('role', true);
+        \Lang::load('auth/role', 'auth.role');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles', __('role.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles', __('auth.role.breadcrumb.section'));
     }
     
     public function action_list()
     {
         static::restrict('roles.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/list', __('role.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/list', __('auth.role.breadcrumb.list'));
         
-        // $pagination_config = array(
-        //     'pagination_url' => \Uri::create('admin/auth/roles'),
-        //     'total_items'    => \Model\Auth_Role::count(),
-        //     'per_page'       => \Input::get('per_page', 5),
-        //     'uri_segment'    => 'page',
+        // $limit = filter_var(
+        //     \Input::get(
+        //         'per_page',
+        //         5
+        //     ),
+        //     FILTER_SANITIZE_NUMBER_INT,
+        //     array(
+        //         'options' => array(
+        //             'default'   => 5,
+        //             'min_range' => 0
+        //         )
+        //     )
         // );
         
+        // $page = filter_var(
+        //     \Input::get(
+        //         'page',
+        //         1
+        //     ),
+        //     FILTER_SANITIZE_NUMBER_INT,
+        //     array(
+        //         'options' => array(
+        //             'default'   => 1,
+        //             'min_range' => 0
+        //         )
+        //     )
+        // );
+        
+        // $offset = ( $page - 1 ) * $limit;
+        
+        $pagination_config = array(
+            'pagination_url'    => \Uri::create('admin/auth/roles'),
+            'total_items'       => \Model\Auth_Role::count(),
+            'per_page'          => 15,
+            'uri_segment'       => 'page',
+            'name'              => 'todo-sm',
+        );
+        
         // Create a pagination instance named 'mypagination'
-        // $pagination = \Pagination::forge('todo', $pagination_config);
-        
-        $limit = filter_var(
-            \Input::get(
-                'per_page',
-                5
-            ),
-            FILTER_SANITIZE_NUMBER_INT,
-            array(
-                'options' => array(
-                    'default'   => 5,
-                    'min_range' => 0
-                )
-            )
-        );
-        
-        $page = filter_var(
-            \Input::get(
-                'page',
-                1
-            ),
-            FILTER_SANITIZE_NUMBER_INT,
-            array(
-                'options' => array(
-                    'default'   => 1,
-                    'min_range' => 0
-                )
-            )
-        );
-        
-        $offset = ( $page - 1 ) * $limit;
+        $pagination = \Pagination::forge('todo', $pagination_config);
         
         $roles = \Model\Auth_Role::query()
-            ->limit($limit)
-            ->offset($offset)
+            ->limit($pagination->per_page)
+            ->offset($pagination->offset)
             ->related('users')
             ->get();
         
@@ -93,7 +94,7 @@ class Admin_Roles extends \Controller\Admin {
         $this->view = static::$theme
             ->view('admin/roles/list')
             ->set('roles', $roles)
-            // ->set('pagination', $pagination, false)
+            ->set('pagination', $pagination, false)
             ->set('table', $table, false);
     }
     
@@ -102,7 +103,7 @@ class Admin_Roles extends \Controller\Admin {
     {
         static::restrict('roles.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/create', __('role.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/create', __('auth.role.breadcrumb.create'));
         
         $role = \Model\Auth_Role::forge();
         
@@ -173,7 +174,7 @@ class Admin_Roles extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update', __('role.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update', __('auth.role.breadcrumb.update'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update/' . $role->id, e($role->name));
         
         $form = $role->to_form();
@@ -241,7 +242,7 @@ class Admin_Roles extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete', __('role.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete', __('auth.role.breadcrumb.delete'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete/' . $role->id, e($role->name));
         
         $form = $role->to_form();
@@ -309,7 +310,7 @@ class Admin_Roles extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/', __('role.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/', __('auth.role.breadcrumb.details'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/details/' . $role->id, e($role->name));
         
         $this->view = static::$theme

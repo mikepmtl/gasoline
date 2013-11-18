@@ -8,62 +8,65 @@ class Admin_Users extends \Controller\Admin {
     {
         parent::before();
         
-        \Lang::load('user', true);
+        \Lang::load('auth/user', 'auth.user');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users', __('user.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users', __('auth.user.breadcrumb.section'));
     }
     
     public function action_list()
     {
         static::restrict('users.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/list', __('user.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/list', __('auth.user.breadcrumb.list'));
         
-        // $pagination_config = array(
-        //     'pagination_url' => \Uri::create('admin/auth/users'),
-        //     'total_items'    => \Model\Auth_User::count(),
-        //     'per_page'       => \Input::get('per_page', 5),
-        //     'uri_segment'    => 'page',
+        // $limit = filter_var(
+        //     \Input::get(
+        //         'per_page',
+        //         5
+        //     ),
+        //     FILTER_SANITIZE_NUMBER_INT,
+        //     array(
+        //         'options' => array(
+        //             'default'   => 5,
+        //             'min_range' => 0
+        //         )
+        //     )
         // );
         
+        // $page = filter_var(
+        //     \Input::get(
+        //         'page',
+        //         1
+        //     ),
+        //     FILTER_SANITIZE_NUMBER_INT,
+        //     array(
+        //         'options' => array(
+        //             'default'   => 1,
+        //             'min_range' => 0
+        //         )
+        //     )
+        // );
+        
+        // $offset = ( $page - 1 ) * $limit;
+        
+        $pagination_config = array(
+            'pagination_url'    => \Uri::create('admin/auth/users'),
+            'total_items'       => \Model\Auth_User::count(),
+            'per_page'          => 15,
+            'uri_segment'       => 'page',
+            'name'              => 'todo-sm',
+        );
+        
         // Create a pagination instance named 'mypagination'
-        // $pagination = \Pagination::forge('todo', $pagination_config);
-        
-        $limit = filter_var(
-            \Input::get(
-                'per_page',
-                5
-            ),
-            FILTER_SANITIZE_NUMBER_INT,
-            array(
-                'options' => array(
-                    'default'   => 5,
-                    'min_range' => 0
-                )
-            )
-        );
-        
-        $page = filter_var(
-            \Input::get(
-                'page',
-                1
-            ),
-            FILTER_SANITIZE_NUMBER_INT,
-            array(
-                'options' => array(
-                    'default'   => 1,
-                    'min_range' => 0
-                )
-            )
-        );
-        
-        $offset = ( $page - 1 ) * $limit;
+        $pagination = \Pagination::forge('todo', $pagination_config);
         
         $users = \Model\Auth_User::query()
-            ->limit($limit)
-            ->offset($offset)
+            ->limit($pagination->per_page)
+            ->offset($pagination->offset)
+            ->related('roles')
+            ->related('group')
             ->get();
         
         \Package::load('table');
@@ -93,7 +96,7 @@ class Admin_Users extends \Controller\Admin {
         $this->view = static::$theme
             ->view('admin/users/list')
             ->set('users', $users)
-            // ->set('pagination', $pagination, false)
+            ->set('pagination', $pagination, false)
             ->set('table', $table, false);
     }
     
@@ -102,7 +105,7 @@ class Admin_Users extends \Controller\Admin {
     {
         static::restrict('users.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/create', __('user.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/create', __('auth.user.breadcrumb.create'));
         
         $user = \Model\Auth_User::forge();
         
@@ -156,7 +159,7 @@ class Admin_Users extends \Controller\Admin {
     {
         static::restrict('users.admin[update]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update', __('user.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update', __('auth.user.breadcrumb.update'));
         
         if ( ! ( $user = \Model\Auth_User::find($id) ) )
         {
@@ -239,7 +242,7 @@ class Admin_Users extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/', __('user.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/', __('auth.user.breadcrumb.details'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/details/' . $user->id, e($user->username));
         
         $this->view = static::$theme

@@ -71,7 +71,7 @@ Finder::instance()->add_path(__DIR__, 1);
 //  if there's been a change between pages so we won't set the last_page to the
 //  current page if the user hits reload
 Event::register('shutdown', function() {
-    ( Uri::current() != Session::get('last_page') ) && Session::set('last_page', Uri::current());
+    Uri::main() == Session::get('last_page') OR Session::set('last_page', Uri::main());
 });
 
 /* End of file bootstrap.php */

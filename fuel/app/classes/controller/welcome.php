@@ -30,20 +30,7 @@ class Welcome extends \Controller
      */
     public function action_index()
     {
-        \Debug::$js_toggle_open = true;
-        
-        $form = \Model\Post::to_form();
-        $btngroup = new \Gasform\Input_ButtonGroup();
-        $btn = new \Gasform\Input_Submit('submit');
-        $btngroup[] = $btn->set_value('Submit');
-        $btn = new \Gasform\Input_Button('cancel');
-        $btngroup[] = $btn->set_value('Cancel');
-        $form[] = $btngroup;
-        $renderer = new \Gasform\Render_Bootstrap();
-        
-        \Input::method() === "POST" && $form->repopulate(\Input::post());
-        
-        return \Response::forge(\View::forge('welcome/index')->set('form', $form, false)->set('form_rendered', $renderer->render($form), false));
+        return \Response::forge(\View::forge('welcome/index'));
     }
 
     /**

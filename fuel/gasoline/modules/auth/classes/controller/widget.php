@@ -43,4 +43,4 @@ class Widget extends \Controller\Widget {
 }
 
 /* End of file dashboard.php */
-/* Location: ./fuel/gasoline/modules/auth/calsses/controller/widget/dashboard.php */
+/* Location: ./fuel/gasoline/modules/auth/classes/controller/widget/dashboard.php */

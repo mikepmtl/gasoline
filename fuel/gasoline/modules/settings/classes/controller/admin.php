@@ -1,5 +1,16 @@
 <?php namespace Settings\Controller;
 
+/**
+ * Part of the Gasoline framework
+ *
+ * @package     Gasoline
+ * @version     1.0-dev
+ * @author      Gasoline Development Teams
+ * @license     MIT License
+ * @copyright   2013 Gasoline Development Team
+ * @link        http://hubspace.github.io/gasoline
+ */
+
 class Admin extends \Controller\Admin {
     
     public function before()
@@ -96,3 +107,6 @@ class Admin extends \Controller\Admin {
     }
     
 }
+
+/* End of file admin.php */
+/* Location: ./fuel/gasoline/modules/settings/classes/controller/admin.php */

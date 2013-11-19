@@ -59,3 +59,6 @@ class Admin extends \Controller\Admin {
     }
     
 }
+
+/* End of file admin.php */
+/* Location: ./fuel/gasoline/modules/dashboard/classes/controller/admin.php */

@@ -1,5 +1,16 @@
 <?php namespace Auth\Controller;
 
+/**
+ * Part of the Gasoline framework
+ *
+ * @package     Gasoline
+ * @version     1.0-dev
+ * @author      Gasoline Development Teams
+ * @license     MIT License
+ * @copyright   2013 Gasoline Development Team
+ * @link        http://hubspace.github.io/gasoline
+ */
+
 class Admin_Permissions extends \Controller\Admin {
     
     public function before()
@@ -65,6 +76,24 @@ class Admin_Permissions extends \Controller\Admin {
     }
     
     
+    public function post_users()
+    {
+        return $this->set_permissions('user', \Input::post('user_id'));
+    }
+    
+    
+    public function post_roles()
+    {
+        return $this->set_permissions('role', \Input::post('role_id'));
+    }
+    
+    
+    public function post_groups()
+    {
+        return $this->set_permissions('group', \Input::post('group_id'));
+    }
+    
+    
     protected function choice($scope)
     {
         \Package::load('table');
@@ -99,7 +128,7 @@ class Admin_Permissions extends \Controller\Admin {
                     
                     $row->set_meta('data', $role)
                         ->add_cell('')
-                        ->add_cell(\Html::anchor('admin/auth/permissions/roles' . $role->id, e($role->name)));
+                        ->add_cell(\Html::anchor('admin/auth/permissions/roles/' . $role->id, e($role->name)));
                 }
             break;
             
@@ -112,7 +141,7 @@ class Admin_Permissions extends \Controller\Admin {
                     
                     $row->set_meta('data', $group)
                         ->add_cell('')
-                        ->add_cell(\Html::anchor('admin/auth/permissions/groups' . $group->id, e($group->name)));
+                        ->add_cell(\Html::anchor('admin/auth/permissions/groups/' . $group->id, e($group->name)));
                 }
             break;
         }
@@ -128,7 +157,149 @@ class Admin_Permissions extends \Controller\Admin {
     {
         \Package::load('table');
         
-        $table = \Table\Table::forge()->headers(array());
+        $table = \Table\Table::forge()->headers(array(
+            'Area',
+            'Permission',
+            'Actions',
+        ));
+        
+        switch ( $scope )
+        {
+            default:
+                throw new \HttpNotFoundException();
+            break;
+            
+            case 'user':
+                $query = \Model\Auth_User::query()
+                    ->where('id', '=', $id)
+                    ->related('userpermissions')
+                    ->related('userpermissions.permission');
+                
+                if ( ! $user = $query->get_one() )
+                {
+                    throw new \HttpNotFoundException();
+                }
+                
+                $perms = \Model\Auth_Permission::query()
+                    ->get();
+                
+                foreach ( $perms as &$perm )
+                {
+                    $row = $table->get_body()->add_row();
+                    
+                    $row->set_meta('permission', $perm)
+                        ->add_cell(e($perm->area))
+                        ->add_cell(e($perm->permission))
+                        ->add_cell(function() use ($perm, $user) {
+                            $perms = array();
+                            
+                            foreach ( $perm->actions as $k => $action )
+                            {
+                                $cbx = new \Gasform\Input_Checkbox('permission[' . $perm->id . ']', array(), $k);
+                                $perms[] = $cbx->render(new \Gasform\Render_Simple) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
+                            }
+                            
+                            return implode('<br />', $perms);
+                        });
+                }
+                
+                $data = $user;
+            break;
+            
+            case 'role':
+                $query = \Model\Auth_Role::query()
+                    ->where('id', '=', $id)
+                    ->related('rolepermissions')
+                    ->related('rolepermissions.permission');
+                
+                if ( ! $role = $query->get_one() )
+                {
+                    throw new \HttpNotFoundException();
+                }
+                
+                if ( $role->filter )
+                {
+                    return \Response::redirect_back('admin/auth/permissions/roles');
+                }
+                
+                $perms = \Model\Auth_Permission::query()
+                    ->get();
+                
+                foreach ( $perms as &$perm )
+                {
+                    $row = $table->get_body()->add_row();
+                    
+                    $row->set_meta('permission', $perm)
+                        ->add_cell(e($perm->area))
+                        ->add_cell(e($perm->permission))
+                        ->add_cell(function() use ($perm, $role) {
+                            $perms = array();
+                            
+                            foreach ( $perm->actions as $k => $action )
+                            {
+                                $cbx = new \Gasform\Input_Checkbox('permission[' . $perm->id . ']', array(), $k);
+                                $perms[] = $cbx->render(new \Gasform\Render_Simple) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
+                            }
+                            
+                            return implode('<br />', $perms);
+                        });
+                }
+                
+                $data = $role;
+            break;
+            
+            case 'group':
+                $query = \Model\Auth_Group::query()
+                    ->where('id', '=', $id)
+                    ->related('grouppermissions')
+                    ->related('grouppermissions.permission');
+                
+                if ( ! $group = $query->get_one() )
+                {
+                    throw new \HttpNotFoundException();
+                }
+                
+                $perms = \Model\Auth_Permission::query()
+                    ->get();
+                
+                foreach ( $perms as &$perm )
+                {
+                    $row = $table->get_body()->add_row();
+                    
+                    $row->set_meta('permission', $perm)
+                        ->add_cell(e($perm->area))
+                        ->add_cell(e($perm->permission))
+                        ->add_cell(function() use ($perm, $group) {
+                            $perms = array();
+                            
+                            foreach ( $perm->actions as $k => $action )
+                            {
+                                $cbx = new \Gasform\Input_Checkbox('permission[' . $perm->id . ']', array(), $k);
+                                $perms[] = $cbx->render(new \Gasform\Render_Simple) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
+                            }
+                            
+                            return implode('<br />', $perms);
+                        });
+                }
+                
+                $data = $group;
+            break;
+        }
+        
+        $this->view = static::$theme
+            ->view('admin/permissions/list')
+            ->set('table', $table, false)
+            ->set('scope', $scope)
+            ->set('data', $data, false);
+    }
+    
+    
+    protected function set_permissions($scope, $id = null)
+    {
+        if ( ! $id )
+        {
+            throw new \HttpNotFoundException();
+        }
         
         switch ( $scope )
         {
@@ -148,10 +319,9 @@ class Admin_Permissions extends \Controller\Admin {
                 
             break;
         }
-        
-        $this->view = static::$theme
-            ->view('admin/permissions/list')
-            ->set('table', $table, false);
     }
     
 }
+
+/* End of file permissions.php */
+/* Location: ./fuel/gasoline/modules/auth/classes/controller/admin/permissions.php */

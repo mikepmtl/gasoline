@@ -1,5 +1,16 @@
 <?php namespace Auth\Controller;
 
+/**
+ * Part of the Gasoline framework
+ *
+ * @package     Gasoline
+ * @version     1.0-dev
+ * @author      Gasoline Development Teams
+ * @license     MIT License
+ * @copyright   2013 Gasoline Development Team
+ * @link        http://hubspace.github.io/gasoline
+ */
+
 class Admin_Users extends \Controller\Admin {
     
     public $default_action = 'list';
@@ -220,3 +231,6 @@ class Admin_Users extends \Controller\Admin {
     }
     
 }
+
+/* End of file users.php */
+/* Location: ./fuel/gasoline/modules/auth/classes/controller/admin/users.php */

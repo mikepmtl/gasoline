@@ -5,6 +5,7 @@
     <section class="panel">
       <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('role.page-title.list')); ?></header>
       <?php if ( count($table) ) : ?>
+        <?php echo \Form::open(); ?>
         <div class="table-responsive">
           <?php
           $table->set_attribute('class', 'table table-striped table-hover');
@@ -62,6 +63,7 @@
           echo $table;
           ?>
         </div>
+        <?php echo \Form::close(); ?>
         <?php else : ?>
         <div class="panel-body">
           <div class="row">

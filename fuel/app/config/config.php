@@ -292,6 +292,7 @@ return array(
 		 */
 		'modules'  => array(
 			'auth',
+			'modules',
 		),
 
 		/**

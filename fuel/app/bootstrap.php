@@ -35,6 +35,7 @@ Autoloader::add_classes(array(
     'Model\\Auth_User_Permission'   => __DIR__.'/classes/model/auth/user/permission.php',
     
     // Overwriting some classes from the ORM package
+    'Orm\\Observer_Auditor' => __DIR__ . '/classes/orm/observer/auditor.php',
     'Orm\\Observer_Id'      => __DIR__ . '/classes/orm/observer/id.php',
     'Orm\\Observer_Slug'    => __DIR__ . '/classes/orm/observer/slug.php',
 ));

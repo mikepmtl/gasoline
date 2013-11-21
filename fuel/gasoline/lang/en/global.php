@@ -21,6 +21,10 @@ return array(
     'confirmation'      => 'Confirmation',
     
     'dashboard'     => 'Dashboard',
+    'details'       => 'Details',
+    'disable'       => 'Disable',
+    
+    'enable'        => 'Enable',
     
     'n/a'           => 'n/a',
     

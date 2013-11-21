@@ -21,8 +21,10 @@ return array(
     
     'delete'    => 'Delete',
     'details'   => 'Details',
+    'disable'   => 'Disable',
     
     'edit'      => 'Edit',
+    'enable'    => 'Enable',
     
     'list'      => 'List',
         
@@ -37,6 +39,7 @@ return array(
     'remove'    => 'Remove',
     
     'update'    => 'Update',
+    'upload'    => 'Upload',
     
     'view'      => 'View',
 );

@@ -41,7 +41,7 @@ class Admin_Users extends \Controller\Admin {
         );
         
         // Create a pagination instance named 'mypagination'
-        $pagination = \Pagination::forge('todo', $pagination_config);
+        $pagination = \Pagination::forge('users-pagination', $pagination_config);
         
         $users = \Model\Auth_User::query()
             ->limit($pagination->per_page)
@@ -141,7 +141,19 @@ class Admin_Users extends \Controller\Admin {
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update', __('auth.user.breadcrumb.update'));
         
-        if ( ! ( $user = \Model\Auth_User::find($id) ) )
+        $query = \Model\Auth_User::query()
+            ->related('group')
+            ->related('auditor')
+            ->related('metadata')
+            ->related('userpermissions')
+            ->related('roles')
+            ->related('permissions')
+            ->and_where_open()
+                ->where('id', '=', $id)
+                ->or_where('username', '=', $id)
+            ->and_where_close();
+        
+        if ( ! ( $user = $query->get_one() ) )
         {
             throw new \HttpNotFoundException();
         }
@@ -215,7 +227,10 @@ class Admin_Users extends \Controller\Admin {
             ->related('userpermissions')
             ->related('roles')
             ->related('permissions')
-            ->where('id', '=', $id);
+            ->and_where_open()
+                ->where('id', '=', $id)
+                ->or_where('username', '=', $id)
+            ->and_where_close();
         
         if ( ! ( $user = $query->get_one() ) )
         {

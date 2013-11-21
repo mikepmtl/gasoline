@@ -41,7 +41,7 @@ class Admin_Roles extends \Controller\Admin {
         );
         
         // Create a pagination instance named 'mypagination'
-        $pagination = \Pagination::forge('todo', $pagination_config);
+        $pagination = \Pagination::forge('roles-pagination', $pagination_config);
         
         $roles = \Model\Auth_Role::query()
             ->limit($pagination->per_page)
@@ -150,7 +150,18 @@ class Admin_Roles extends \Controller\Admin {
     {
         static::restrict('roles.admin[update]');
         
-        if ( ! ( $role = \Model\Auth_Role::find($id) ) )
+        $query = \Model\Auth_Role::query()
+            ->related('auditor')
+            ->related('rolepermissions')
+            ->related('users')
+            ->related('groups')
+            ->related('permissions')
+            ->and_where_open()
+                ->where('id', '=', $id)
+                ->or_where('slug', '=', $id)
+            ->and_where_close();
+        
+        if ( ! ( $role = $query->get_one() ) )
         {
             throw new \HttpNotFoundException();
         }
@@ -284,7 +295,10 @@ class Admin_Roles extends \Controller\Admin {
             ->related('users')
             ->related('groups')
             ->related('permissions')
-            ->where('id', '=', $id);
+            ->and_where_open()
+                ->where('id', '=', $id)
+                ->or_where('slug', '=', $id)
+            ->and_where_close();
         
         if ( ! ( $role = $query->get_one() ) )
         {

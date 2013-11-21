@@ -171,9 +171,12 @@ class Admin_Permissions extends \Controller\Admin {
             
             case 'user':
                 $query = \Model\Auth_User::query()
-                    ->where('id', '=', $id)
                     ->related('userpermissions')
-                    ->related('userpermissions.permission');
+                    ->related('userpermissions.permission')
+                    ->and_where_open()
+                        ->where('id', '=', $id)
+                        ->or_where('username', '=', $id)
+                    ->and_where_close();
                 
                 if ( ! $user = $query->get_one() )
                 {
@@ -208,9 +211,12 @@ class Admin_Permissions extends \Controller\Admin {
             
             case 'role':
                 $query = \Model\Auth_Role::query()
-                    ->where('id', '=', $id)
                     ->related('rolepermissions')
-                    ->related('rolepermissions.permission');
+                    ->related('rolepermissions.permission')
+                    ->and_where_open()
+                        ->where('id', '=', $id)
+                        ->or_where('slug', '=', $id)
+                    ->and_where_close();
                 
                 if ( ! $role = $query->get_one() )
                 {
@@ -250,9 +256,12 @@ class Admin_Permissions extends \Controller\Admin {
             
             case 'group':
                 $query = \Model\Auth_Group::query()
-                    ->where('id', '=', $id)
                     ->related('grouppermissions')
-                    ->related('grouppermissions.permission');
+                    ->related('grouppermissions.permission')
+                    ->and_where_open()
+                        ->where('id', '=', $id)
+                        ->or_where('slug', '=', $id)
+                    ->and_where_close();
                 
                 if ( ! $group = $query->get_one() )
                 {

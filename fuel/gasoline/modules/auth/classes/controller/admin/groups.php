@@ -41,7 +41,7 @@ class Admin_Groups extends \Controller\Admin {
         );
         
         // Create a pagination instance named 'mypagination'
-        $pagination = \Pagination::forge('todo', $pagination_config);
+        $pagination = \Pagination::forge('groups-pagination', $pagination_config);
         
         $groups = \Model\Auth_Group::query()
             ->limit($pagination->per_page)
@@ -151,7 +151,18 @@ class Admin_Groups extends \Controller\Admin {
     {
         static::restrict('groups.admin[update]');
         
-        if ( ! ( $group = \Model\Auth_Group::find($id) ) )
+        $query = \Model\Auth_Group::query()
+            ->related('auditor')
+            ->related('users')
+            ->related('grouppermissions')
+            ->related('roles')
+            ->related('permissions')
+            ->and_where_open()
+                ->where('id', '=', $id)
+                ->or_where('slug', '=', $id)
+            ->and_where_close();
+        
+        if ( ! ( $group = $query->get_one() ) )
         {
             throw new \HttpNotFoundException();
         }
@@ -286,7 +297,10 @@ class Admin_Groups extends \Controller\Admin {
             ->related('grouppermissions')
             ->related('roles')
             ->related('permissions')
-            ->where('id', '=', $id);
+            ->and_where_open()
+                ->where('id', '=', $id)
+                ->or_where('slug', '=', $id)
+            ->and_where_close();
         
         if ( ! ( $group = $query->get_one() ) )
         {

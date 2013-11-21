@@ -140,6 +140,18 @@ abstract class Base extends \Controller {
     {
         parent::before();
         
+        // See if it's a request to a module and grab that module from the DB
+        if ( ( $module = \Request::main()->module ) && ( $module = \Modules\Model\Module::find_by_slug($module) ) )
+        {
+            // Module disabled?
+            if ( $module->status === 0 )
+            {
+                logger(\Fuel::L_INFO, 'Access to disabled module [' . $module->slug . '] at ' . microtime() . ' from ' . \Input::real_ip());
+                
+                throw new \HttpNotFoundException();
+            }
+        }
+        
         // Initialize the theme
         $this->_init_theme();
         

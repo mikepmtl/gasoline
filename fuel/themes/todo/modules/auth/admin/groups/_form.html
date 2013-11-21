@@ -2,8 +2,10 @@
 
 <div class="row">
   <div class="col-md-10">
+    <?php echo \Message\Container::instance('group-form')->render(); ?>
+    
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('group.page-title.' . $action)); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.group.page-title.' . $action)); ?></header>
       <div class="panel-body">
         <?php
         $engine = new \Gasform\Render_Bootstrap();

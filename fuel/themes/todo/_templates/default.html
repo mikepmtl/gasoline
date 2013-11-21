@@ -44,17 +44,19 @@
           <!-- /.breadcrumb -->
           
           <!-- #messages -->
-          
           <?php echo \Message\Container::instance()->render(); ?>
-          
           <!-- /#messages -->
           
           <?php echo $content; ?>
         </section>
         <!-- /.scrollable .wrapper -->
+        <footer class="footer bg-light lter b-t text-sm v-middle">
+          <p class="text-muted col-md-offset-2"><?php echo __('global.execution_stats'); ?></p>
+        </footer>
       </section>
       <!-- /.vbox -->
       <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
+      
     </section>
     <!-- /#content -->
   </section>

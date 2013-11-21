@@ -20,6 +20,7 @@ class Admin_Groups extends \Controller\Admin {
         parent::before();
         
         \Lang::load('auth/group', 'auth.group');
+        \Lang::load('messages/group', 'auth.messages.group');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
@@ -106,26 +107,22 @@ class Admin_Groups extends \Controller\Admin {
                     
                     $group->save();
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Created!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.success.create.message', array('name' => e($group->name))), __('auth.messages.group.success.create.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/groups/details/' . $group->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
-                    
-                    die('orm validation failed');
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.success.create.message', array('name' => e($group->name))), __('auth.messages.group.success.create.heading'))->is_flash(true));
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'General error!'));
-                    
-                    die('some other error');
+                    \Message\Container::instance('group-form')->push(\Message\Item::forge('danger', __('auth.messages.group.failure.create.message'), __('auth.messages.group.failure.create.heading')));
                 }
             }
             else
             {
-                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
+                \Message\Container::instance('group-form')->push(\Message\Item::forge('warning', __('auth.messages.group.validation_failed.message'), __('auth.messages.group.validation_failed.heading')));
                 
                 $form->repopulate(\Input::post());
                 
@@ -186,26 +183,22 @@ class Admin_Groups extends \Controller\Admin {
                     
                     $group->save();
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Updated!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.success.update.message', array('name' => e($group->name))), __('auth.messages.group.success.update.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/groups/details/' . $group->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
-                    
-                    die('orm validation failed');
+                    \Message\Container::instance('group-form')->push(\Message\Item::forge('warning', __('auth.messages.group.validation_failed.message'), __('auth.messages.group.validation_failed.heading')));
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'General error!'));
-                    
-                    die('some other error');
+                    \Message\Container::instance('group-form')->push(\Message\Item::forge('danger', __('auth.messages.group.failure.update.message'), __('auth.messages.group.failure.update.heading')));
                 }
             }
             else
             {
-                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
+                \Message\Container::instance('group-form')->push(\Message\Item::forge('warning', __('auth.messages.group.validation_failed.message'), __('auth.messages.group.validation_failed.heading')));
                 
                 $form->repopulate(\Input::post());
                 
@@ -251,18 +244,18 @@ class Admin_Groups extends \Controller\Admin {
                 {
                     $group->delete();
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Deleted!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.success.delete.message', array('name' => e($name))), __('auth.messages.group.success.delete.heading'))->is_flash(true));
                 }
                 catch ( \Exception $e )
                 {
                     logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Failure!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.group.failure.delete.message'), __('auth.messages.group.failure.delete.heading'))->is_flash(true));
                 }
             }
             else
             {
-                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Not confirmed!')->is_flash());
+                \Message\Container::push(\Message\Item::forge('warning', __('auth.messages.group.warning.delete.message', array('name' => e($group->name))), __('auth.messages.group.warning.delete.heading'))->is_flash(true));
             }
             
             return \Response::redirect('admin/auth/groups');

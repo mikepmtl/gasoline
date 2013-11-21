@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('role.page-title.details', array('name' => e($role->name)))); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.role.page-title.details', array('name' => e($role->name)))); ?></header>
       <?php
       
       \Package::load('table');
@@ -36,7 +36,7 @@
             . (
               \Auth::has_access('users.admin[read]')
               ? ( $role->auditor
-                ? \Html::anchor('admin/auth/users/details/' . $role->auditor->id, e($role->auditor->username) . '&nbsp;<i class="icon-share-alt"></i>', array('class' => 'text-primary'))
+                ? \Html::anchor('admin/auth/users/details/' . $role->auditor->username, e($role->auditor->username) . '&nbsp;<i class="icon-share-alt"></i>', array('class' => 'text-primary'))
                 : __('global.n/a')
               )
               : ( $role->auditor
@@ -79,7 +79,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/auth/roles/update/' . $role->id,
+            'admin/auth/roles/update/' . $role->slug,
             '<i class="icon-pencil icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.edit'),
             array(
               'class'   => 'list-group-item',
@@ -88,7 +88,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/auth/roles/delete/' . $role->id,
+            'admin/auth/roles/delete/' . $role->slug,
             '<i class="icon-trash icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.delete'),
             array(
               'class'   => 'list-group-item',
@@ -97,7 +97,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/auth/permissions/roles/' . $role->id,
+            'admin/auth/permissions/roles/' . $role->slug,
             '<i class="icon-legal icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.permissions'),
             array(
               'class'   => 'list-group-item',
@@ -119,7 +119,7 @@
             <?php
             echo \Html::anchor(
               'admin/auth/users/details/'
-              . $user->id,
+              . $user->username,
               '<i class="icon-chevron-right"></i>'
               . e($user->username),
               array(
@@ -145,7 +145,7 @@
             <?php
             echo \Html::anchor(
               'admin/auth/groups/details/'
-              . $group->id,
+              . $group->slug,
               '<i class="icon-chevron-right"></i>'
               . e($group->name),
               array(

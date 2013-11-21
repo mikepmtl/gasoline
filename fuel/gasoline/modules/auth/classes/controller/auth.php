@@ -87,11 +87,11 @@ class Auth extends \Controller\Base {
         
         if ( \Auth::logout() )
         {
-            \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Logout successful', 'Bye bye'));
+            \Message\Container::push(\Message\Item::forge('success', 'Logout successful', 'Bye bye')->is_flash(true));
         }
         else
         {
-            \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'Logout failed', 'Somehow!'));
+            \Message\Container::push(\Message\Item::forge('danger', 'Logout failed', 'Somehow!')->is_flash(true));
         }
         
         return \Response::redirect('/');

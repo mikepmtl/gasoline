@@ -20,6 +20,7 @@ class Admin_Roles extends \Controller\Admin {
         parent::before();
         
         \Lang::load('auth/role', 'auth.role');
+        \Lang::load('messages/role', 'auth.messages.role');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
@@ -47,6 +48,7 @@ class Admin_Roles extends \Controller\Admin {
             ->limit($pagination->per_page)
             ->offset($pagination->offset)
             ->related('users')
+            ->related('groups')
             ->get();
         
         \Package::load('table');
@@ -105,26 +107,22 @@ class Admin_Roles extends \Controller\Admin {
                     
                     $role->save();
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Created!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.create.message', array('name' => e($role->name))), __('auth.messages.role.success.create.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/roles/details/' . $role->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation Failed!'));
-                    
-                    die('orm validation failed');
+                    \Message\Container::instance('role-form')->push(\Message\Item::forge('warning', __('auth.messages.role.validation_failed.message'), __('auth.messages.role.validation_failed.heading')));
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Some weird error occured!'));
-                    
-                    die('some other error');
+                    \Message\Container::instance('role-form')->push(\Message\Item::forge('danger', __('auth.messages.role.failure.create.message'), __('auth.messages.role.failure.create.heading')));
                 }
             }
             else
             {
-                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation Failed!'));
+                \Message\Container::instance('role-form')->push(\Message\Item::forge('warning', __('auth.messages.role.validation_failed.message'), __('auth.messages.role.validation_failed.heading')));
                 
                 $form->repopulate(\Input::post());
                 
@@ -186,25 +184,23 @@ class Admin_Roles extends \Controller\Admin {
                     
                     $role->save();
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Updated!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.update.message', array('name' => e($role->name))), __('auth.messages.role.success.update.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/roles/details/' . $role->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation Failed!'));
-                    
-                    die('orm validation failed');
+                    \Message\Container::instance('role-form')->push(\Message\Item::forge('warning', __('auth.messages.role.validation_failed.message'), __('auth.messages.role.validation_failed.heading')));
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Some weird error occured!'));
-                    
-                    die('some other error');
+                    \Message\Container::instance('role-form')->push(\Message\Item::forge('danger', __('auth.messages.role.failure.update.message'), __('auth.messages.role.failure.update.heading')));
                 }
             }
             else
             {
+                \Message\Container::instance('role-form')->push(\Message\Item::forge('warning', __('auth.messages.role.validation_failed.message'), __('auth.messages.role.validation_failed.heading')));
+                
                 $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
@@ -229,7 +225,18 @@ class Admin_Roles extends \Controller\Admin {
     {
         static::restrict('roles.admin[delete]');
         
-        if ( ! ( $role = \Model\Auth_Role::find($id) ) )
+        $query = \Model\Auth_Role::query()
+            ->related('auditor')
+            ->related('rolepermissions')
+            ->related('users')
+            ->related('groups')
+            ->related('permissions')
+            ->and_where_open()
+                ->where('id', '=', $id)
+                ->or_where('slug', '=', $id)
+            ->and_where_close();
+        
+        if ( ! ( $role = $query->get_one() ) )
         {
             throw new \HttpNotFoundException();
         }
@@ -247,20 +254,21 @@ class Admin_Roles extends \Controller\Admin {
             {
                 try
                 {
+                    $name = $role->name;
                     $role->delete();
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Deleted!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.delete.message', array('name' => e($name))), __('auth.messages.role.success.delete.heading'))->is_flash(true));
                 }
                 catch ( \Exception $e )
                 {
                     logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Failure!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.role.failure.delete.message'), __('auth.messages.role.failure.delete.heading'))->is_flash(true));
                 }
             }
             else
             {
-                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Not confirmed!')->is_flash());
+                \Message\Container::push(\Message\Item::forge('warning', __('auth.messages.role.warning.delete.message', array('name' => e($role->name))), __('auth.messages.role.warning.delete.heading'))->is_flash(true));
             }
             
             return \Response::redirect('admin/auth/roles');

@@ -102,22 +102,22 @@ class Admin_Users extends \Controller\Admin {
             {
                 if ( $user_id = \Auth::create_user($val->validated('username'), $val->validated('password'), $val->validated('email'), $val->validated('group_id'), array()) )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Created!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.success.create.message', array('name' => e($user->username))), __('auth.messages.user.success.create.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/users/details/' . $user_id);
                 }
                 else
                 {
-                    \Message\Container::instance()->set(null, new \Message\Item('danger', 'No!', 'Failed!'));
+                    \Message\Container::instance('user-form')->push(\Message\Item::forge('danger', __('auth.messages.user.failure.create.message'), __('auth.messages.user.failure.create.heading')));
                 }
             }
             else
             {
+                \Message\Container::instance('user-form')->push(\Message\Item::forge('warning', __('auth.messages.user.validation_failed.message'), __('auth.messages.user.validation_failed.heading')));
+                
                 $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
-                
-                \Message\Container::instance()->set(null, new \Message\Item('warning', 'No!', 'Validation Failed!'));
             }
         }
         
@@ -175,30 +175,26 @@ class Admin_Users extends \Controller\Admin {
                     
                     $user->save();
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Updated!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.success.update.message', array('name' => e($user->username))), __('auth.messages.user.success.update.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/users/details/' . $user->id);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
-                    
-                    die('orm validation failed');
+                    \Message\Container::instance('user-form')->push(\Message\Item::forge('warning', __('auth.messages.user.validation_failed.message'), __('auth.messages.user.validation_failed.heading')));
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'General error!'));
-                    
-                    die('some other error');
+                    \Message\Container::instance('user-form')->push(\Message\Item::forge('danger', __('auth.messages.user.failure.update.message'), __('auth.messages.user.failure.update.heading')));
                 }
             }
             else
             {
+                \Message\Container::instance('user-form')->push(\Message\Item::forge('warning', __('auth.messages.user.validation_failed.message'), __('auth.messages.user.validation_failed.heading')));
+                
                 $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
-                
-                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Validation failed!'));
             }
         }
         

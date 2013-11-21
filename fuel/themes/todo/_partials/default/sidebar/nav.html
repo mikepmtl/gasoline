@@ -29,7 +29,7 @@
   </div>
   <nav class="nav-primary hidden-xs">
     <ul class="nav">
-      <li class="<?php echo ( ( \Str::starts_with(\Uri::main(), \Uri::create('admin/dashboard')) OR \Str::ends_with(\Uri::main(), 'admin') ) ? 'active' : '' );  ?>">
+      <li class="<?php echo ( ! \Request::main()->uri->get_segment(2) OR \Str::starts_with(\Uri::main(), \Uri::create('admin/dashboard')) ? 'active' : '' );  ?>">
       <?php echo \Html::anchor(\Router::get('dashboard.admin'), '<i class="icon-home"></i><span>Dashboard</span>'); ?>
       </li>
       <li class="dropdown-submenu<?php echo ( \Str::starts_with(\Uri::main(), \Uri::create('admin/auth')) ? ' active' : '' );  ?>">
@@ -43,6 +43,9 @@
       </li>
       <li class="<?php echo ( \Str::starts_with(\Uri::main(), \Uri::create('admin/settings')) ? 'active' : '' );  ?>">
       <?php echo \Html::anchor('admin/settings', '<i class="icon-cogs"></i><span>Settings</span>'); ?>
+      </li>
+      <li class="<?php echo ( \Str::starts_with(\Uri::main(), \Uri::create('admin/modules')) ? 'active' : '' );  ?>">
+      <?php echo \Html::anchor('admin/modules', '<i class="icon-puzzle-piece"></i><span>Modules</span>'); ?>
       </li>
     </ul>
   </nav>

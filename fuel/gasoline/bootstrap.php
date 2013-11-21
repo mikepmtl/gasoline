@@ -58,8 +58,9 @@ Autoloader::add_classes(array(
     'Gasoline\\Model\\Auth_User'                => __DIR__ . '/classes/model/auth/user.php',
     'Gasoline\\Model\\Auth_User_Permission'     => __DIR__ . '/classes/model/auth/user/permission.php',
     
-    'Gasoline\\Orm\\Observer_Id'    => __DIR__ . '/classes/orm/observer/id.php',
-    'Gasoline\\Orm\\Observer_Slug'  => __DIR__ . '/classes/orm/observer/slug.php',
+    'Gasoline\\Orm\\Observer_Auditor'   => __DIR__ . '/classes/orm/observer/auditor.php',
+    'Gasoline\\Orm\\Observer_Id'        => __DIR__ . '/classes/orm/observer/id.php',
+    'Gasoline\\Orm\\Observer_Slug'      => __DIR__ . '/classes/orm/observer/slug.php',
 ));
 
 // We also need to add the __DIR__ to the finder-instance so we can load config
@@ -71,7 +72,10 @@ Finder::instance()->add_path(__DIR__, 1);
 //  if there's been a change between pages so we won't set the last_page to the
 //  current page if the user hits reload
 Event::register('shutdown', function() {
-    Uri::main() == Session::get('last_page') OR Session::set('last_page', Uri::main());
+    if ( ! Request::is_hmvc() )
+    {
+        Uri::current() == Session::get('last_page') OR Session::set('last_page', Uri::current());
+    }
 });
 
 /* End of file bootstrap.php */

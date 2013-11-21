@@ -1,10 +1,11 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/groups/page-headers/list')); ?>
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/list')); ?>
 
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('group.page-title.list')); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('module.page-title.list')); ?></header>
       <?php if ( count($table) ) : ?>
+        <?php echo \Form::open(); ?>
         <div class="table-responsive">
           <?php
           $table->set_attribute('class', 'table table-striped table-hover');
@@ -16,42 +17,83 @@
             $cbx = $row[0]->get_content();
             $row[0]->set_content($cbx->render($engine));
             
-            if ( ! ( $group = $row->get_meta('group') ) )
+            $tools = array();
+            
+            if ( ! ( $module = $row->get_meta('module') ) )
             {
               continue;
             }
             
-            $tools = array();
+            $row[1]->set_content(
+              html_tag(
+                'span',
+                array(
+                  'class' => 'pull-right text-xs clearfix',
+                ),
+                \Html::anchor(
+                  '#',
+                  '<span class="text-info"><i class="icon-info"></i></span>',
+                  array(
+                    'class'           => 'btn btn-xs btn-text',
+                    'data-toggle'     => 'popover',
+                    'data-trigger'    => 'hover',
+                    'data-html'       => 'true',
+                    'data-placement'  => 'right',
+                    'data-content'    => $module->description['short'],
+                    'data-title'      => __('module.model.module.description.short'),
+                  )
+                )
+              )
+              . $row[1]->get_content()
+            );
             
-            if ( \Auth::has_access('groups.admin[read]') )
+            if ( \Auth::has_access('modules.admin[read]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/groups/details/' . $group->id,
+                'admin/modules/details/' . $module->id,
                 '<i class="icon-eye-open"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
+                  'title' => __('button.details'),
+                  'data-toggle' => 'tooltip',
                 )
               );
             }
             
-            if ( \Auth::has_access('groups.admin[update]') )
+            if ( $module->is_disabled() && \Auth::has_access('modules.admin[enable]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/groups/update/' . $group->id,
-                '<i class="icon-pencil"></i>',
+                'admin/modules/enable/' . $module->id,
+                '<i class="icon-plus-sign"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
+                  'title' => __('button.enable'),
+                  'data-toggle' => 'tooltip',
+                )
+              );
+            }
+            elseif ( $module->is_enabled() && \Auth::has_access('modules.admin[disable]') )
+            {
+              $tools[] = \Html::anchor(
+                'admin/modules/disable/' . $module->id,
+                '<i class="icon-minus-sign"></i>',
+                array(
+                  'class' => 'btn btn-default btn-xs',
+                  'title' => __('button.disable'),
+                  'data-toggle' => 'tooltip',
                 )
               );
             }
             
-            if ( $group->is_deletable() && \Auth::has_access('groups.admin[delete]') )
+            if ( $module->is_deletable() && \Auth::has_access('modules.admin[delete]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/groups/delete/' . $group->id,
+                'admin/modules/delete/' . $module->id,
                 '<i class="icon-trash"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
+                  'title' => __('button.delete'),
+                  'data-toggle' => 'tooltip',
                 )
               );
             }
@@ -62,6 +104,7 @@
           echo $table;
           ?>
         </div>
+        <?php echo \Form::close(); ?>
         <?php else : ?>
         <div class="panel-body">
           <div class="row">
@@ -102,18 +145,9 @@
       <header class="panel-heading bg-primary lter"><?php echo html_tag('span', array('class' => 'h5'), __('global.navigation')); ?></header>
       <div class="list-group">
         <?php
-        echo \Html::anchor(
-            'admin/auth',
-            '<i class="icon-double-angle-left icon-fixed-width"></i>' . __('auth.page-title.section'),
-            array(
-              'class'   => 'list-group-item',
-            )
-          );
-        ?>
-        <?php
           echo \Html::anchor(
-            'admin/auth/groups/create',
-            '<i class="icon-plus icon-fixed-width"></i>' . __('button.new'),
+            'admin/modules/upload',
+            '<i class="icon-plus icon-fixed-width"></i>' . __('button.upload'),
             array(
               'class'   => 'list-group-item',
             )

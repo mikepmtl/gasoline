@@ -16,7 +16,7 @@
 <body>
 
   <section class="hbox stretch">
-    <!-- .aside -->
+    <!-- aside -->
     <aside class="bg-dark aside-sm" id="nav">
       <section class="vbox">
         <?php echo \Theme::instance()->view('_partials/default/sidebar/header')->render(); ?>
@@ -26,11 +26,14 @@
         <?php echo \Theme::instance()->view('_partials/default/sidebar/footer')->render(); ?>
       </section>
     </aside>
-    <!-- /.aside -->
-    <!-- .vbox -->
+    <!-- /aside -->
+    
+    <!-- #content -->
     <section id="content">
+      <!-- .vbox -->
       <section class="vbox">
         <?php echo ( isset($partials['page-header']) ? $partials['page-header'] : '' ); ?>
+        <!-- .scrollable .wrapper -->
         <section class="scrollable wrapper">
           <!-- .breadcrumb -->
           <?php
@@ -48,9 +51,12 @@
           
           <?php echo $content; ?>
         </section>
+        <!-- /.scrollable .wrapper -->
       </section>
+      <!-- /.vbox -->
+      <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
     </section>
-    <!-- /.vbox -->
+    <!-- /#content -->
   </section>
   
   <?php echo \Theme::instance()->asset->render('footer.js'); ?>

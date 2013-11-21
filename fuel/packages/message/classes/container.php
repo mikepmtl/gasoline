@@ -1,5 +1,16 @@
 <?php namespace Message;
 
+/**
+ * Part of the Gasoline framework
+ *
+ * @package     Gasoline
+ * @version     1.0-dev
+ * @author      Gasoline Development Teams
+ * @license     MIT License
+ * @copyright   2013 Gasoline Development Team
+ * @link        http://hubspace.github.io/gasoline
+ */
+
 class Container {
     
     /**
@@ -170,3 +181,6 @@ class Container {
     }
     
 }
+
+/* End of file container.php */
+/* Location: ./fuel/packages/message/classes/container.php */

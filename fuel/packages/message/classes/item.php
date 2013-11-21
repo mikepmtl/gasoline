@@ -1,5 +1,16 @@
 <?php namespace Message;
 
+/**
+ * Part of the Gasoline framework
+ *
+ * @package     Gasoline
+ * @version     1.0-dev
+ * @author      Gasoline Development Teams
+ * @license     MIT License
+ * @copyright   2013 Gasoline Development Team
+ * @link        http://hubspace.github.io/gasoline
+ */
+
 class Item {
     
     public static function _init()
@@ -236,3 +247,6 @@ class Item {
     }
     
 }
+
+/* End of file item.php */
+/* Location: ./fuel/packages/message/classes/item.php */

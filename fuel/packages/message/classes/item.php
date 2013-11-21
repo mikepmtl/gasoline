@@ -188,11 +188,13 @@ class Item {
      * 
      * @return  mixed               Value of the property is returned
      */
-    public function get($property)
+    public function get($property, $default = null)
     {
         if ( ! property_exists($this, $property) )
         {
-            throw new \InvalidArgumentException('Undefined property ' . $property);
+            logger(\Fuel::L_DEBUG, 'Undefined property ' . $property, __METHOD__);
+            
+            return $default;
         }
         
         return $this->{$property};
@@ -213,7 +215,7 @@ class Item {
     {
         if ( preg_match('/(?<method>(s|g)et)\_(?<property>[a-zA-Z0-9]+)/', $method, $matches) )
         {
-            return $this->{$matches['method']}($matches['property']);
+            return $this->{$matches['method']}($matches['property'], array_shift($arguments));
         }
         
         throw new \BadMethodCallException('Invalid method: ' . get_called_class() . '::' . $method);

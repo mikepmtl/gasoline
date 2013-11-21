@@ -39,8 +39,8 @@ return array(
     ),
     
     /**
-     * Whether to render the messages directly as HTML (set to false) or whether
-     * views shall be used for rendering (set to true)
+     * Whether to render the messages directly as HTML (set to true) or whether
+     * views shall be used for rendering (set to false)
      */
     'render_html' => false,
     
@@ -50,7 +50,7 @@ return array(
     'html' => array(
         /**
          * Wrapper for the container or none if omitted. Should contain placeholder
-         * ":messages" otherwise messages will not be displayed
+         * ":messages" otherwise messages cannot be displayed
          */
         'container' => '<div id="messages">:messages</div>',
         
@@ -71,9 +71,9 @@ return array(
     'view_file' => '_templates/messages',
     
     /**
-     * Whether to unset messages after they are rendered
+     * Whether to unset messages after they have rendered
      */
-    'unset_after_render' => true,
+    'unset_after_render' => false,
 );
 
 /* End of file message.php */

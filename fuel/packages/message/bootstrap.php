@@ -18,4 +18,6 @@ Autoloader::add_core_namespace('Message');
 Autoloader::add_classes(array(
     'Message\\Container'    => __DIR__ . '/classes/container.php',
     'Message\\Item'         => __DIR__ . '/classes/item.php',
+    
+    'Message\\Container_Instance'   => __DIR__ . '/classes/container/instance.php',
 ));

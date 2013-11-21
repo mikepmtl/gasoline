@@ -1,49 +1,14 @@
 <?php namespace Message;
 
-/**
- * Part of the Gasoline framework
- *
- * @package     Gasoline\Message
- * @version     1.0-dev
- * @author      Gasoline Development Teams
- * @license     MIT License
- * @copyright   2013 Gasoline Development Team
- * @link        http://hubspace.github.io/gasoline
- */
-
 class Item {
     
-    /**
-     * Class initialization
-     * 
-     * Just to make sure the message config is set we will load it
-     * 
-     * @static
-     * @access  public
-     * 
-     * @return  void
-     */
     public static function _init()
     {
         \Config::load('message', true);
     }
     
     
-    /**
-     * Forge a new message item object
-     * 
-     * @static
-     * @access  public
-     * @param   string  $type       Message type. Mainly used on rendering
-     * @param   string  $message    Actual message to display
-     * @param   string  $heading    Optionally a heading (if supported by the
-     *                              rendering engine [theme or plain html])
-     * @param   array  $attributes  Array of attributes to set on the rendered message
-     *                              item like class, id, ...
-     * 
-     * @return  \Message\Item       Returns message item
-     */
-    public static function forge($type, $message, $heading = null, $attributes = array())
+    public static function forge($type, $message, $heading = null, array $attributes = array())
     {
         return new static($type, $message, $heading, $attributes);
     }
@@ -61,20 +26,20 @@ class Item {
     protected $attributes = array();
     
     /**
-     * Whether the message is a flash message
-     * 
-     * @access  protected
-     * @var     boolean
-     */
-    protected $flash = false;
-    
-    /**
      * Message heading
      * 
      * @access  protected
      * @var     string
      */
-    protected $heading;
+    protected $heading = null;
+    
+    /**
+     * Whether the message is a flash message
+     * 
+     * @access  protected
+     * @var     boolean
+     */
+    protected $is_flash = false;
     
     /**
      * Message's message
@@ -82,15 +47,15 @@ class Item {
      * @access  protected
      * @var     string
      */
-    protected $message;
+    protected $message = null;
     
     /**
-     * Type of the message like info, warning, error, success
+     * Type of the message like info, warning, danger, success
      * 
      * @access  protected
      * @var     string
      */
-    protected $type;
+    protected $type = null;
     
     
     
@@ -111,7 +76,7 @@ class Item {
      * 
      * @return  \Message\Item       Returns message item
      */
-    public function __construct($type, $message, $heading = null, $attributes = array())
+    public function __construct($type, $message, $heading = null, array $attributes = array())
     {
         // That's how we define flash items: Prepend "flash:" before the type and
         // it will automatically be set as a flash variable. Of course, flashing
@@ -122,7 +87,7 @@ class Item {
             $type = preg_replace('/^flash:/', '', $type);
             
             // And set the item to be flash
-            $this->flash = true;
+            $this->is_flash = true;
         }
         
         // We allow omitting the heading parameter and replacing it with the attributes,
@@ -141,40 +106,47 @@ class Item {
     
     
     /**
-     * Get any property of the object
-     * 
-     * @access  public
-     * @param   string  $property   Property name to grade
-     * @throws  InvalidArgumentException    If the property does not exist
-     * 
-     * @return  mixed               Value of the property is returned
-     */
-    public function get($property)
-    {
-        if ( ! property_exists($this, $property) )
-        {
-            throw new \InvalidArgumentException('Undefined property ' . $property);
-        }
-        
-        return $this->{$property};
-    }
-    
-    
-    /**
      * Check to see if the message is flash
      * 
      * @access  public
      * 
      * @return  boolean     True if it's a flash message, otherwise false
      */
-    public function is_flash()
+    public function is_flash($state = null)
     {
-        return $this->flash == true;
+        if ( is_bool($state) )
+        {
+            $this->is_flash = $state;
+            
+            return $this;
+        }
+        
+        return $this->is_flash === true;
     }
     
     
     /**
-     * Set any of the items property
+     * Converts the object to an array
+     * 
+     * @access  public
+     * @return  array       Associative array of item's properties and their
+     *                      respective values
+     */
+    public function to_array()
+    {
+        $as_array = array();
+        
+        foreach ( get_object_vars($this) as $var => $value )
+        {
+            $as_array[$var] = $value;
+        }
+        
+        return $as_array;
+    }
+    
+    
+    /**
+     * Set any of the item's properties
      * 
      * @access  public
      * @param   string  $property   Name of the property to set
@@ -195,21 +167,24 @@ class Item {
         return $this;
     }
     
+    
     /**
-     * Converts the object to an array
+     * Get any property of the object
      * 
      * @access  public
-     * @return  array       Associative array of item's properties and their
-     *                      respective values
+     * @param   string  $property   Property name to grade
+     * @throws  InvalidArgumentException    If the property does not exist
+     * 
+     * @return  mixed               Value of the property is returned
      */
-    public function to_array()
+    public function get($property)
     {
-        return array(
-            'type'          => $this->type,
-            'message'       => $this->message,
-            'heading'       => $this->heading,
-            'attributes'    => $this->attributes,
-        );
+        if ( ! property_exists($this, $property) )
+        {
+            throw new \InvalidArgumentException('Undefined property ' . $property);
+        }
+        
+        return $this->{$property};
     }
     
     
@@ -261,6 +236,3 @@ class Item {
     }
     
 }
-
-/* End of file item.php */
-/* Location: ./fuel/packages/message/classes/item.php */

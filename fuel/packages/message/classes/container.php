@@ -113,6 +113,12 @@ class Container {
     }
     
     
+    public static function container($name = '_default_')
+    {
+        return static::instance($name);
+    }
+    
+    
     /**
      * Accessor method to the storage driver
      * 

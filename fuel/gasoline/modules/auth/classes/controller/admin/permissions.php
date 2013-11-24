@@ -120,7 +120,7 @@ class Admin_Permissions extends \Controller\Admin {
             break;
             
             case 'roles':
-                $roles = \Model\Auth_Role::find('all');
+                $roles = \Model\Auth_Role::find('all', array('where' => array(array('filter', '=', ''))));
                 
                 foreach ( $roles as &$role )
                 {
@@ -225,6 +225,8 @@ class Admin_Permissions extends \Controller\Admin {
                 
                 if ( $role->filter )
                 {
+                    \Message\Container::push(\Message\Item::forge('success', 'Role ' . e($role->name) . ' has filter '. $role->filter . ' applied, therefore cannot have permissions set', 'Not possible')->is_flash(true));
+                    
                     return \Response::redirect_back('admin/auth/permissions/roles');
                 }
                 

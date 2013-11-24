@@ -1,31 +1,31 @@
 <section class="panel">
-  <header class="panel-heading bg-primary lter"><div class="h5">Most recent users</div></header>
-  <section class="panel-body">
+  <header class="panel-heading bg-primary lter">
+    <span class="h5">Most recent users</span>
+  </header>
+  <div class="list-group">
     <?php if ( isset($recent) && $recent ) : ?>
-      <div class="list-group">
-      <?php foreach ( $recent as $_recent ) : ?>
+      <?php foreach ( $recent as $user ) : ?>
         <?php
         echo \Html::anchor(
-          'admin/users/details/'
-          . $_recent->id,
+          'admin/auth/users/details/'
+          . $user->id,
           '<i class="icon-chevron-right"></i>'
           . html_tag(
             'span',
             array('class' => 'badge'),
-            \Date::time_ago($_recent->created_at)
+            \Date::time_ago($user->created_at)
           )
-          . e($_recent->username),
+          . e($user->username),
           array(
             'class' => 'list-group-item'
           )
         );
         ?>
       <?php endforeach; ?>
-      </div>
     <?php else : ?>
-      <p>No recent</p>
+      <p class="list-group-item">No recent</p>
     <?php endif; ?>
-  </section>
+  </div>
   <footer class="panel-footer">
     <?php
       echo html_tag(
@@ -36,12 +36,12 @@
         html_tag(
           'span',
           array(
-            'class' => 'btn btn-white btn-xs pull-right',
+            'class' => 'btn btn-white btn-xs pull-right text-xs',
           ),
           \Html::anchor(
-            'admin/users',
-            '<i class="icon-user"></i>'
-            . 'Manage users'
+            'admin/auth/users',
+            '<i class="icon-user icon-fixed-width"></i>&nbsp;'
+            . 'Manage Users'
           )
         )
       );

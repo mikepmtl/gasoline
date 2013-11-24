@@ -67,18 +67,33 @@ class Admin_Roles extends \Controller\Admin {
                 $row = $table->get_body()->add_row();
                 
                 $row->set_meta('role', $role)
-                    ->add_cell(new \Gasform\Input_Checkbox('role_id', array(), $role->id))
+                    ->add_cell(new \Gasform\Input_Checkbox('role_id[]', array(), $role->id))
                     ->add_cell( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->id, e($role->name)) : e($role->name) )
                     ->add_cell(e($role->slug))
                     ->add_cell('');
             }
         }
         
+        $form = new \Gasform\Form(\Uri::create('admin/auth/roles/action'));
+        $bulk_actions = new \Gasform\Input_Select();
+        
+        $bulk = new \Gasform\Input_Option(__('global.bulk_actions'), array(), '');
+        $bulk_actions['bulk'] = $bulk;
+        
+        $delete = new \Gasform\Input_Option(__('button.delete'), array(), 'delete');
+        $bulk_actions['delete'] = $delete;
+        
+        $form['bulk_action'] = $bulk_actions->set_name('action');
+        
+        $submit = new \Gasform\Input_Submit('submit', array(), __('button.submit'));
+        $form['submit'] = $submit;
+        
         $this->view = static::$theme
             ->view('admin/roles/list')
             ->set('roles', $roles)
             ->set('pagination', $pagination, false)
-            ->set('table', $table, false);
+            ->set('table', $table, false)
+            ->set('form', $form, false);
     }
     
     
@@ -319,6 +334,66 @@ class Admin_Roles extends \Controller\Admin {
         $this->view = static::$theme
             ->view('admin/roles/details')
             ->set('role', $role);
+    }
+    
+    
+    public function post_action()
+    {
+        switch ( \Input::post('action', false) )
+        {
+            default:
+                throw new \HttpNotFoundException();
+            
+            break;
+            case 'delete':
+                static::restrict('roles.admin[delete]');
+                
+                if ( $ids = \Input::post('role_id', false) )
+                {
+                    is_array($ids) OR $ids = array($ids);
+                    
+                    try
+                    {
+                        $roles = \Model\Auth_Role::query()
+                            ->where('id', 'IN', $ids)
+                            ->get();
+                    }
+                    catch ( \Exception $e )
+                    {
+                        break;
+                    }
+                    
+                    if ( ! $roles )
+                    {
+                        break;
+                    }
+                    
+                    $success = $failed = array();
+                    
+                    foreach ( $roles as &$role )
+                    {
+                        try
+                        {
+                            $name = $role->name;
+                            
+                            $role->delete();
+                            
+                            $success[] = e($name);
+                        }
+                        catch ( \Exception $e )
+                        {
+                            $failed[] = e($role->name);
+                        }
+                    }
+                    
+                    $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.delete_batch.message', array('names' => implode(', ', $success))), __('auth.messages.role.success.delete_batch.heading'))->is_flash(true));
+                    
+                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.role.failure.delete_batch.message', array('names' => implode(', ', $failed))), __('auth.messages.role.failure.delete_batch.heading'))->is_flash(true));
+                }
+            break;
+        }
+        
+        return \Response::redirect('admin/auth/roles');
     }
     
 }

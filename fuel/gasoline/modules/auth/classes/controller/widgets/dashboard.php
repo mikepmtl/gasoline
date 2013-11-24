@@ -11,19 +11,9 @@
  * @link        http://hubspace.github.io/gasoline
  */
 
-class Widget extends \Controller\Widget {
+class Widgets_Dashboard extends \Controller\Widget {
     
-    public function action_dashboard($scope = 'user')
-    {
-        if ( method_exists($this, 'dashboard_' . $scope) )
-        {
-            return $this->{'dashboard_' . $scope}();
-        }
-        
-        return '';
-    }
-    
-    public function dashboard_admin()
+    public function action_admin()
     {
         $recent = \Model\Auth_User::query()
             ->order_by('created_at', 'desc')
@@ -31,11 +21,11 @@ class Widget extends \Controller\Widget {
             ->get();
         
         $this->view = static::$theme
-            ->view('widget/dashboard/admin')
+            ->view('widgets/dashboard/admin')
             ->set('recent', $recent);
     }
     
-    public function dashboard_user()
+    public function action_user()
     {
         return '';
     }

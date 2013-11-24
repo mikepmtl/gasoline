@@ -22,9 +22,13 @@ return array(
             'heading'   => 'Group updated!',
             'message'   => 'Successfully updated group :name.',
         ),
-        'delete'    => array(
+        'delete_single'    => array(
             'heading'   => 'Group deleted!',
             'message'   => 'Successfully deleted group :name.',
+        ),
+        'delete_batch'    => array(
+            'heading'   => 'Groups delete!',
+            'message'   => 'Successfully deleted the following groups: :names.',
         ),
     ),
     
@@ -37,9 +41,13 @@ return array(
             'heading'   => 'Updating failed!',
             'message'   => 'There was an unexpected error updating the group.',
         ),
-        'delete'    => array(
+        'delete_single'    => array(
             'heading'   => 'Deleting failed!',
-            'message'   => 'There was an unexpected error deleting the group.',
+            'message'   => 'There was an unexpected error deleting group :name.',
+        ),
+        'delete_batch'    => array(
+            'heading'   => 'Deleting failed!',
+            'message'   => 'There was an unexpected error deleting the following groups: :names.',
         ),
     ),
     

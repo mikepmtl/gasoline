@@ -22,9 +22,13 @@ return array(
             'heading'   => 'User updated!',
             'message'   => 'Successfully updated user :username.',
         ),
-        'delete'    => array(
+        'delete_single'    => array(
             'heading'   => 'User deleted!',
             'message'   => 'Successfully deleted user :username.',
+        ),
+        'delete_batch'    => array(
+            'heading'   => 'Users delete!',
+            'message'   => 'Successfully deleted the following users: :usernames.',
         ),
     ),
     
@@ -35,11 +39,15 @@ return array(
         ),
         'udpate'    => array(
             'heading'   => 'Updating failed!',
-            'message'   => 'There was an unexpected error updating the user.',
+            'message'   => 'There was an unexpected error updating user :username.',
         ),
-        'delete'    => array(
+        'delete_single'    => array(
             'heading'   => 'Deleting failed!',
-            'message'   => 'There was an unexpected error deleting the user.',
+            'message'   => 'There was an unexpected error deleting user :username.',
+        ),
+        'delete_batch'    => array(
+            'heading'   => 'Deleting failed!',
+            'message'   => 'There was an unexpected error deleting the following users: :usernames.',
         ),
     ),
     

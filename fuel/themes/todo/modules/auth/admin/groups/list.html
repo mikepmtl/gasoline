@@ -1,15 +1,17 @@
 <?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/groups/page-headers/list')); ?>
 
+<?php $engine = new \Gasform\Render_Bootstrap(); ?>
+<?php $simple_engine = new \Gasform\Render_Simple(); ?>
+
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
       <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.group.page-title.list')); ?></header>
       <?php if ( count($table) ) : ?>
+        <?php echo \Form::open('admin/auth/groups/action'); ?>
         <div class="table-responsive">
           <?php
           $table->set_attribute('class', 'table table-striped table-hover');
-          
-          $engine = new \Gasform\Render_Bootstrap();
           
           foreach ( $table as $row )
           {
@@ -62,7 +64,37 @@
           echo $table;
           ?>
         </div>
-        <?php else : ?>
+        <footer class="panel-footer">
+          <div class="row">
+            <!-- bulk actions -->
+            <div class="col-xs-4 col-md-4">
+              <div class="input-group">
+                <?php
+                  $form['bulk_action']->set_attribute('class', 'input-sm form-control input-s-sm inline');
+                  echo $simple_engine->render($form['bulk_action']);
+                ?>
+                <span class="input-group-btn">
+                <?php
+                  $form['submit']->set_attribute('class', 'btn btn-primary btn-sm');
+                  echo $simple_engine->render($form['submit']);
+                ?>
+                </span>
+              </div>
+            </div>
+            <!-- /bulk-actions -->
+            <!-- page-info -->
+            <div class="col-xs-4 col-md-4">
+            
+            </div>
+            <!-- /page-info -->
+            <!-- pagination -->
+            <div class="col-md-4 text-right text-center-xs">
+              <?php echo ( isset($pagination) ? $pagination->render() : '' ); ?>
+            </div>
+            <!-- /pagination -->
+          </div>
+        </footer>
+      <?php else : ?>
         <div class="panel-body">
           <div class="row">
             <div class="col-md-6 col-md-offset-3">
@@ -75,26 +107,7 @@
             </div>
           </div>
         </div>
-        <?php endif; ?>
-      <footer class="panel-footer">
-        <div class="row">
-          <!-- bulk actions -->
-          <div class="col-xs-4 col-md-4">
-            
-          </div>
-          <!-- /bulk-actions -->
-          <!-- page-info -->
-          <div class="col-xs-4 col-md-4">
-          
-          </div>
-          <!-- /page-info -->
-          <!-- pagination -->
-          <div class="col-md-4 text-right text-center-xs">
-            <?php echo ( isset($pagination) ? $pagination->render() : '' ); ?>
-          </div>
-          <!-- /pagination -->
-        </div>
-      </footer>
+      <?php endif; ?>
     </section>
   </div>
   <div class="col-md-2">
@@ -104,7 +117,7 @@
         <?php
         echo \Html::anchor(
             'admin/auth',
-            '<i class="icon-double-angle-left icon-fixed-width"></i>' . __('auth.page-title.section'),
+            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;' . __('auth.page-title.section'),
             array(
               'class'   => 'list-group-item',
             )
@@ -113,7 +126,7 @@
         <?php
           echo \Html::anchor(
             'admin/auth/groups/create',
-            '<i class="icon-plus icon-fixed-width"></i>' . __('button.new'),
+            '<i class="icon-plus icon-fixed-width"></i>&nbsp;' . __('button.new'),
             array(
               'class'   => 'list-group-item',
             )

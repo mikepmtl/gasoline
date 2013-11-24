@@ -22,9 +22,13 @@ return array(
             'heading'   => 'Role updated!',
             'message'   => 'Successfully updated role :name.',
         ),
-        'delete'    => array(
+        'delete_single'    => array(
             'heading'   => 'Role deleted!',
             'message'   => 'Successfully deleted role :name.',
+        ),
+        'delete_batch'    => array(
+            'heading'   => 'Roles delete!',
+            'message'   => 'Successfully deleted the following roles: :names.',
         ),
     ),
     
@@ -37,9 +41,13 @@ return array(
             'heading'   => 'Updating failed!',
             'message'   => 'There was an unexpected error updating the role.',
         ),
-        'delete'    => array(
+        'delete_single'    => array(
             'heading'   => 'Deleting failed!',
-            'message'   => 'There was an unexpected error deleting the role.',
+            'message'   => 'There was an unexpected error deleting role :name.',
+        ),
+        'delete_batch'    => array(
+            'heading'   => 'Deleting failed!',
+            'message'   => 'There was an unexpected error deleting the following roles: :names.',
         ),
     ),
     

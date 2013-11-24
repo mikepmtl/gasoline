@@ -1,4 +1,4 @@
-<?php namespace Gasolne;
+<?php namespace Gasoline;
 
 /**
  * Part of the Gasoline framework

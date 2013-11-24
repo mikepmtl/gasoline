@@ -205,13 +205,16 @@ class Admin_Groups extends \Controller\Admin {
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update/' . $group->id, e($group->name));
         
         $form = $group->to_form();
-        $form['role_ids'] = \Model\Auth_Role::to_form_element()
+        $form['role_id'] = \Model\Auth_Role::to_form_element()
             ->allow_multiple(true)
-            ->set_label(__('auth.model.group.roles'));
+            ->set_label(__('auth.model.group.roles'))
+            ->set_name('role_id[]');
         
         if ( \Input::method() === "POST" )
         {
             $val = \Validation::forge()->add_model($group);
+            $val->add('role_id', __('auth.model.group.roles'))
+                ->add_rule('exists', 'users_roles.id');
             
             if ( $val->run() )
             {

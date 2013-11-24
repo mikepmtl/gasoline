@@ -13,8 +13,9 @@
 
 return array(
     'admin'         => 'Admin',
-    
     'actions'       => 'Actions',
+    
+    'bulk_actions'  => 'Bulk actions',
     
     'confirm'           => 'Confirm',
     'confirm_delete'    => 'Confirm delete',
@@ -24,7 +25,9 @@ return array(
     'details'       => 'Details',
     'disable'       => 'Disable',
     
-    'enable'        => 'Enable',
+    'enable'            => 'Enable',
+    'execution_stats'   => 'Executed in {exec_time}s with a memory usage of {mem_usage}MB.',
+    'export'            => 'Export',
     
     'n/a'           => 'n/a',
     

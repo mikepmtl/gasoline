@@ -25,6 +25,9 @@ return array(
     
     'edit'      => 'Edit',
     'enable'    => 'Enable',
+    'export'    => 'Export',
+    
+    'install'   => 'Install',
     
     'list'      => 'List',
         
@@ -34,6 +37,7 @@ return array(
     'print'         => 'Print',
     
     'save'      => 'Save',
+    'scan'      => 'Scan',
     'submit'    => 'Submit',
     
     'remove'    => 'Remove',

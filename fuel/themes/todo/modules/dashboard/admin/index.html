@@ -4,10 +4,10 @@
   <?php $i = 0; ?>
   <div class="row">
   <?php foreach ( $widgets as $widget ) : ?>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <?php echo $widget['body']; ?>
     </div>
-    <?php if ( $i % 2 == 0 ) : ?>
+    <?php if ( ++$i % 3 == 0 ) : ?>
       </div>
       <div class="row">
     <?php endif; ?>

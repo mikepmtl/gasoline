@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.user.page-title.list')); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.user.page-title.list')); ?></header>
       <?php if ( count($table) ) : ?>
         <div class="table-responsive">
           <?php
@@ -27,7 +27,7 @@
             if ( \Auth::has_access('users.admin[read]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/users/details/' . $user->id,
+                'admin/auth/users/details/' . $user->username,
                 '<i class="icon-eye-open"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -38,7 +38,7 @@
             if ( \Auth::has_access('users.admin[update]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/users/update/' . $user->id,
+                'admin/auth/users/update/' . $user->username,
                 '<i class="icon-pencil"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -49,7 +49,7 @@
             if ( $user->is_deletable() && \Auth::has_access('users.admin[delete]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/users/delete/' . $user->id,
+                'admin/auth/users/delete/' . $user->username,
                 '<i class="icon-trash"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -116,7 +116,7 @@
         <?php
         echo \Html::anchor(
             'admin/auth',
-            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;' . __('auth.page-title.section'),
+            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;' . __('auth.navigation.page-title.section'),
             array(
               'class'   => 'list-group-item',
             )

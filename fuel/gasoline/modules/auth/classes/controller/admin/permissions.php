@@ -128,7 +128,7 @@ class Admin_Permissions extends \Controller\Admin {
                     
                     $row->set_meta('data', $role)
                         ->add_cell('')
-                        ->add_cell(\Html::anchor('admin/auth/permissions/roles/' . $role->name, e($role->name)));
+                        ->add_cell(\Html::anchor('admin/auth/permissions/roles/' . $role->slug, e($role->name)));
                 }
             break;
             
@@ -141,7 +141,7 @@ class Admin_Permissions extends \Controller\Admin {
                     
                     $row->set_meta('data', $group)
                         ->add_cell('')
-                        ->add_cell(\Html::anchor('admin/auth/permissions/groups/' . $group->name, e($group->name)));
+                        ->add_cell(\Html::anchor('admin/auth/permissions/groups/' . $group->slug, e($group->name)));
                 }
             break;
         }

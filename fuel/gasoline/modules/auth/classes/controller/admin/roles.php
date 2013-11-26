@@ -19,19 +19,20 @@ class Admin_Roles extends \Controller\Admin {
     {
         parent::before();
         
-        \Lang::load('auth/role', 'auth.role');
+        \Lang::load('navigation', 'auth.navigation');
+        \Lang::load('navigation/role', 'auth.navigation.role');
         \Lang::load('messages/role', 'auth.messages.role');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles', __('auth.role.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles', __('auth.navigation.role.breadcrumb.section'));
     }
     
     public function action_list()
     {
         static::restrict('roles.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/list', __('auth.role.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/list', __('auth.navigation.role.breadcrumb.list'));
         
         $pagination_config = array(
             'pagination_url'    => \Uri::create('admin/auth/roles'),
@@ -68,7 +69,7 @@ class Admin_Roles extends \Controller\Admin {
                 
                 $row->set_meta('role', $role)
                     ->add_cell(new \Gasform\Input_Checkbox('role_id[]', array(), $role->id))
-                    ->add_cell( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->id, e($role->name)) : e($role->name) )
+                    ->add_cell( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->slug, e($role->name)) : e($role->name) )
                     ->add_cell(e($role->slug))
                     ->add_cell('');
             }
@@ -101,7 +102,7 @@ class Admin_Roles extends \Controller\Admin {
     {
         static::restrict('roles.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/create', __('auth.role.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/create', __('auth.navigation.role.breadcrumb.create'));
         
         $role = \Model\Auth_Role::forge();
         
@@ -124,7 +125,7 @@ class Admin_Roles extends \Controller\Admin {
                     
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.create.message', array('name' => e($role->name))), __('auth.messages.role.success.create.heading'))->is_flash(true));
                     
-                    return \Response::redirect('admin/auth/roles/details/' . $role->id);
+                    return \Response::redirect('admin/auth/roles/details/' . $role->slug);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
@@ -179,8 +180,8 @@ class Admin_Roles extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update', __('auth.role.breadcrumb.update'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update/' . $role->id, e($role->name));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update', __('auth.navigation.role.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update/' . $role->slug, e($role->name));
         
         $form = $role->to_form();
         
@@ -201,7 +202,7 @@ class Admin_Roles extends \Controller\Admin {
                     
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.update.message', array('name' => e($role->name))), __('auth.messages.role.success.update.heading'))->is_flash(true));
                     
-                    return \Response::redirect('admin/auth/roles/details/' . $role->id);
+                    return \Response::redirect('admin/auth/roles/details/' . $role->slug);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
@@ -256,8 +257,8 @@ class Admin_Roles extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete', __('auth.role.breadcrumb.delete'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete/' . $role->id, e($role->name));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete', __('auth.navigation.role.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete/' . $role->slug, e($role->name));
         
         $form = $role->to_form();
         
@@ -328,8 +329,8 @@ class Admin_Roles extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/', __('auth.role.breadcrumb.details'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/details/' . $role->id, e($role->name));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/', __('auth.navigation.role.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/details/' . $role->slug, e($role->name));
         
         $this->view = static::$theme
             ->view('admin/roles/details')

@@ -19,18 +19,20 @@ class Admin_Users extends \Controller\Admin {
     {
         parent::before();
         
-        \Lang::load('auth/user', 'auth.user');
+        \Lang::load('navigation', 'auth.navigation');
+        \Lang::load('navigation/user', 'auth.navigation.user');
+        \Lang::load('messages/user', 'auth.messages.user');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users', __('auth.user.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users', __('auth.navigation.user.breadcrumb.section'));
     }
     
     public function action_list()
     {
         static::restrict('users.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/list', __('auth.user.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/list', __('auth.navigation.user.breadcrumb.list'));
         
         $pagination_config = array(
             'pagination_url'    => \Uri::create('admin/auth/users'),
@@ -67,7 +69,7 @@ class Admin_Users extends \Controller\Admin {
                 
                 $row->set_meta('user', $user)
                     ->add_cell(new \Gasform\Input_Checkbox('user_id[]', array(), $user->id))
-                    ->add_cell( \Auth::has_access('users.admin[read]') ? \Html::anchor('admin/auth/users/details/' . $user->id, e($user->username)) : e($user->username) )
+                    ->add_cell( \Auth::has_access('users.admin[read]') ? \Html::anchor('admin/auth/users/details/' . $user->username, e($user->username)) : e($user->username) )
                     ->add_cell(e($user->email))
                     ->add_cell('');
             }
@@ -100,7 +102,7 @@ class Admin_Users extends \Controller\Admin {
     {
         static::restrict('users.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/create', __('auth.user.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/create', __('auth.navigation.user.breadcrumb.create'));
         
         $user = \Model\Auth_User::forge();
         
@@ -154,8 +156,6 @@ class Admin_Users extends \Controller\Admin {
     {
         static::restrict('users.admin[update]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update', __('auth.user.breadcrumb.update'));
-        
         $query = \Model\Auth_User::query()
             ->related('group')
             ->related('auditor')
@@ -172,6 +172,9 @@ class Admin_Users extends \Controller\Admin {
         {
             throw new \HttpNotFoundException();
         }
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update', __('auth.navigation.user.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update/' . $id, e($user->username));
         
         $form = $user->to_form();
         
@@ -192,7 +195,7 @@ class Admin_Users extends \Controller\Admin {
                     
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.success.update.message', array('username' => e($user->username))), __('auth.messages.user.success.update.heading'))->is_flash(true));
                     
-                    return \Response::redirect('admin/auth/users/details/' . $user->id);
+                    return \Response::redirect('admin/auth/users/details/' . $user->username);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
@@ -248,8 +251,8 @@ class Admin_Users extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/', __('auth.user.breadcrumb.details'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/details/' . $user->id, e($user->username));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/', __('auth.navigation.user.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/details/' . $user->username, e($user->username));
         
         $this->view = static::$theme
             ->view('admin/users/details')

@@ -21,6 +21,7 @@ class Register_module_auth {
             'name'      => 'Auth',
             'slug'      => 'auth',
             'author'    => 'Philipp Tempel',
+            'website'   => 'http://gasoline.github.io/gasoline',
             'version'   => '1.0-dev',
             'status'    => true,
             'scope'     => 3,

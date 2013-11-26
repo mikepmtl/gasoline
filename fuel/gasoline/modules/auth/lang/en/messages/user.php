@@ -13,48 +13,51 @@
 
 return array(
     
-    'success'   => array(
-        'create'    => array(
+    'create'    => array(
+        'success'   => array(
             'heading'   => 'User created!',
             'message'   => 'Successfully created user :username.',
         ),
-        'udpate'    => array(
-            'heading'   => 'User updated!',
-            'message'   => 'Successfully updated user :username.',
-        ),
-        'delete_single'    => array(
-            'heading'   => 'User deleted!',
-            'message'   => 'Successfully deleted user :username.',
-        ),
-        'delete_batch'    => array(
-            'heading'   => 'Users delete!',
-            'message'   => 'Successfully deleted the following users: :usernames.',
-        ),
-    ),
-    
-    'failure'   => array(
-        'create'    => array(
+        'failure'   => array(
             'heading'   => 'Creation failed!',
             'message'   => 'There was an unexpected error creating the user.',
         ),
-        'udpate'    => array(
+    ),
+    
+    'update'    => array(
+        'success'   => array(
+            'heading'   => 'User updated!',
+            'message'   => 'Successfully updated user :username.',
+        ),
+        'failure'   => array(
             'heading'   => 'Updating failed!',
-            'message'   => 'There was an unexpected error updating user :username.',
-        ),
-        'delete_single'    => array(
-            'heading'   => 'Deleting failed!',
-            'message'   => 'There was an unexpected error deleting user :username.',
-        ),
-        'delete_batch'    => array(
-            'heading'   => 'Deleting failed!',
-            'message'   => 'There was an unexpected error deleting the following users: :usernames.',
+            'message'   => 'There was an unexpected error updating the user.',
         ),
     ),
     
-    'warning'   => array(
-        'delete'    => array(
+    'delete'    => array(
+        'success' => array(
+            'heading'   => 'User deleted!',
+            'message'   => 'Successfully deleted user :username.',
+        ),
+        'failure'   => array(
+            'heading'   => 'Deleting failed!',
+            'message'   => 'There was an unexpected error deleting user :username.',
+        ),
+        'unconfirmed' => array(
             'heading'   => 'Deleting not performed!',
             'message'   => 'User :username was not deleted because deleting hasn\'t been confirmed.',
+        ),
+    ),
+    
+    'delete_batch'  => array(
+        'success' => array(
+            'heading'   => 'User(s) delete!',
+            'message'   => 'Successfully deleted the following users: :usernames.',
+        ),
+        'failure'   => array(
+            'heading'   => 'Deleting failed!',
+            'message'   => 'There was an unexpected error deleting the following users: :usernames.',
         ),
     ),
     

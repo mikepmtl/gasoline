@@ -13,48 +13,51 @@
 
 return array(
     
-    'success'   => array(
-        'create'    => array(
+    'create'    => array(
+        'success'   => array(
             'heading'   => 'Group created!',
             'message'   => 'Successfully created group :name.',
         ),
-        'udpate'    => array(
-            'heading'   => 'Group updated!',
-            'message'   => 'Successfully updated group :name.',
-        ),
-        'delete_single'    => array(
-            'heading'   => 'Group deleted!',
-            'message'   => 'Successfully deleted group :name.',
-        ),
-        'delete_batch'    => array(
-            'heading'   => 'Groups delete!',
-            'message'   => 'Successfully deleted the following groups: :names.',
-        ),
-    ),
-    
-    'failure'   => array(
-        'create'    => array(
+        'failure'   => array(
             'heading'   => 'Creation failed!',
             'message'   => 'There was an unexpected error creating the group.',
         ),
-        'udpate'    => array(
+    ),
+    
+    'update'    => array(
+        'success'   => array(
+            'heading'   => 'Group updated!',
+            'message'   => 'Successfully updated group :name.',
+        ),
+        'failure'   => array(
             'heading'   => 'Updating failed!',
             'message'   => 'There was an unexpected error updating the group.',
         ),
-        'delete_single'    => array(
+    ),
+    
+    'delete'    => array(
+        'success' => array(
+            'heading'   => 'Group deleted!',
+            'message'   => 'Successfully deleted group :name.',
+        ),
+        'failure'   => array(
             'heading'   => 'Deleting failed!',
             'message'   => 'There was an unexpected error deleting group :name.',
         ),
-        'delete_batch'    => array(
-            'heading'   => 'Deleting failed!',
-            'message'   => 'There was an unexpected error deleting the following groups: :names.',
+        'unconfirmed' => array(
+            'heading'   => 'Deleting not performed!',
+            'message'   => 'Group :name was not deleted because deleting hasn\'t been confirmed.',
         ),
     ),
     
-    'warning'   => array(
-        'delete'    => array(
-            'heading'   => 'Deleting not performed!',
-            'message'   => 'Group :name was not deleted because deleting hasn\'t been confirmed.',
+    'delete_batch'  => array(
+        'success' => array(
+            'heading'   => 'Group(s) delete!',
+            'message'   => 'Successfully deleted the following groups: :names.',
+        ),
+        'failure'   => array(
+            'heading'   => 'Deleting failed!',
+            'message'   => 'There was an unexpected error deleting the following groups: :names.',
         ),
     ),
     

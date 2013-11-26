@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.group.page-title.list')); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.group.page-title.list')); ?></header>
       <?php if ( count($table) ) : ?>
         <?php echo \Form::open('admin/auth/groups/action'); ?>
         <div class="table-responsive">
@@ -28,7 +28,7 @@
             if ( \Auth::has_access('groups.admin[read]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/groups/details/' . $group->id,
+                'admin/auth/groups/details/' . $group->slug,
                 '<i class="icon-eye-open"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -39,7 +39,7 @@
             if ( \Auth::has_access('groups.admin[update]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/groups/update/' . $group->id,
+                'admin/auth/groups/update/' . $group->slug,
                 '<i class="icon-pencil"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -50,7 +50,7 @@
             if ( $group->is_deletable() && \Auth::has_access('groups.admin[delete]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/groups/delete/' . $group->id,
+                'admin/auth/groups/delete/' . $group->slug,
                 '<i class="icon-trash"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -117,7 +117,7 @@
         <?php
         echo \Html::anchor(
             'admin/auth',
-            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;' . __('auth.page-title.section'),
+            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;' . __('auth.navigation.page-title.section'),
             array(
               'class'   => 'list-group-item',
             )

@@ -28,7 +28,7 @@
             if ( \Auth::has_access('roles.admin[read]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/roles/details/' . $role->id,
+                'admin/auth/roles/details/' . $role->slug,
                 '<i class="icon-eye-open"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -39,7 +39,7 @@
             if ( \Auth::has_access('roles.admin[update]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/roles/update/' . $role->id,
+                'admin/auth/roles/update/' . $role->slug,
                 '<i class="icon-pencil"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -50,7 +50,7 @@
             if ( $role->is_deletable() && \Auth::has_access('roles.admin[delete]') )
             {
               $tools[] = \Html::anchor(
-                'admin/auth/roles/delete/' . $role->id,
+                'admin/auth/roles/delete/' . $role->slug,
                 '<i class="icon-trash"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
@@ -118,7 +118,7 @@
         <?php
         echo \Html::anchor(
             'admin/auth',
-            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;' . __('auth.page-title.section'),
+            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;' . __('auth.navigation.page-title.section'),
             array(
               'class'   => 'list-group-item',
             )

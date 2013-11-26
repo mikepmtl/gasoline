@@ -49,14 +49,14 @@ Autoloader::add_classes(array(
     
     'Gasoline\\Model\\Base'     => __DIR__ . '/classes/model/base.php',
     
-    'Gasoline\\Model\\Auth_Group'               => __DIR__ . '/classes/model/auth/group.php',
-    'Gasoline\\Model\\Auth_Group_Permission'    => __DIR__ . '/classes/model/auth/group/permission.php',
-    'Gasoline\\Model\\Auth_Metadata'            => __DIR__ . '/classes/model/auth/metadata.php',
-    'Gasoline\\Model\\Auth_Permission'          => __DIR__ . '/classes/model/auth/permission.php',
-    'Gasoline\\Model\\Auth_Role'                => __DIR__ . '/classes/model/auth/role.php',
-    'Gasoline\\Model\\Auth_Role_Permission'     => __DIR__ . '/classes/model/auth/role/permission.php',
-    'Gasoline\\Model\\Auth_User'                => __DIR__ . '/classes/model/auth/user.php',
-    'Gasoline\\Model\\Auth_User_Permission'     => __DIR__ . '/classes/model/auth/user/permission.php',
+    // 'Gasoline\\Model\\Auth_Group'               => __DIR__ . '/classes/model/auth/group.php',
+    // 'Gasoline\\Model\\Auth_Group_Permission'    => __DIR__ . '/classes/model/auth/group/permission.php',
+    // 'Gasoline\\Model\\Auth_Metadata'            => __DIR__ . '/classes/model/auth/metadata.php',
+    // 'Gasoline\\Model\\Auth_Permission'          => __DIR__ . '/classes/model/auth/permission.php',
+    // 'Gasoline\\Model\\Auth_Role'                => __DIR__ . '/classes/model/auth/role.php',
+    // 'Gasoline\\Model\\Auth_Role_Permission'     => __DIR__ . '/classes/model/auth/role/permission.php',
+    // 'Gasoline\\Model\\Auth_User'                => __DIR__ . '/classes/model/auth/user.php',
+    // 'Gasoline\\Model\\Auth_User_Permission'     => __DIR__ . '/classes/model/auth/user/permission.php',
     
     'Gasoline\\Orm\\Observer_Auditor'   => __DIR__ . '/classes/orm/observer/auditor.php',
     'Gasoline\\Orm\\Observer_Id'        => __DIR__ . '/classes/orm/observer/id.php',

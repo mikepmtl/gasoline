@@ -13,7 +13,7 @@
           {
             $data = $row->get_meta('data');
             
-            $row[0]->set_content( \Auth::has_access('permissions.admin[' . $scope . ']') ? \Html::anchor('admin/auth/permissions/' . $scope . '/' . $data->id, html_tag('span', array('class' => 'text-info'), '<i class="icon-chevron-right"></i>')) : '' );
+            $row[0]->set_content( \Auth::has_access('permissions.admin[' . $scope . ']') ? \Html::anchor('admin/auth/permissions/' . $scope . '/' . ( $scope == 'users' ? $data->username : $data->slug ), html_tag('span', array('class' => 'text-info'), '<i class="icon-chevron-right"></i>')) : '' );
           }
           
           echo $table->render();

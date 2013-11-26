@@ -13,48 +13,51 @@
 
 return array(
     
-    'success'   => array(
-        'create'    => array(
+    'create'    => array(
+        'success'   => array(
             'heading'   => 'Role created!',
             'message'   => 'Successfully created role :name.',
         ),
-        'udpate'    => array(
-            'heading'   => 'Role updated!',
-            'message'   => 'Successfully updated role :name.',
-        ),
-        'delete_single'    => array(
-            'heading'   => 'Role deleted!',
-            'message'   => 'Successfully deleted role :name.',
-        ),
-        'delete_batch'    => array(
-            'heading'   => 'Roles delete!',
-            'message'   => 'Successfully deleted the following roles: :names.',
-        ),
-    ),
-    
-    'failure'   => array(
-        'create'    => array(
+        'failure'   => array(
             'heading'   => 'Creation failed!',
             'message'   => 'There was an unexpected error creating the role.',
         ),
-        'udpate'    => array(
+    ),
+    
+    'update'    => array(
+        'success'   => array(
+            'heading'   => 'Role updated!',
+            'message'   => 'Successfully updated role :name.',
+        ),
+        'failure'   => array(
             'heading'   => 'Updating failed!',
             'message'   => 'There was an unexpected error updating the role.',
         ),
-        'delete_single'    => array(
+    ),
+    
+    'delete'    => array(
+        'success' => array(
+            'heading'   => 'Role deleted!',
+            'message'   => 'Successfully deleted role :name.',
+        ),
+        'failure'   => array(
             'heading'   => 'Deleting failed!',
             'message'   => 'There was an unexpected error deleting role :name.',
         ),
-        'delete_batch'    => array(
-            'heading'   => 'Deleting failed!',
-            'message'   => 'There was an unexpected error deleting the following roles: :names.',
+        'unconfirmed' => array(
+            'heading'   => 'Deleting not performed!',
+            'message'   => 'Role :name was not deleted because deleting hasn\'t been confirmed.',
         ),
     ),
     
-    'warning'   => array(
-        'delete'    => array(
-            'heading'   => 'Deleting not performed!',
-            'message'   => 'Role :name was not deleted because deleting hasn\'t been confirmed.',
+    'delete_batch'  => array(
+        'success' => array(
+            'heading'   => 'Role(s) delete!',
+            'message'   => 'Successfully deleted the following roles: :names.',
+        ),
+        'failure'   => array(
+            'heading'   => 'Deleting failed!',
+            'message'   => 'There was an unexpected error deleting the following roles: :names.',
         ),
     ),
     

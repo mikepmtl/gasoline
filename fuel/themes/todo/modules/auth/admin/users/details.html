@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.user.page-title.details', array('name' => e($user->username)))); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.user.page-title.details', array('name' => e($user->username)))); ?></header>
       <?php
       
       \Package::load('table');
@@ -61,7 +61,7 @@
             . (
               \Auth::has_access('users.admin[read]')
               ? ( $user->auditor
-                ? \Html::anchor('admin/auth/users/details/' . $user->auditor->id, e($user->auditor->username) . '&nbsp;<i class="icon-share-alt"></i>', array('class' => 'text-primary'))
+                ? \Html::anchor('admin/auth/users/details/' . $user->auditor->username, e($user->auditor->username) . '&nbsp;<i class="icon-share-alt"></i>', array('class' => 'text-primary'))
                 : __('global.n/a')
               )
               : ( $user->auditor
@@ -104,7 +104,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/auth/users/update/' . $user->id,
+            'admin/auth/users/update/' . $user->username,
             '<i class="icon-pencil icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.edit'),
             array(
               'class'   => 'list-group-item',
@@ -115,7 +115,7 @@
           if ( $user->is_deletable() )
           {
             echo \Html::anchor(
-              'admin/auth/users/delete/' . $user->id,
+              'admin/auth/users/delete/' . $user->username,
               '<i class="icon-trash icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.delete'),
               array(
                 'class'   => 'list-group-item',
@@ -125,7 +125,7 @@
         ?>
         <?php
           echo \Html::anchor(
-            'admin/auth/permissions/users/' . $user->id,
+            'admin/auth/permissions/users/' . $user->username,
             '<i class="icon-legal icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.permissions'),
             array(
               'class'   => 'list-group-item',
@@ -165,7 +165,7 @@
             <?php
             echo \Html::anchor(
               'admin/auth/roles/details/'
-              . $role->id,
+              . $role->slug,
               '<i class="icon-chevron-right"></i>'
               . e($role->name),
               array(

@@ -1,6 +1,6 @@
 <?php namespace Model;
 
-class Auth_User extends \Gasoline\Model\Auth_User {
+class Auth_User extends \Auth\Model\User {
     
     /**
      * Initialize this class

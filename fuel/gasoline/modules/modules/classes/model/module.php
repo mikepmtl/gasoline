@@ -60,6 +60,18 @@ class Module extends \Gasoline\Model\Base {
             'data_type' => 'varchar',
             'null'      => false,
         ),
+        'website' => array(
+            'label'     => 'module.model.module.website',
+            'form'      => array(
+                'type'  => 'text',
+            ),
+            'validation'  => array(
+                'max_length'    => array(255),
+            ),
+            'character_maximum_length'  => 255,
+            'data_type' => 'varchar',
+            'null'      => false,
+        ),
         'version' => array(
             'label'     => 'module.model.module.version',
             'form'      => array(
@@ -186,10 +198,6 @@ class Module extends \Gasoline\Model\Base {
             'events'    => array('before_insert', 'before_update'),
             'property'  => 'user_id',
         ),
-        // 'Orm\\Observer_Slug' => array(
-        //     'events'    => array('before_insert'),
-        //     'source'    => 'name',
-        // ),
     );
     
     protected static $_belongs_to = array(
@@ -214,8 +222,7 @@ class Module extends \Gasoline\Model\Base {
     {
         \Config::load('module', true);
         
-        \Lang::load('module', 'module');
-        \Lang::load('model/module', 'module.model.module');
+        \Lang::load('model/module', 'modules.model.module');
     }
     
     

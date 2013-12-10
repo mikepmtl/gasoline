@@ -16,6 +16,7 @@ return array(
     'name'          => 'Name',
     'slug'          => 'Slug',
     'author'        => 'Author',
+    'website'       => 'Website',
     'version'       => 'Version',
     'status'        => 'Status',
     'scope'         => 'Scope',

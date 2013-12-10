@@ -20,3 +20,5 @@ fuel/app/config/development/*.php
 fuel/app/config/production/*.php
 fuel/app/config/test/*.php
 fuel/app/config/staging/*.php
+fuel/app/cache/*
+

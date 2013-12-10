@@ -58,6 +58,10 @@ Autoloader::add_classes(array(
     // 'Gasoline\\Model\\Auth_User'                => __DIR__ . '/classes/model/auth/user.php',
     // 'Gasoline\\Model\\Auth_User_Permission'     => __DIR__ . '/classes/model/auth/user/permission.php',
     
+    'Gasoline\\Orm\\Interface_Delete'   => __DIR__ . '/classes/orm/interface/delete.php',
+    'Gasoline\\Orm\\Interface_Protect'  => __DIR__ . '/classes/orm/interface/protected.php',
+    'Gasoline\\Orm\\Interface_State'    => __DIR__ . '/classes/orm/interface/stable.php',
+    
     'Gasoline\\Orm\\Observer_Auditor'   => __DIR__ . '/classes/orm/observer/auditor.php',
     'Gasoline\\Orm\\Observer_Id'        => __DIR__ . '/classes/orm/observer/id.php',
     'Gasoline\\Orm\\Observer_Slug'      => __DIR__ . '/classes/orm/observer/slug.php',

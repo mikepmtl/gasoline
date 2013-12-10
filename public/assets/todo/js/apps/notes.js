@@ -11,7 +11,7 @@ $(function(){
       return {
         id   :  Notes.nextId(),
         name :  "New note",
-        desc :  "",
+        description :  "",
         date :  Date.now()
       };
     }
@@ -28,19 +28,23 @@ $(function(){
     // Reference to this collection's model.
     model: Note,
 
-    // Save all of the items under namespace.
+    // Save all of the items to local storage under namespace.
     localStorage: new Backbone.LocalStorage("notes-app"),
+
+    // Save data to database.
+    // url: 'api/notes',
 
     // We keep in sequential id, despite being saved by unordered
     // GUID in the database. This generates the next id number for new items.
     nextId: function() {
+      if (this.url) return null;
       if (!this.length) return 1;
       return this.last().get('id') + 1;
     },
 
     // sorted by their original insertion id.
     comparator: function(note) {
-      return note.get("id");
+      return parseInt(note.get("id"));
     },
 
     search : function(str){
@@ -49,7 +53,7 @@ $(function(){
       var pattern = new RegExp(str, "gi");
       return _(this.filter(function(data) {
           data.trigger('show');
-          if (pattern.test(data.get("desc")) == false) {
+          if (pattern.test(data.get("description")) == false) {
             data.trigger('hide');
           };
       }));
@@ -85,6 +89,7 @@ $(function(){
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
       this.listenTo(this.model, 'select', this.select);
+      this.listenTo(this.model, 'active', this.active);
       this.listenTo(this.model, 'hide', this.hide);
       this.listenTo(this.model, 'show', this.show);
     },
@@ -103,9 +108,14 @@ $(function(){
 
     // Click to select
     select: function(){
-      this.$el.parent().find('.active').removeClass('active');
-      this.$el.addClass('active');    
+      this.active();
       app.navigate("notes/"+this.model.get('id'), {trigger: true});
+    },
+
+    // Active
+    active: function(){
+      this.$el.parent().find('.active').removeClass('active');
+      this.$el.addClass('active');
     },
 
     hide: function(){
@@ -126,19 +136,17 @@ $(function(){
     // Instead of generating a new element, bind to the existing skeleton of
     el: $("#note-list"),
 
+    // Delegated events for creating new items, and clearing completed ones.
+    events: {
+      "keyup #search-note": "search"
+    },
     // At initialization we bind to the relevant events on the 
     // collection, when items are added or changed. Kick things off by
     // loading any preexistings that might be saved in *localStorage*.
     initialize: function() {
-
       this.listenTo(Notes, 'add', this.addOne);
       this.listenTo(Notes, 'reset', this.addAll);
-      this.listenTo(Notes, 'all', this.render);
-
-      Notes.fetch();
-      if(Notes.length == 0){
-        this.populateData();
-      }
+      this.listenTo(Notes, 'all', this.render);      
     },
 
     // Re-rendering the App just means refreshing the statistics -- the rest
@@ -151,16 +159,16 @@ $(function(){
     // appending its element to the `<ul>`.
     addOne: function(note) {
       var view = new NoteItemView({model: note});
-      this.$el.prepend(view.render().el);
+      this.$el.find('#note-items').prepend(view.render().el);
     },
 
     // Add all items in the collection at once.
     addAll: function() {
-      Notes.each(this.addOne, this);
+      Notes.each(this.addOne, this);      
     },
 
-    populateData: function () {
-      Notes.create();
+    search: function(){
+      Notes.search($('#search-note').val());
     }
 
   });
@@ -184,10 +192,10 @@ $(function(){
     // update the model when update
     updateOnKeyup: function(e){
       var name = '',
-          desc = $(e.target).val(),
-          arr  = desc.split(/\r\n|\r|\n/g);
+          description = $(e.target).val(),
+          arr  = description.split(/\r\n|\r|\n/g);
       arr.length && ( name = _.first( _.filter(arr, function(item){ return !!$.trim(item); }) ) );
-      this.model.save({name: name, desc: desc});
+      this.model.save({name: name, description: description});
     },
 
     close:function () {
@@ -203,21 +211,20 @@ $(function(){
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
-      "click #new-note"   : "create",
-      "keyup #search-note": "search"
+      "click #new-note"   : "create"
     },
 
     create: function(e) {
-      var note = Notes.create();
-      note.trigger('select');
+      var note = new Note;
+      Notes.create(note, {
+        success:function () {
+            note.trigger('select');
+        }
+      });
     },
 
-    search: function(){
-      Notes.search($('#search-note').val());
-    }
-
   });
-  
+
   var AppRouter = Backbone.Router.extend({
     routes: {
       "" : "list",
@@ -225,30 +232,36 @@ $(function(){
     },
 
     initialize: function () {
-      new NoteAppView;      
+      new NoteAppView;
     },
 
     list: function() {
       if(this.noteListView) return;
       this.noteListView = new NoteListView;
       var self = this;
-      if(!this.requiredId){
-        _.delay(function(){self.noteListView.$el.children().first().trigger('click')},500);
-      }
+      Notes.fetch({
+        success: function(){
+          var id = app.requiredId || (Notes.length && Notes.at(Notes.length - 1).get('id'));
+          Notes.length && self.details(id) && app.navigate('notes/'+id);
+          !Notes.length && $('#new-note').trigger('click');
+        }
+      });
     },
     
     details: function(id) {
-      this.requiredId = id;
+      app.requiredId = id;
       this.list();
       // close the note detail view
       if (this.noteView) this.noteView.close();
       // get the note
       this.note = Notes.get(id);
       if(this.note){
-        this.note.trigger('select');
+        this.note.trigger('active');
         this.noteView = new NoteView({model: this.note});
-      }      
+      }
+      return this;
     }
+
   });
 
   // Finally, we kick things off by creating the **App**.

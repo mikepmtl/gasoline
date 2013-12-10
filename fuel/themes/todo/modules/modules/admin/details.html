@@ -145,7 +145,7 @@
           );
         ?>
         <?php endif ;?>
-        <?php if ( $module->is_enabled() && \Auth::has_access('modules.admin[disabled]') ) : ?>
+        <?php if ( $module->is_enabled() && \Auth::has_access('modules.admin[disable]') ) : ?>
         <?php
           echo \Html::anchor(
             'admin/modules/disable/' . $module->slug,

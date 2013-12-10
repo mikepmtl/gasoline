@@ -65,7 +65,7 @@
                   'admin/auth/users/details/'
                   . $module->auditor->id,
                   e($module->auditor->username)
-                  . '&nbsp;<i class="icon-share-alt"></i>',
+                  . '&nbsp;<i class="fa fa-share-alt"></i>',
                   array(
                     'class' => 'text-primary'
                   )
@@ -108,7 +108,7 @@
             <div class="col-md-6 col-md-offset-3">
               <section class="panel text-center no-border bg-warning dker">
                 <div class="panel-body">
-                  <p><i class="icon-exclamation-sign icon-4x"></i></p>
+                  <p><i class="fa fa-exclamation-triangle fa-4x"></i></p>
                   <p class="h5"><?php echo __('global.no_data'); ?></p>
                 </div>
               </section>
@@ -127,7 +127,7 @@
         <?php
           echo \Html::anchor(
             'admin/modules',
-            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.list'),
+            '<i class="fa fa-angle-double-left fa-fw"></i>&nbsp;&nbsp;' . __('button.list'),
             array(
               'class'   => 'list-group-item',
             )
@@ -138,7 +138,7 @@
         <?php
           echo \Html::anchor(
             'admin/modules/upload',
-            '<i class="icon-plus icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.new'),
+            '<i class="fa fa-plus fa-fw"></i>&nbsp;&nbsp;' . __('button.new'),
             array(
               'class'   => 'list-group-item',
             )
@@ -149,7 +149,7 @@
         <?php
           echo \Html::anchor(
             'admin/modules/disable/' . $module->slug,
-            '<i class="icon-minus-sign icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.disable'),
+            '<i class="fa fa-minus fa-fw"></i>&nbsp;&nbsp;' . __('button.disable'),
             array(
               'class'   => 'list-group-item',
             )
@@ -159,7 +159,7 @@
         <?php
           echo \Html::anchor(
             'admin/modules/enable/' . $module->slug,
-            '<i class="icon-plus-sign icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.enable'),
+            '<i class="fa fa-plus-sign fa-fw"></i>&nbsp;&nbsp;' . __('button.enable'),
             array(
               'class'   => 'list-group-item',
             )
@@ -169,7 +169,7 @@
         <?php if ( $module->is_deletable() && \Auth::has_access('modules.admin[delete]') ) : 
           echo \Html::anchor(
             'admin/modules/delete/' . $module->slug,
-            '<i class="icon-trash icon-fixed-width"></i>&nbsp;&nbsp;' . __('button.delete'),
+            '<i class="fa fa-trash fa-fw"></i>&nbsp;&nbsp;' . __('button.delete'),
             array(
               'class'   => 'list-group-item',
             )

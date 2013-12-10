@@ -13,7 +13,7 @@
           // {
           //   $data = $row->get_meta('data');
             
-          //   $row[0]->set_content( \Auth::has_access('permissions.admin[' . $scope . ']') ? \Html::anchor('admin/auth/permissions/' . $scope . '/' . $data->id, html_tag('span', array('class' => 'text-info'), '<i class="icon-chevron-right"></i>')) : '' );
+          //   $row[0]->set_content( \Auth::has_access('permissions.admin[' . $scope . ']') ? \Html::anchor('admin/auth/permissions/' . $scope . '/' . $data->id, html_tag('span', array('class' => 'text-info'), '<i class="fa fa-chevron-right fa-fw"></i>')) : '' );
           // }
           
           echo $table->render();
@@ -27,7 +27,7 @@
             <div class="col-md-6 col-md-offset-3">
               <section class="panel text-center no-border bg-warning dker">
                 <div class="panel-body">
-                  <p><i class="icon-exclamation-sign icon-4x"></i></p>
+                  <p><i class="fa fa-exclamation-triangle fa-4x"></i></p>
                   <p class="h5"><?php echo __('global.no_data'); ?></p>
                 </div>
               </section>

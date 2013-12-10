@@ -29,7 +29,7 @@
             {
               $tools[] = \Html::anchor(
                 'admin/auth/roles/details/' . $role->slug,
-                '<i class="icon-eye-open"></i>',
+                '<i class="fa fa-info"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
                 )
@@ -40,7 +40,7 @@
             {
               $tools[] = \Html::anchor(
                 'admin/auth/roles/update/' . $role->slug,
-                '<i class="icon-pencil"></i>',
+                '<i class="fa fa-pencil"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
                 )
@@ -51,7 +51,7 @@
             {
               $tools[] = \Html::anchor(
                 'admin/auth/roles/delete/' . $role->slug,
-                '<i class="icon-trash"></i>',
+                '<i class="fa fa-trash-o"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
                 )
@@ -101,7 +101,7 @@
             <div class="col-md-6 col-md-offset-3">
               <section class="panel text-center no-border bg-warning dker">
                 <div class="panel-body">
-                  <p><i class="icon-exclamation-sign icon-4x"></i></p>
+                  <p><i class="fa fa-exclamation-triangle fa-4x"></i></p>
                   <p class="h5"><?php echo __('global.no_data'); ?></p>
                 </div>
               </section>
@@ -118,7 +118,7 @@
         <?php
         echo \Html::anchor(
             'admin/auth',
-            '<i class="icon-double-angle-left icon-fixed-width"></i>&nbsp;' . __('auth.navigation.page-title.section'),
+            '<i class="fa fa-angle-double-left fa-fw"></i>&nbsp;' . __('auth.navigation.page-title.section'),
             array(
               'class'   => 'list-group-item',
             )
@@ -127,7 +127,7 @@
         <?php
           echo \Html::anchor(
             'admin/auth/roles/create',
-            '<i class="icon-plus icon-fixed-width"></i>&nbsp;' . __('button.new'),
+            '<i class="fa fa-plus fa-fw"></i>&nbsp;' . __('button.new'),
             array(
               'class'   => 'list-group-item',
             )

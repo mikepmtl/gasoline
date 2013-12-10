@@ -13,14 +13,14 @@
     'wrapper'                 => "<ul class=\"pagination m-t-none m-b-none\">\n\t{pagination}\n\t</ul>\n",
     
     'first'                   => "\n\t\t<li>{link}</li>",
-    'first-marker'            => "<i class=\"icon-double-angle-left\"></i>",
+    'first-marker'            => "<i class=\"fa fa-angle-double-left\"></i>",
     'first-link'              => "<a href=\"{uri}\" rel=\"first\">{page}</a>",
     
     'first-inactive'          => "",
     'first-inactive-link'     => "",
     
     'previous'                => "\n\t\t<li>{link}</li>",
-    'previous-marker'         => "<i class=\"icon-angle-left\"></i>",
+    'previous-marker'         => "<i class=\"fa fa-angle-left\"></i>",
     'previous-link'           => "<a href=\"{uri}\" rel=\"prev\">{page}</a>",
     
     'previous-inactive'       => "\n\t\t<li class=\"disabled\">{link}</li>",
@@ -33,14 +33,14 @@
     'active-link'             => "<a href=\"#\">{page} <span class=\"sr-only\"></span></a>",
     
     'next'                    => "\n\t\t<li>{link}</li>",
-    'next-marker'             => "<i class=\"icon-angle-right\"></i>",
+    'next-marker'             => "<i class=\"fa fa-angle-right\"></i>",
     'next-link'               => "<a href=\"{uri}\" rel=\"prev\">{page}</a>",
     
     'next-inactive'           => "\n\t\t<li class=\"disabled\">{link}</li>",
     'next-inactive-link'      => "<a href=\"#\" rel=\"next\">{page}</a>",
     
     'last'                    => "\n\t\t<li>{link}</li>",
-    'last-marker'             => "<i class=\"icon-double-angle-right\"></i>",
+    'last-marker'             => "<i class=\"fa fa-double-angle-right\"></i>",
     'last-link'               => "<a href=\"{uri}\" rel=\"last\">{page}</a>",
     
     'last-inactive'           => "",
@@ -51,14 +51,14 @@
     'wrapper'                 => "<ul class=\"pagination pagination-sm m-t-none m-b-none\">\n\t{pagination}\n\t</ul>\n",
     
     'first'                   => "\n\t\t<li>{link}</li>",
-    'first-marker'            => "<i class=\"icon-double-angle-left\"></i>",
+    'first-marker'            => "<i class=\"fa fa-angle-double-left\"></i>",
     'first-link'              => "<a href=\"{uri}\" rel=\"first\">{page}</a>",
     
     'first-inactive'          => "",
     'first-inactive-link'     => "",
     
     'previous'                => "\n\t\t<li>{link}</li>",
-    'previous-marker'         => "<i class=\"icon-angle-left\"></i>",
+    'previous-marker'         => "<i class=\"fa fa-angle-left\"></i>",
     'previous-link'           => "<a href=\"{uri}\" rel=\"prev\">{page}</a>",
     
     'previous-inactive'       => "\n\t\t<li class=\"disabled\">{link}</li>",
@@ -71,14 +71,14 @@
     'active-link'             => "<a href=\"#\">{page} <span class=\"sr-only\"></span></a>",
     
     'next'                    => "\n\t\t<li>{link}</li>",
-    'next-marker'             => "<i class=\"icon-angle-right\"></i>",
+    'next-marker'             => "<i class=\"fa fa-angle-right\"></i>",
     'next-link'               => "<a href=\"{uri}\" rel=\"prev\">{page}</a>",
     
     'next-inactive'           => "\n\t\t<li class=\"disabled\">{link}</li>",
     'next-inactive-link'      => "<a href=\"#\" rel=\"next\">{page}</a>",
     
     'last'                    => "\n\t\t<li>{link}</li>",
-    'last-marker'             => "<i class=\"icon-double-angle-right\"></i>",
+    'last-marker'             => "<i class=\"fa fa-double-angle-right\"></i>",
     'last-link'               => "<a href=\"{uri}\" rel=\"last\">{page}</a>",
     
     'last-inactive'           => "",
@@ -89,14 +89,14 @@
     'wrapper'                 => "<ul class=\"pagination pagination-lg m-t-none m-b-none\">\n\t{pagination}\n\t</ul>\n",
     
     'first'                   => "\n\t\t<li>{link}</li>",
-    'first-marker'            => "<i class=\"icon-double-angle-left\"></i>",
+    'first-marker'            => "<i class=\"fa fa-angle-double-left\"></i>",
     'first-link'              => "<a href=\"{uri}\" rel=\"first\">{page}</a>",
     
     'first-inactive'          => "",
     'first-inactive-link'     => "",
     
     'previous'                => "\n\t\t<li>{link}</li>",
-    'previous-marker'         => "<i class=\"icon-angle-left\"></i>",
+    'previous-marker'         => "<i class=\"fa fa-angle-left\"></i>",
     'previous-link'           => "<a href=\"{uri}\" rel=\"prev\">{page}</a>",
     
     'previous-inactive'       => "\n\t\t<li class=\"disabled\">{link}</li>",
@@ -109,14 +109,14 @@
     'active-link'             => "<a href=\"#\">{page} <span class=\"sr-only\"></span></a>",
     
     'next'                    => "\n\t\t<li>{link}</li>",
-    'next-marker'             => "<i class=\"icon-angle-right\"></i>",
+    'next-marker'             => "<i class=\"fa fa-angle-right\"></i>",
     'next-link'               => "<a href=\"{uri}\" rel=\"prev\">{page}</a>",
     
     'next-inactive'           => "\n\t\t<li class=\"disabled\">{link}</li>",
     'next-inactive-link'      => "<a href=\"#\" rel=\"next\">{page}</a>",
     
     'last'                    => "\n\t\t<li>{link}</li>",
-    'last-marker'             => "<i class=\"icon-double-angle-right\"></i>",
+    'last-marker'             => "<i class=\"fa fa-double-angle-right\"></i>",
     'last-link'               => "<a href=\"{uri}\" rel=\"last\">{page}</a>",
     
     'last-inactive'           => "",

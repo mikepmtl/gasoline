@@ -9,7 +9,7 @@
         echo \Html::anchor(
           'admin/auth/users/details/'
           . $user->id,
-          '<i class="icon-chevron-right"></i>'
+          '<i class="fa fa-chevron-right fa-fw"></i>'
           . html_tag(
             'span',
             array('class' => 'badge'),
@@ -40,7 +40,7 @@
           ),
           \Html::anchor(
             'admin/auth/users',
-            '<i class="icon-user icon-fixed-width"></i>&nbsp;'
+            '<i class="fa fa-user fa-fw"></i>&nbsp;'
             . 'Manage Users'
           )
         )

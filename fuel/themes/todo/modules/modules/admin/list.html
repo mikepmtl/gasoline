@@ -32,7 +32,7 @@
                 ),
                 \Html::anchor(
                   '#',
-                  '<span class="text-info"><i class="icon-info"></i></span>',
+                  '<span class="text-info"><i class="fa fa-info"></i></span>',
                   array(
                     'class'           => 'btn btn-xs btn-text',
                     'data-toggle'     => 'popover',
@@ -51,7 +51,7 @@
             {
               $tools[] = \Html::anchor(
                 'admin/modules/details/' . $module->id,
-                '<i class="icon-eye-open"></i>',
+                '<i class="fa fa-info"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
                   'title' => __('button.details'),
@@ -64,7 +64,7 @@
             {
               $tools[] = \Html::anchor(
                 'admin/modules/enable/' . $module->id,
-                '<i class="icon-plus-sign"></i>',
+                '<i class="fa fa-plus-sign"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
                   'title' => __('button.enable'),
@@ -76,7 +76,7 @@
             {
               $tools[] = \Html::anchor(
                 'admin/modules/disable/' . $module->id,
-                '<i class="icon-minus-sign"></i>',
+                '<i class="fa fa-minus"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
                   'title' => __('button.disable'),
@@ -89,7 +89,7 @@
             {
               $tools[] = \Html::anchor(
                 'admin/modules/delete/' . $module->id,
-                '<i class="icon-trash"></i>',
+                '<i class="fa fa-trash-o"></i>',
                 array(
                   'class' => 'btn btn-default btn-xs',
                   'title' => __('button.delete'),
@@ -111,7 +111,7 @@
             <div class="col-md-6 col-md-offset-3">
               <section class="panel text-center no-border bg-warning dker">
                 <div class="panel-body">
-                  <p><i class="icon-exclamation-sign icon-4x"></i></p>
+                  <p><i class="fa fa-exclamation-triangle fa-4x"></i></p>
                   <p class="h5"><?php echo __('global.no_data'); ?></p>
                 </div>
               </section>
@@ -147,7 +147,7 @@
         <?php
           echo \Html::anchor(
             'admin/modules/upload',
-            '<i class="icon-plus icon-fixed-width"></i>' . __('button.upload'),
+            '<i class="fa fa-plus fa-fw"></i>' . __('button.upload'),
             array(
               'class'   => 'list-group-item',
             )

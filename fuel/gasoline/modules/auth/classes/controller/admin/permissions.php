@@ -17,20 +17,19 @@ class Admin_Permissions extends \Controller\Admin {
     {
         parent::before();
         
-        \Lang::load('auth/page-title/permission', true);
-        
-        \Lang::load('auth/permission', 'auth.permission');
+        \Lang::load('navigation', 'auth.navigation');
+        \Lang::load('navigation/permission', 'auth.navigation.permission');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions', __('auth.permission.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb._section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions', __('auth.navigation.permission.breadcrumb._section'));
     }
     
     public function action_index()
     {
         static::restrict('permission.admin[index]');
         
-        // \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/index', __('auth.permission.breadcrumb.index'));
+        // \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/index', __('auth.navigation.permission.breadcrumb.index'));
         
         $this->view = static::$theme
             ->view('admin/permissions/index');
@@ -39,7 +38,9 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_groups($id = null)
     {
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/groups', __('auth.permission.breadcrumb.groups'));
+        \Lang::load('navigation/group', 'auth.navigation.group');
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/groups', __('auth.navigation.group.breadcrumb._section'));
         
         if ( $id ) 
         {
@@ -52,7 +53,9 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_roles($id = null)
     {
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/roles', __('auth.permission.breadcrumb.roles'));
+        \Lang::load('navigation/roles', 'auth.navigation.role');
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/roles', __('auth.navigation.role.breadcrumb._section'));
         
         if ( $id ) 
         {
@@ -65,7 +68,9 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_users($id = null)
     {
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/users', __('auth.permission.breadcrumb.users'));
+        \Lang::load('navigation/user', 'auth.navigation.user');
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/users', __('auth.navigation.user.breadcrumb._section'));
         
         if ( $id ) 
         {
@@ -183,6 +188,8 @@ class Admin_Permissions extends \Controller\Admin {
                     throw new \HttpNotFoundException();
                 }
                 
+                \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/' . $scope . '/' . $user->id, e($user->username));
+                
                 $perms = \Model\Auth_Permission::query()
                     ->get();
                 
@@ -222,6 +229,8 @@ class Admin_Permissions extends \Controller\Admin {
                 {
                     throw new \HttpNotFoundException();
                 }
+                
+                \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/' . $scope . '/' . $role->id, e($role->name));
                 
                 if ( $role->filter )
                 {
@@ -269,6 +278,8 @@ class Admin_Permissions extends \Controller\Admin {
                 {
                     throw new \HttpNotFoundException();
                 }
+                
+                \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/' . $scope . '/' . $group->id, e($group->name));
                 
                 $perms = \Model\Auth_Permission::query()
                     ->get();

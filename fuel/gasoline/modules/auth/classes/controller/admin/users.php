@@ -24,8 +24,8 @@ class Admin_Users extends \Controller\Admin {
         \Lang::load('messages/user', 'auth.messages.user');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb.section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users', __('auth.navigation.user.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb._section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users', __('auth.navigation.user.breadcrumb._section'));
     }
     
     public function action_list()

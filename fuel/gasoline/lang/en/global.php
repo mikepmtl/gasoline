@@ -16,6 +16,7 @@ return array(
     'actions'       => 'Actions',
     
     'bulk_actions'  => 'Bulk actions',
+    'by'            => 'by',
     
     'confirm'           => 'Confirm',
     'confirm_delete'    => 'Confirm delete',
@@ -24,14 +25,17 @@ return array(
     'dashboard'     => 'Dashboard',
     'details'       => 'Details',
     'disable'       => 'Disable',
+    'disabled'      => 'Disabled',
     
     'enable'            => 'Enable',
+    'enabled'           => 'Enabled',
     'execution_stats'   => 'Executed in {exec_time}s with a memory usage of {mem_usage}MB.',
     'export'            => 'Export',
     
     'n/a'           => 'n/a',
     
-    'by'            => 'by',
+    'login'         => 'Log in',
+    'logout'        => 'Log out',
     
     'manage'        => 'Manage',
     'manage_'       => 'Manage :item',
@@ -41,6 +45,8 @@ return array(
     'no_data'       => 'No data found!',
     
     'send_email'    => 'Send an email',
+    'sign_in'       => 'Sign in',
+    'sign_off'      => 'Sign off',
     
     'tools'         => 'Tools',
 );

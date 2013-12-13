@@ -97,28 +97,43 @@ class Lang extends \Fuel\Core\Lang {
             $group = ( $group === true ) ? $file : $group;
             isset(static::$lines[$language]) OR static::$lines[$language] = array();
             
-            if ( strpos($group, DS) !== false OR strpos($group, '.') !== false )
+            $group = ( strpos($group, DS) === false ? str_replace(DS, '.', $group) : $group );
+            
+            if ( $overwrite )
             {
-                $sections = explode( strpos($group, DS) !== false ? DS : '.', $group);
-                
-                $lines =& static::$lines[$language];
-                
-                while ( count($sections) )
-                {
-                    $section = array_shift($sections);
-                    
-                    isset($lines[$section]) OR $lines[$section] = array();
-                    
-                    $lines =& $lines[$section];
-                }
-                
-                $lines = $overwrite ? $lang : \Arr::merge($lines, $lang);
+                \Arr::delete(static::$lines[$language], $group);
+                \Arr::set(static::$lines[$language], $group, $lang);
             }
             else
             {
-                isset(static::$lines[$language][$group]) or static::$lines[$language][$group] = array();
-                static::$lines[$language][$group] = $overwrite ? array_merge(static::$lines[$language][$group], $lang) : \Arr::merge(static::$lines[$language][$group], $lang);
+                $tmp = array();
+                \Arr::set($tmp, $group, $lang);
+                
+                static::$lines[$language] = \Arr::merge(static::$lines[$language], \Arr::merge(array(), $tmp));
             }
+            
+            // if ( strpos($group, DS) !== false OR strpos($group, '.') !== false )
+            // {
+            //     $sections = explode( strpos($group, DS) !== false ? DS : '.', $group);
+                
+            //     $lines =& static::$lines[$language];
+                
+            //     while ( count($sections) )
+            //     {
+            //         $section = array_shift($sections);
+                    
+            //         isset($lines[$section]) OR $lines[$section] = array();
+                    
+            //         $lines =& $lines[$section];
+            //     }
+                
+            //     $lines = $overwrite ? $lang : \Arr::merge($lines, $lang);
+            // }
+            // else
+            // {
+            //     isset(static::$lines[$language][$group]) or static::$lines[$language][$group] = array();
+            //     static::$lines[$language][$group] = $overwrite ? array_merge(static::$lines[$language][$group], $lang) : \Arr::merge(static::$lines[$language][$group], $lang);
+            // }
         }
         
         return $lang;

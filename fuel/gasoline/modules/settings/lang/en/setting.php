@@ -13,12 +13,12 @@
 
 return array(
     'breadcrumb'    => array(
-        'section'   => 'Settings',
+        '_section'  => 'Settings',
         'index'     => 'List',
     ),
     
     'page-title'    => array(
-        'section'   => 'Settings',
+        '_section'  => 'Settings',
         'index'     => 'Settings',
     ),
 );

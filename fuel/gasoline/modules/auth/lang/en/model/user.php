@@ -12,6 +12,9 @@
  */
 
 return array(
+    /**
+     * Properties of the object and table fields
+     */
     'id'                => 'User ID',
     'username'          => 'Username',
     'email'             => 'Email address',
@@ -24,8 +27,14 @@ return array(
     'created_at'        => 'Created',
     'updated_at'        => 'Updated',
     
+    /**
+     * Relational data
+     */
     'roles'             => 'Roles',
     
+    /**
+     * Metadata
+     */
     'metadata'  => array(
     ),
 );

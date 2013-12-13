@@ -12,6 +12,9 @@
  */
 
 return array(
+    /**
+     * Properties of the object and table fields
+     */
     'id'            => 'Module ID',
     'name'          => 'Name',
     'slug'          => 'Slug',
@@ -25,6 +28,9 @@ return array(
     'created_at'    => 'Created',
     'updated_at'    => 'Updated',
     
+    /**
+     * Options for some properties
+     */
     'options'   => array(
         'status'   => array(
             0   => 'Disabled',
@@ -42,9 +48,25 @@ return array(
         ),
     ),
     
+    /**
+     * Custom data
+     */
     'description'   => array(
         'short' => 'Summary',
         'long'  => 'Description'
+    ),
+    
+    /**
+     * Form help
+     */
+    'help' => array(
+        'name'      => 'Name of the module. Must be a unique name',
+        'slug'      => 'Slug of the module which is both the folder name as well as the trigger in the URI to point to the module. Must be the same as the folder of the module and must be unique',
+        'author'    => 'Author of the module. If defined like so "Author <email@example.com>" the email will be parsed a link automatically',
+        'website'   => 'Website where there is more information on the module',
+        'version'   => 'Installed version of the module',
+        'status'    => 'Status of the module can be either disabled or enabled. Disabled are not publicly accessible but classes can be internally used',
+        'protected' => 'Protection status of the module. Protected modules cannot be deleted via the web interface',
     ),
 );
 

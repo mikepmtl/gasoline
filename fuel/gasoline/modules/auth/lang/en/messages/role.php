@@ -59,6 +59,10 @@ return array(
             'heading'   => 'Deleting failed!',
             'message'   => 'There was an unexpected error deleting the following roles: :names.',
         ),
+        'unconfirmed' => array(
+            'heading'   => 'Deleting not performed!',
+            'message'   => 'Roles :names were not deleted because deleting hasn\'t been confirmed.',
+        ),
     ),
     
     'validation_failed'   => array(

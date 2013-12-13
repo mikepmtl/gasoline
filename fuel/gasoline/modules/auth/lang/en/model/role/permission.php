@@ -12,6 +12,9 @@
  */
 
 return array(
+    /**
+     * Properties of the object and table fields
+     */
     'role_id'   => 'Role',
     'perms_id'  => 'Permission',
     'actions'   => 'Allowed actions',

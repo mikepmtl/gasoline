@@ -12,6 +12,9 @@
  */
 
 return array(
+    /**
+     * Properties of the object and table fields
+     */
     'name'          => 'Name',
     'slug'          => 'Slug',
     'filter'        => 'Permissions filter',
@@ -19,6 +22,9 @@ return array(
     'created_at'    => 'Created',
     'updated_at'    => 'Updated',
     
+    /**
+     * Options for some properties
+     */
     'options'   => array(
         'filter'    => array(
             ''  => 'None',
@@ -28,8 +34,12 @@ return array(
         ),
     ),
     
+    /**
+     * Form help lines
+     */
     'help'  => array(
-        'name'      => 'A unique name for a role',
+        'name'      => 'A unique name for the role',
+        'slug'      => 'A short, search-engine friendly version of the role\'s name',
         'filter'    => 'Each role can have a filter applied which will be checked before checking the role\'s permissions',
     ),
 );

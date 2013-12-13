@@ -14,7 +14,7 @@
 return array(
     
     'breadcrumb'    => array(
-        'section'   => 'Users',
+        '_section'  => 'Users',
         'list'      => 'List',
         'create'    => 'Create',
         'details'   => 'Details',
@@ -23,12 +23,12 @@ return array(
     ),
     
     'page-title'    => array(
-        'section'   => 'Users',
+        '_section'  => 'Users',
         'list'      => 'List',
-        'create'    => 'Create User',
-        'details'   => 'User Info',
-        'update'    => 'Update User',
-        'delete'    => 'Delete User',
+        'create'    => 'Create user',
+        'details'   => 'Details for user',
+        'update'    => 'Update user',
+        'delete'    => 'Delete user',
     ),
     
 );

@@ -14,7 +14,7 @@
 return array(
     
     'breadcrumb'    => array(
-        'section'   => 'Groups',
+        '_section'  => 'Groups',
         'list'      => 'List',
         'create'    => 'Create',
         'details'   => 'Details',
@@ -23,12 +23,12 @@ return array(
     ),
     
     'page-title'    => array(
-        'section'   => 'Groups',
+        '_section'  => 'Groups',
         'list'      => 'List',
-        'create'    => 'Create Group',
-        'details'   => 'Group Info',
-        'update'    => 'Update Group',
-        'delete'    => 'Delete Group',
+        'create'    => 'Create a group',
+        'details'   => 'Details for group',
+        'update'    => 'Update group',
+        'delete'    => 'Delete group',
     ),
     
 );

@@ -12,6 +12,9 @@
  */
 
 return array(
+    /**
+     * Properties of the object and table fields
+     */
     'id'            => 'ID',
     'area'          => 'Area',
     'permission'    => 'Permission',
@@ -19,6 +22,15 @@ return array(
     'user_id'       => 'Updated by',
     'created_at'    => 'Created',
     'updated_at'    => 'updated',
+    
+    /**
+     * Form help lines
+     */
+    'help'  => array(
+        'area'          => 'Area of the permission. Usually the module it is provided with',
+        'permission'    => 'Effective permission name like "admin" for administration, "public" for public interactions, &hellip;',
+        'actions'       => 'List of actions that are available for the created permission',
+    ),
 );
 
 /* End of file permission.php */

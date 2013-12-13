@@ -14,11 +14,11 @@
 return array(
     
     'breadcrumb'    => array(
-        'section'   => 'Auth',
+        '_section'  => 'Auth',
     ),
     
     'page-title'    => array(
-        'section'   => 'Auth',
+        '_section'  => 'Auth',
     ),
     
 );

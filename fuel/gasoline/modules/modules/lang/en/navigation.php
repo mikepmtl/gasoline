@@ -14,24 +14,28 @@
 return array(
     
     'breadcrumb'    => array(
-        '_section'  => 'Roles',
+        '_section'  => 'Modules',
         'list'      => 'List',
         'create'    => 'Create',
         'details'   => 'Details',
         'update'    => 'Update',
         'delete'    => 'Delete',
+        'enable'    => 'Enable',
+        'disable'   => 'Disable',
     ),
     
     'page-title'    => array(
-        '_section'  => 'Roles',
+        '_section'  => 'Modules',
         'list'      => 'List',
-        'create'    => 'Create role',
-        'details'   => 'Details for role',
-        'update'    => 'Update role',
-        'delete'    => 'Delete role',
+        'create'    => 'Create a module',
+        'details'   => 'Details for module',
+        'update'    => 'Update module',
+        'delete'    => 'Delete module',
+        'enable'    => 'Enable module',
+        'disable'   => 'Disable module',
     ),
     
 );
 
-/* End of file role.php */
-/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/role.php */
+/* End of file navigation.php */
+/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation.php */

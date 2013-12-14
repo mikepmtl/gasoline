@@ -17,7 +17,10 @@ class Html extends \Fuel\Core\Html {
     {
         if ( \Config::get('app.general.links.external_no_follow', false) === true )
         {
-            isset($attr['rel']) OR $attr['rel'] = 'nofollow';
+            if ( false !== strpos($href, '://') && false === strpos($href, \Config::get('base_url')) )
+            {
+                isset($attr['rel']) OR $attr['rel'] = 'nofollow';
+            }
         }
         
         return parent::anchor($href, $text, $attr, $secure);

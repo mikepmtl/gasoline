@@ -14,14 +14,14 @@
 return array(
     'breadcrumb'    => array(
         '_section'  => 'Settings',
-        'index'     => 'List',
+        'index'     => 'Overview',
     ),
     
     'page-title'    => array(
         '_section'  => 'Settings',
-        'index'     => 'Settings',
+        'index'     => 'Overview',
     ),
 );
 
-/* End of file setting.php */
-/* Location: ./fuel/gasoline/modules/settings/lang/en/setting.php */
+/* End of file navigation.php */
+/* Location: ./fuel/gasoline/modules/settings/lang/en/navigation.php */

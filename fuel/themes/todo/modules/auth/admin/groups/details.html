@@ -1,9 +1,9 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/groups/page-headers/details')); ?>
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/groups/page-headers/details', array('name' => $group->name))); ?>
 
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.group.page-title.details', array('name' => e($group->name)))); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.admin.group.page-title.details', array('name' => html_tag('small', array(), e($group->name))))); ?></header>
       <?php
       
       \Package::load('table');
@@ -22,7 +22,7 @@
       
       $table->get_body()->add_row(array(
         \Table\Cell::forge(__('auth.model.group.created_at'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(\Date::time_ago($group->created_at), array(), \Table\Cell::BODY)
+        \Table\Cell::forge(html_tag('span', array('data-toggle' => 'tooltip', 'title' => \Date::forge($group->created_at)->format(), 'data-placement' => 'right'), \Date::time_ago($group->created_at)), array(), \Table\Cell::BODY)
       ));
       
       $table->get_body()->add_row(array(
@@ -89,7 +89,7 @@
         <?php
           echo \Html::anchor(
             'admin/auth/groups/delete/' . $group->slug,
-            '<i class="fa fa-trash fa-fw"></i>&nbsp;&nbsp;' . __('button.delete'),
+            '<i class="fa fa-trash-o fa-fw"></i>&nbsp;&nbsp;' . __('button.delete'),
             array(
               'class'   => 'list-group-item',
             )

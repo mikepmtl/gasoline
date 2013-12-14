@@ -40,15 +40,20 @@ return array(
     'manage'        => 'Manage',
     'manage_'       => 'Manage :item',
     
-    'navigation'    => 'Navigation',
-    'never'         => 'Never',
-    'no_data'       => 'No data found!',
+    'navigation'        => 'Navigation',
+    'never'             => 'Never',
+    'no_data'           => 'No data',
+    'no_data_found'     => 'No data found',
+    'no_data_available' => 'No data available',
     
     'send_email'    => 'Send an email',
     'sign_in'       => 'Sign in',
     'sign_off'      => 'Sign off',
     
     'tools'         => 'Tools',
+    
+    'widget'        => 'Widget',
+    'widgets'       => 'Widgets',
 );
 
 /* End of file global.php */

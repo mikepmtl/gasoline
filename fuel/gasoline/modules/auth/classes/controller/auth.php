@@ -85,14 +85,11 @@ class Auth extends \Controller\Base {
         
         \Auth::dont_remember_me();
         
-        if ( \Auth::logout() )
-        {
-            \Message\Container::push(\Message\Item::forge('success', 'Logout successful', 'Bye bye')->is_flash(true));
-        }
-        else
-        {
-            \Message\Container::push(\Message\Item::forge('danger', 'Logout failed', 'Somehow!')->is_flash(true));
-        }
+        \Auth::logout();
+        
+        \Message\Container::push(\Message\Item::forge('success', 'Bye bye', 'Logout successful')->is_flash(true));
+        
+        // \Message\Container::push(\Message\Item::forge('danger', 'Logout failed', 'Somehow!')->is_flash(true));
         
         return \Response::redirect('/');
     }

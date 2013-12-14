@@ -1,105 +1,115 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/details')); ?>
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/details', array('name' => e($module->name)))); ?>
 
 <div class="row">
   <div class="col-md-10">
-    <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('module.page-title.details', array('name' => e($module->name)))); ?></header>
-      <?php
-      
-      \Package::load('table');
-      
-      $table = \Table\Table::forge()->set_attribute('class', 'table table-striped table-hover');
-      
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.name'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(e($module->name), array(), \Table\Cell::BODY)
-      ));
-      
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.slug'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(e($module->slug), array(), \Table\Cell::BODY)
-      ));
-      
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.author'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(e($module->author), array(), \Table\Cell::BODY)
-      ));
-      
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.version'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(e($module->version), array(), \Table\Cell::BODY)
-      ));
-      
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.status'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(__('module.model.module.options.status.' . $module->status), array(), \Table\Cell::BODY)
-      ));
-      
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.scope'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(__('module.model.module.options.scope.' . $module->scope), array(), \Table\Cell::BODY)
-      ));
-      
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.protected'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(__('module.model.module.options.protected.' . $module->protected), array(), \Table\Cell::BODY)
-      ));
-      
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.created_at'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(\Date::time_ago($module->created_at), array(), \Table\Cell::BODY)
-      ));
-      
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.updated_at'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(
-          $module->updated_at
-          ? \Date::time_ago($module->updated_at)
-            . ' '
-            . __('global.by')
-            . ' '
-            . (
-              \Auth::has_access('users.admin[read]')
-              ? ( $module->auditor
-                ? \Html::anchor(
-                  'admin/auth/users/details/'
-                  . $module->auditor->id,
-                  e($module->auditor->username)
-                  . '&nbsp;<i class="fa fa-share-alt"></i>',
-                  array(
-                    'class' => 'text-primary'
+    <div class="row">
+      <div class="col-md-7">
+        <section class="panel">
+          <header class="panel-heading bg-light lter"><?php echo html_tag('span', array('class' => 'h4'), __('modules.navigation.admin.page-title.details', array('name' => html_tag('small', array(), e($module->name))))); ?></header>
+          <?php
+          
+          \Package::load('table');
+          
+          $table = \Table\Table::forge()->set_attribute('class', 'table table-striped table-hover');
+          
+          $table->get_body()->add_row(array(
+            \Table\Cell::forge(__('modules.model.module.name'), array(), \Table\Cell::HEADER),
+            \Table\Cell::forge(e($module->name), array(), \Table\Cell::BODY)
+          ));
+          
+          $table->get_body()->add_row(array(
+            \Table\Cell::forge(__('modules.model.module.slug'), array(), \Table\Cell::HEADER),
+            \Table\Cell::forge(e($module->slug), array(), \Table\Cell::BODY)
+          ));
+          
+          $table->get_body()->add_row(array(
+            \Table\Cell::forge(__('modules.model.module.author'), array(), \Table\Cell::HEADER),
+            \Table\Cell::forge(e($module->author), array(), \Table\Cell::BODY)
+          ));
+          
+          $table->get_body()->add_row(array(
+            \Table\Cell::forge(__('modules.model.module.version'), array(), \Table\Cell::HEADER),
+            \Table\Cell::forge(e($module->version), array(), \Table\Cell::BODY)
+          ));
+          
+          $table->get_body()->add_row(array(
+            \Table\Cell::forge(__('modules.model.module.status'), array(), \Table\Cell::HEADER),
+            \Table\Cell::forge(__('modules.model.module.options.status.' . $module->status), array(), \Table\Cell::BODY)
+          ));
+          
+          $table->get_body()->add_row(array(
+            \Table\Cell::forge(__('modules.model.module.scope'), array(), \Table\Cell::HEADER),
+            \Table\Cell::forge(__('modules.model.module.options.scope.' . $module->scope), array(), \Table\Cell::BODY)
+          ));
+          
+          $table->get_body()->add_row(array(
+            \Table\Cell::forge(__('modules.model.module.protected'), array(), \Table\Cell::HEADER),
+            \Table\Cell::forge(__('modules.model.module.options.protected.' . $module->protected), array(), \Table\Cell::BODY)
+          ));
+          
+          $table->get_body()->add_row(array(
+            \Table\Cell::forge(__('modules.model.module.created_at'), array(), \Table\Cell::HEADER),
+            \Table\Cell::forge(\Date::time_ago($module->created_at), array(), \Table\Cell::BODY)
+          ));
+          
+          $table->get_body()->add_row(array(
+            \Table\Cell::forge(__('modules.model.module.updated_at'), array(), \Table\Cell::HEADER),
+            \Table\Cell::forge(
+              $module->updated_at
+              ? \Date::time_ago($module->updated_at)
+                . ' '
+                . __('global.by')
+                . ' '
+                . (
+                  \Auth::has_access('users.admin[read]')
+                  ? ( $module->auditor
+                    ? \Html::anchor(
+                      'admin/auth/users/details/'
+                      . $module->auditor->id,
+                      e($module->auditor->username)
+                      . '&nbsp;<i class="fa fa-share-alt"></i>',
+                      array(
+                        'class' => 'text-primary'
+                      )
+                    )
+                    : __('global.n/a')
+                  )
+                  : ( $module->auditor
+                    ? e($module->auditor->username)
+                    : __('global.n/a')
                   )
                 )
-                : __('global.n/a')
-              )
-              : ( $module->auditor
-                ? e($module->auditor->username)
-                : __('global.n/a')
-              )
+              : __('global.never'),
+              array(),
+              \Table\Cell::BODY
             )
-          : __('global.never'),
-          array(),
-          \Table\Cell::BODY
-        )
-      ));
-    
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.description.short'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge($module->description['short'], array(), \Table\Cell::BODY)
-      ));
+          ));
+          
+          echo $table->render();
+          
+          ?>
+        </section>
+      </div>
       
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('module.model.module.description.long'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge($module->description['long'], array(), \Table\Cell::BODY)
-      ));
+      <div class="col-md-5">
+        <section class="panel">
+          <header class="panel-heading bg-light dk"><?php echo html_tag('span', array('class' => 'h4'), __('modules.model.module.description.short')); ?></header>
+          <div class="panel-body">
+            <?php echo e($module->description['short']); ?>
+          </div>
+        </section>
+        <section class="panel">
+          <header class="panel-heading bg-light dk"><?php echo html_tag('span', array('class' => 'h4'), __('modules.model.module.description.long')); ?></header>
+          <div class="panel-body">
+            <?php echo e($module->description['long']); ?>
+          </div>
+        </section>
+      </div>
       
-      echo $table->render();
-      
-      ?>
-    </section>
+    </div>
     
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('module.widget', array('name' => e($module->name)))); ?></header>
+      <header class="panel-heading bg-light lter"><?php echo html_tag('span', array('class' => 'h4'), __('global.widget') . '&nbsp;' . html_tag('small', array(), e($module->name))); ?></header>
       <div class="panel-body">
         <?php if ( isset($widget) && $widget ) : ?>
           <?php echo $widget['body']; ?>
@@ -109,7 +119,7 @@
               <section class="panel text-center no-border bg-warning dker">
                 <div class="panel-body">
                   <p><i class="fa fa-exclamation-triangle fa-4x"></i></p>
-                  <p class="h5"><?php echo __('global.no_data'); ?></p>
+                  <p class="h5"><?php echo __('global.no_data_found'); ?></p>
                 </div>
               </section>
             </div>
@@ -159,7 +169,7 @@
         <?php
           echo \Html::anchor(
             'admin/modules/enable/' . $module->slug,
-            '<i class="fa fa-plus-sign fa-fw"></i>&nbsp;&nbsp;' . __('button.enable'),
+            '<i class="fa fa-plus fa-fw"></i>&nbsp;&nbsp;' . __('button.enable'),
             array(
               'class'   => 'list-group-item',
             )
@@ -169,7 +179,7 @@
         <?php if ( $module->is_deletable() && \Auth::has_access('modules.admin[delete]') ) : 
           echo \Html::anchor(
             'admin/modules/delete/' . $module->slug,
-            '<i class="fa fa-trash fa-fw"></i>&nbsp;&nbsp;' . __('button.delete'),
+            '<i class="fa fa-trash-o fa-fw"></i>&nbsp;&nbsp;' . __('button.delete'),
             array(
               'class'   => 'list-group-item',
             )

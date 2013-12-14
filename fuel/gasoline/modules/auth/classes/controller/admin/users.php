@@ -20,19 +20,19 @@ class Admin_Users extends \Controller\Admin {
         parent::before();
         
         \Lang::load('navigation', 'auth.navigation');
-        \Lang::load('navigation/user', 'auth.navigation.user');
+        \Lang::load('navigation/admin/user', 'auth.navigation.admin.user');
         \Lang::load('messages/user', 'auth.messages.user');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb._section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users', __('auth.navigation.user.breadcrumb._section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users', __('auth.navigation.admin.user.breadcrumb._section'));
     }
     
     public function action_list()
     {
         static::restrict('users.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/list', __('auth.navigation.user.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/list', __('auth.navigation.admin.user.breadcrumb.list'));
         
         $pagination_config = array(
             'pagination_url'    => \Uri::create('admin/auth/users'),
@@ -102,7 +102,7 @@ class Admin_Users extends \Controller\Admin {
     {
         static::restrict('users.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/create', __('auth.navigation.user.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/create', __('auth.navigation.admin.user.breadcrumb.create'));
         
         $user = \Model\Auth_User::forge();
         
@@ -119,13 +119,13 @@ class Admin_Users extends \Controller\Admin {
             {
                 if ( $user_id = \Auth::create_user($val->validated('username'), $val->validated('password'), $val->validated('email'), $val->validated('group_id'), array()) )
                 {
-                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.success.create.message', array('name' => e($user->username))), __('auth.messages.user.success.create.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.create.success.message', array('username' => e($user->username))), __('auth.messages.user.create.success.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/users/details/' . $user_id);
                 }
                 else
                 {
-                    \Message\Container::instance('user-form')->push(\Message\Item::forge('danger', __('auth.messages.user.failure.create.message'), __('auth.messages.user.failure.create.heading')));
+                    \Message\Container::instance('user-form')->push(\Message\Item::forge('danger', __('auth.messages.user.create.failure.message'), __('auth.messages.user.create.failure.heading')));
                 }
             }
             else
@@ -173,10 +173,13 @@ class Admin_Users extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update', __('auth.navigation.user.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update', __('auth.navigation.admin.user.breadcrumb.update'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/update/' . $id, e($user->username));
         
         $form = $user->to_form();
+        
+        $password_repeat = new \Gasform\Input_Password('password_repeat');
+        $form['password_repeat'] = $password_repeat->set_label(__('auth.model.user.password_repeat'));
         
         if ( \Input::method() === "POST" )
         {
@@ -193,7 +196,7 @@ class Admin_Users extends \Controller\Admin {
                     
                     $user->save();
                     
-                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.success.update.message', array('username' => e($user->username))), __('auth.messages.user.success.update.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.update.success.message', array('username' => e($user->username))), __('auth.messages.user.update.success.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/users/details/' . $user->username);
                 }
@@ -203,7 +206,7 @@ class Admin_Users extends \Controller\Admin {
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance('user-form')->push(\Message\Item::forge('danger', __('auth.messages.user.failure.update.message', array('username' => $user->username)), __('auth.messages.user.failure.update.heading')));
+                    \Message\Container::instance('user-form')->push(\Message\Item::forge('danger', __('auth.messages.user.update.failure.message', array('username' => $user->username)), __('auth.messages.user.update.failure.heading')));
                 }
             }
             else
@@ -251,7 +254,7 @@ class Admin_Users extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/', __('auth.navigation.user.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/', __('auth.navigation.admin.user.breadcrumb.details'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/details/' . $user->username, e($user->username));
         
         $this->view = static::$theme
@@ -271,7 +274,7 @@ class Admin_Users extends \Controller\Admin {
             case 'delete':
                 static::restrict('users.admin[delete]');
                 
-                if ( $ids = \Input::post('user_id', false) )
+                if ( $ids = \Input::post('user_id', \Input::post('user_ids', false)) )
                 {
                     is_array($ids) OR $ids = array($ids);
                     
@@ -322,9 +325,9 @@ class Admin_Users extends \Controller\Admin {
                         }
                     }
                     
-                    $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.success.delete_batch.message', array('usernames' => implode(', ', $success))), __('auth.messages.user.success.delete_batch.heading'))->is_flash(true));
+                    $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.delete_batch.success.message', array('usernames' => implode(', ', $success))), __('auth.messages.user.delete_batch.success.heading'))->is_flash(true));
                     
-                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.user.failure.delete_batch.message', array('usernames' => implode(', ', $failed))), __('auth.messages.user.failure.delete_batch.heading'))->is_flash(true));
+                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.user.delete_batch.failure.message', array('usernames' => implode(', ', $failed))), __('auth.messages.user.delete_batch.failure.heading'))->is_flash(true));
                 }
             break;
         }

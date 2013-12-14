@@ -150,4 +150,44 @@ class Validation extends \Fuel\Core\Validation {
         return false;
     }
     
+    
+    /**
+     * Check whether the given value exists within the database
+     * 
+     * @access  public
+     * @static
+     * @param   mixed   $value      Value to check for existence
+     * @param   array   $tbl_fld    Table name and field to check on separated by
+     *                              a period e.g., "users.id"
+     * 
+     * @return  boolean             Returns true if the validation passed (i.e.,
+     *                              item does _NOT_ exist in the DB), otherwise
+     *                              returns false i.e., validation failed, if the
+     *                              item(s) do 
+     */
+    public static function _validation_exists($val, $tbl_fld)
+    {
+        // Get table and field from the options passed
+        list($table, $field) = explode('.', $tbl_fld, 2);
+        
+        // Create a query and allow for multiple values to check for existence of all
+        $query = \DB::select($field)
+            ->from($table)
+            ->where($field, 'IN', (array) $val);
+        
+        // Executei the query
+        $result = $query->execute();
+        
+        // Check the count of results against the count of values to check for
+        // existence. Found as many rows as we wanted to?
+        if ( $result->count() == count($val) )
+        {
+            return true;
+        }
+        
+        // If the count is not the same, then we're missing data and it did not
+        // validate correctly
+        return false;
+    }
+    
 }

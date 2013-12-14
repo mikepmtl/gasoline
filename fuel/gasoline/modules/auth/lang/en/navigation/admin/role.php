@@ -24,14 +24,14 @@ return array(
     
     'page-title'    => array(
         '_section'  => 'Roles',
-        'list'      => 'List',
+        'list'      => 'Roles',
         'create'    => 'Create role',
-        'details'   => 'Details for role',
-        'update'    => 'Update role',
-        'delete'    => 'Delete role',
+        'details'   => 'Details for role :name',
+        'update'    => 'Update role :name',
+        'delete'    => 'Delete role :name',
     ),
     
 );
 
 /* End of file role.php */
-/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/role.php */
+/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/admin/role.php */

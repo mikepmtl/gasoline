@@ -36,7 +36,14 @@ return array(
      * Metadata
      */
     'metadata'  => array(
+        'fullname'  => 'Fullname',
+        'foo'       => 'Foo',
     ),
+    
+    /**
+     * Other data
+     */
+    'password_repeat'   => 'Password (repeat)',
 );
 
 /* End of file user.php */

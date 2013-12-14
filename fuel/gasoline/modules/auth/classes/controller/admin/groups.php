@@ -20,19 +20,19 @@ class Admin_Groups extends \Controller\Admin {
         parent::before();
         
         \Lang::load('navigation', 'auth.navigation');
-        \Lang::load('navigation/group', 'auth.navigation.group');
+        \Lang::load('navigation/admin/group', 'auth.navigation.admin.group');
         \Lang::load('messages/group', 'auth.messages.group');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb.section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups', __('auth.navigation.group.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb._section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups', __('auth.navigation.admin.group.breadcrumb._section'));
     }
     
     public function action_list()
     {
         static::restrict('groups.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/list', __('auth.navigation.group.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/list', __('auth.navigation.admin.group.breadcrumb.list'));
         
         $pagination_config = array(
             'pagination_url'    => \Uri::create('admin/auth/groups'),
@@ -103,7 +103,7 @@ class Admin_Groups extends \Controller\Admin {
     {
         static::restrict('groups.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/create', __('auth.navigation.group.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/create', __('auth.navigation.admin.group.breadcrumb.create'));
         
         $group = \Model\Auth_Group::forge();
         
@@ -145,17 +145,17 @@ class Admin_Groups extends \Controller\Admin {
                     
                     $group->save();
                     
-                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.success.create.message', array('name' => e($group->name))), __('auth.messages.group.success.create.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.create.success.message', array('name' => e($group->name))), __('auth.messages.group.create.success.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/groups/details/' . $group->slug);
                 }
                 catch ( \Orm\ValidationFailed $e )
                 {
-                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.success.create.message', array('name' => e($group->name))), __('auth.messages.group.success.create.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.create.success.message', array('name' => e($group->name))), __('auth.messages.group.create.success.heading'))->is_flash(true));
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance('group-form')->push(\Message\Item::forge('danger', __('auth.messages.group.failure.create.message'), __('auth.messages.group.failure.create.heading')));
+                    \Message\Container::instance('group-form')->push(\Message\Item::forge('danger', __('auth.messages.group.create.failure.message'), __('auth.messages.group.create.failure.heading')));
                 }
             }
             else
@@ -202,7 +202,7 @@ class Admin_Groups extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update', __('auth.navigation.group.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update', __('auth.navigation.admin.group.breadcrumb.update'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update/' . $group->slug, e($group->name));
         
         $form = $group->to_form();
@@ -245,7 +245,7 @@ class Admin_Groups extends \Controller\Admin {
                     
                     $group->save();
                     
-                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.success.update.message', array('name' => e($group->name))), __('auth.messages.group.success.update.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.update.success.message', array('name' => e($group->name))), __('auth.messages.group.update.success.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/groups/details/' . $group->slug);
                 }
@@ -255,7 +255,7 @@ class Admin_Groups extends \Controller\Admin {
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance('group-form')->push(\Message\Item::forge('danger', __('auth.messages.group.failure.update.message'), __('auth.messages.group.failure.update.heading')));
+                    \Message\Container::instance('group-form')->push(\Message\Item::forge('danger', __('auth.messages.group.update.failure.message'), __('auth.messages.group.update.failure.heading')));
                 }
             }
             else
@@ -286,12 +286,23 @@ class Admin_Groups extends \Controller\Admin {
     {
         static::restrict('groups.admin[delete]');
         
-        if ( ! ( $group = \Model\Auth_Group::find($id) ) )
+        $query = \Model\Auth_Group::query()
+            ->related('auditor')
+            ->related('users')
+            ->related('grouppermissions')
+            ->related('roles')
+            ->related('permissions')
+            ->and_where_open()
+                ->where('id', '=', $id)
+                ->or_where('slug', '=', $id)
+            ->and_where_close();
+        
+        if ( ! ( $group = $query->get_one() ) )
         {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/delete', __('auth.navigation.group.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/delete', __('auth.navigation.admin.group.breadcrumb.delete'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/delete/' . $group->slug, e($group->name));
         
         $form = $group->to_form();
@@ -304,15 +315,16 @@ class Admin_Groups extends \Controller\Admin {
             {
                 try
                 {
+                    $name = $group->name;
                     $group->delete();
                     
-                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.success.delete.message', array('name' => e($name))), __('auth.messages.group.success.delete.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.delete.success.message', array('name' => e($name))), __('auth.messages.group.delete.success.heading'))->is_flash(true));
                 }
                 catch ( \Exception $e )
                 {
                     logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
                     
-                    \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.group.failure.delete.message'), __('auth.messages.group.failure.delete.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.group.delete.failure.message', array('name' => e($group->name))), __('auth.messages.group.delete.failure.heading'))->is_flash(true));
                 }
             }
             else
@@ -362,7 +374,7 @@ class Admin_Groups extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/', __('auth.navigation.group.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/', __('auth.navigation.admin.group.breadcrumb.details'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/details/' . $group->slug, e($group->name));
         
         $this->view = static::$theme
@@ -420,9 +432,9 @@ class Admin_Groups extends \Controller\Admin {
                         }
                     }
                     
-                    $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.success.delete_batch.message', array('names' => implode(', ', $success))), __('auth.messages.group.success.delete_batch.heading'))->is_flash(true));
+                    $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.delete_batch.success.message', array('names' => implode(', ', $success))), __('auth.messages.group.delete_batch.success.heading'))->is_flash(true));
                     
-                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.group.failure.delete_batch.message', array('names' => implode(', ', $failed))), __('auth.messages.group.failure.delete_batch.heading'))->is_flash(true));
+                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.group.delete_batch.failure.message', array('names' => implode(', ', $failed))), __('auth.messages.group.delete_batch.failure.heading'))->is_flash(true));
                 }
             break;
         }

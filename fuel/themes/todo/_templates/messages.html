@@ -8,16 +8,16 @@ if ( ! function_exists('todo_icon') )
       default:
       break;
       case 'success':
-        return 'ok-sign';
+        return 'check';
       break;
       case 'danger':
-        return 'ban-circle';
+        return 'times';
       break;
       case 'warning':
-        return 'bell-alt';
+        return 'exclamation';
       break;
       case 'info':
-        return 'info-sign';
+        return 'info';
       break;
     }
   }
@@ -30,10 +30,10 @@ if ( ! function_exists('todo_icon') )
     <div class="alert alert-<?php echo $message->get_type(); ?> alert-dismissable<?php echo ( $message->get_heading() ? ' alert-block' : ''); ?>">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <?php if ( $heading = $message->get_heading() ) : ?>
-        <h4><i class="fa fa-<?php echo todo_icon($message->get_type()); ?>"></i>&nbsp;<?php echo $heading; ?></h4>
+        <h4><i class="fa fa-<?php echo todo_icon($message->get_type()); ?>-circle"></i>&nbsp;<?php echo $heading; ?></h4>
         <p><?php echo $message->get_message(); ?></p>
       <?php else : ?>
-        <i class="fa fa-<?php echo todo_icon($message->get_type()); ?>"></i>&nbsp;<?php echo $message->get_message(); ?>
+        <i class="fa fa-<?php echo todo_icon($message->get_type()); ?>-circle"></i>&nbsp;<?php echo $message->get_message(); ?>
       <?php endif; ?>
     </div>
   <?php endforeach; ?>

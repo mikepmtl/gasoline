@@ -18,18 +18,18 @@ class Admin_Permissions extends \Controller\Admin {
         parent::before();
         
         \Lang::load('navigation', 'auth.navigation');
-        \Lang::load('navigation/permission', 'auth.navigation.permission');
+        \Lang::load('navigation/admin/permission', 'auth.navigation.admin.permission');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb._section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions', __('auth.navigation.permission.breadcrumb._section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions', __('auth.navigation.admin.permission.breadcrumb._section'));
     }
     
     public function action_index()
     {
         static::restrict('permission.admin[index]');
         
-        // \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/index', __('auth.navigation.permission.breadcrumb.index'));
+        // \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/index', __('auth.navigation.admin.permission.breadcrumb.index'));
         
         $this->view = static::$theme
             ->view('admin/permissions/index');
@@ -38,9 +38,9 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_groups($id = null)
     {
-        \Lang::load('navigation/group', 'auth.navigation.group');
+        \Lang::load('navigation/admin/group', 'auth.navigation.admin.group');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/groups', __('auth.navigation.group.breadcrumb._section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/groups', __('auth.navigation.admin.group.breadcrumb._section'));
         
         if ( $id ) 
         {
@@ -53,9 +53,9 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_roles($id = null)
     {
-        \Lang::load('navigation/roles', 'auth.navigation.role');
+        \Lang::load('navigation/admin/role', 'auth.navigation.admin.role');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/roles', __('auth.navigation.role.breadcrumb._section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/roles', __('auth.navigation.admin.role.breadcrumb._section'));
         
         if ( $id ) 
         {
@@ -68,9 +68,9 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_users($id = null)
     {
-        \Lang::load('navigation/user', 'auth.navigation.user');
+        \Lang::load('navigation/admin/user', 'auth.navigation.admin.user');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/users', __('auth.navigation.user.breadcrumb._section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/users', __('auth.navigation.admin.user.breadcrumb._section'));
         
         if ( $id ) 
         {

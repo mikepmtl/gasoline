@@ -27,12 +27,12 @@ class Admin extends \Controller\Admin {
         // Loop through all modules and display their dashboard widget
         foreach ( \Config::get('module_paths') as $module_path )
         {
-            if ( ! ( $to_consider = glob($module_path . '*/classes/controller/widgets*') ) )
+            if ( ! ( $controller = glob($module_path . '*/classes/controller/widgets/dashboard*') ) )
             {
                 continue;
             }
             
-            foreach ( $to_consider as $module )
+            foreach ( $controller as $module )
             {
                 $path = explode(DS, str_replace($module_path, '', $module));
                 

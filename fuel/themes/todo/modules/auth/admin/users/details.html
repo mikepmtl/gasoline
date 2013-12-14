@@ -1,9 +1,9 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/users/page-headers/details')); ?>
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/users/page-headers/details', array('username' => $user->username))); ?>
 
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.user.page-title.details', array('name' => e($user->username)))); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.admin.user.page-title.details', array('username' => html_tag('small', array(), e($user->username))))); ?></header>
       <?php
       
       \Package::load('table');
@@ -27,7 +27,7 @@
             ),
             \Html::mail_to_safe(
               $user->email,
-              '<i class="fa fa-envelope-alt"></i>',
+              '<i class="fa fa-envelope-o"></i>',
               null,
               array(
                 'class'       => 'btn btn-default btn-xs',
@@ -47,7 +47,7 @@
       
       $table->get_body()->add_row(array(
         \Table\Cell::forge(__('auth.model.user.created_at'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(\Date::time_ago($user->created_at), array(), \Table\Cell::BODY)
+        \Table\Cell::forge(html_tag('span', array('data-toggle' => 'tooltip', 'title' => \Date::forge($user->created_at)->format(), 'data-placement' => 'right'), \Date::time_ago($user->created_at)), array(), \Table\Cell::BODY)
       ));
       
       $table->get_body()->add_row(array(
@@ -116,7 +116,7 @@
           {
             echo \Html::anchor(
               'admin/auth/users/delete/' . $user->username,
-              '<i class="fa fa-trash fa-fw"></i>&nbsp;&nbsp;' . __('button.delete'),
+              '<i class="fa fa-trash-o fa-fw"></i>&nbsp;&nbsp;' . __('button.delete'),
               array(
                 'class'   => 'list-group-item',
               )
@@ -145,8 +145,8 @@
         <?php if ( $user->metadata ) : ?>
           <?php foreach ( $user->metadata as $metadata ) : ?>
             <div class="list-group-item">
-              <small class="text-uc text-muted"><?php echo __('auth.model.user.metadata.' . $metadata->attribute); ?></small>
-              <p><?php echo e($metadata->value); ?></p>
+              <small class="text-uc text-muted"><?php echo __('auth.model.user.metadata.' . $metadata->attribute); ?>:</small><br />
+              <?php echo e($metadata->value); ?>
             </div>
           <?php endforeach; ?>
         <?php else : ?>

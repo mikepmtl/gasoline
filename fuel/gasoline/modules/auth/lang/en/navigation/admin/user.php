@@ -24,14 +24,14 @@ return array(
     
     'page-title'    => array(
         '_section'  => 'Users',
-        'list'      => 'List',
+        'list'      => 'Users',
         'create'    => 'Create user',
-        'details'   => 'Details for user',
-        'update'    => 'Update user',
-        'delete'    => 'Delete user',
+        'details'   => 'Details for user :username',
+        'update'    => 'Update user :username',
+        'delete'    => 'Delete user :username',
     ),
     
 );
 
 /* End of file user.php */
-/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/user.php */
+/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/admin/user.php */

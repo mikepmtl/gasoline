@@ -26,16 +26,16 @@ return array(
     
     'page-title'    => array(
         '_section'  => 'Modules',
-        'list'      => 'List',
+        'list'      => 'Modules',
         'create'    => 'Create a module',
-        'details'   => 'Details for module',
-        'update'    => 'Update module',
-        'delete'    => 'Delete module',
-        'enable'    => 'Enable module',
-        'disable'   => 'Disable module',
+        'details'   => 'Details for module :name',
+        'update'    => 'Update module :name',
+        'delete'    => 'Delete module :name',
+        'enable'    => 'Enable module :name',
+        'disable'   => 'Disable module :name',
     ),
     
 );
 
-/* End of file navigation.php */
-/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation.php */
+/* End of file admin.php */
+/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/admin.php */

@@ -17,7 +17,9 @@ class Admin extends \Controller\Admin {
     {
         parent::before();
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.breadcrumb.section'));
+        \Lang::load('navigation', 'auth.navigation');
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb._section'));
     }
     
     public function action_index()

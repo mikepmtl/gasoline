@@ -14,14 +14,16 @@
 return array(
     
     'breadcrumb'    => array(
-        '_section'  => 'Permissions',
+        '_section'  => 'Modules',
+        'list'      => 'List',
     ),
     
     'page-title'    => array(
-        '_section'  => 'Permissions',
+        '_section'  => 'Modules',
+        'list'      => 'List',
     ),
     
 );
 
-/* End of file group.php */
-/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/group.php */
+/* End of file settings.php */
+/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/settings.php */

@@ -24,14 +24,14 @@ return array(
     
     'page-title'    => array(
         '_section'  => 'Groups',
-        'list'      => 'List',
-        'create'    => 'Create a group',
-        'details'   => 'Details for group',
-        'update'    => 'Update group',
-        'delete'    => 'Delete group',
+        'list'      => 'Groups',
+        'create'    => 'Create group',
+        'details'   => 'Details for group :name',
+        'update'    => 'Update group :name',
+        'delete'    => 'Delete group :name',
     ),
     
 );
 
 /* End of file group.php */
-/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/group.php */
+/* Location: ./fuel/gasoline/modules/auth/lang/en/navigation/admin/group.php */

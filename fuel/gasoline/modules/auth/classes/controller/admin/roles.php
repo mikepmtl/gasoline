@@ -20,19 +20,19 @@ class Admin_Roles extends \Controller\Admin {
         parent::before();
         
         \Lang::load('navigation', 'auth.navigation');
-        \Lang::load('navigation/role', 'auth.navigation.role');
+        \Lang::load('navigation/admin/role', 'auth.navigation.admin.role');
         \Lang::load('messages/role', 'auth.messages.role');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb.section'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles', __('auth.navigation.role.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth', __('auth.navigation.breadcrumb._section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles', __('auth.navigation.admin.role.breadcrumb._section'));
     }
     
     public function action_list()
     {
         static::restrict('roles.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/list', __('auth.navigation.role.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/list', __('auth.navigation.admin.role.breadcrumb.list'));
         
         $pagination_config = array(
             'pagination_url'    => \Uri::create('admin/auth/roles'),
@@ -102,7 +102,7 @@ class Admin_Roles extends \Controller\Admin {
     {
         static::restrict('roles.admin[create]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/create', __('auth.navigation.role.breadcrumb.create'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/create', __('auth.navigation.admin.role.breadcrumb.create'));
         
         $role = \Model\Auth_Role::forge();
         
@@ -123,7 +123,7 @@ class Admin_Roles extends \Controller\Admin {
                     
                     $role->save();
                     
-                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.create.message', array('name' => e($role->name))), __('auth.messages.role.success.create.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.create.success.message', array('name' => e($role->name))), __('auth.messages.role.create.success.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/roles/details/' . $role->slug);
                 }
@@ -133,7 +133,7 @@ class Admin_Roles extends \Controller\Admin {
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance('role-form')->push(\Message\Item::forge('danger', __('auth.messages.role.failure.create.message'), __('auth.messages.role.failure.create.heading')));
+                    \Message\Container::instance('role-form')->push(\Message\Item::forge('danger', __('auth.messages.role.create.failure.message'), __('auth.messages.role.create.failure.heading')));
                 }
             }
             else
@@ -180,7 +180,7 @@ class Admin_Roles extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update', __('auth.navigation.role.breadcrumb.update'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update', __('auth.navigation.admin.role.breadcrumb.update'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/update/' . $role->slug, e($role->name));
         
         $form = $role->to_form();
@@ -200,7 +200,7 @@ class Admin_Roles extends \Controller\Admin {
                     
                     $role->save();
                     
-                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.update.message', array('name' => e($role->name))), __('auth.messages.role.success.update.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.update.success.message', array('name' => e($role->name))), __('auth.messages.role.update.success.heading'))->is_flash(true));
                     
                     return \Response::redirect('admin/auth/roles/details/' . $role->slug);
                 }
@@ -210,7 +210,7 @@ class Admin_Roles extends \Controller\Admin {
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance('role-form')->push(\Message\Item::forge('danger', __('auth.messages.role.failure.update.message'), __('auth.messages.role.failure.update.heading')));
+                    \Message\Container::instance('role-form')->push(\Message\Item::forge('danger', __('auth.messages.role.update.failure.message'), __('auth.messages.role.update.failure.heading')));
                 }
             }
             else
@@ -257,7 +257,7 @@ class Admin_Roles extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete', __('auth.navigation.role.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete', __('auth.navigation.admin.role.breadcrumb.delete'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/delete/' . $role->slug, e($role->name));
         
         $form = $role->to_form();
@@ -273,13 +273,13 @@ class Admin_Roles extends \Controller\Admin {
                     $name = $role->name;
                     $role->delete();
                     
-                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.delete.message', array('name' => e($name))), __('auth.messages.role.success.delete.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.delete.success.message', array('name' => e($name))), __('auth.messages.role.delete.success.heading'))->is_flash(true));
                 }
                 catch ( \Exception $e )
                 {
                     logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
                     
-                    \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.role.failure.delete.message'), __('auth.messages.role.failure.delete.heading'))->is_flash(true));
+                    \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.role.delete.failure.message', array('name' => e($role->name))), __('auth.messages.role.delete.failure.heading'))->is_flash(true));
                 }
             }
             else
@@ -329,7 +329,7 @@ class Admin_Roles extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/', __('auth.navigation.role.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/', __('auth.navigation.admin.role.breadcrumb.details'));
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/details/' . $role->slug, e($role->name));
         
         $this->view = static::$theme
@@ -387,9 +387,9 @@ class Admin_Roles extends \Controller\Admin {
                         }
                     }
                     
-                    $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.success.delete_batch.message', array('names' => implode(', ', $success))), __('auth.messages.role.success.delete_batch.heading'))->is_flash(true));
+                    $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.delete_batch.success.message', array('names' => implode(', ', $success))), __('auth.messages.role.delete_batch.success.heading'))->is_flash(true));
                     
-                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.role.failure.delete_batch.message', array('names' => implode(', ', $failed))), __('auth.messages.role.failure.delete_batch.heading'))->is_flash(true));
+                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.role.delete_batch.failure.message', array('names' => implode(', ', $failed))), __('auth.messages.role.delete_batch.failure.heading'))->is_flash(true));
                 }
             break;
         }

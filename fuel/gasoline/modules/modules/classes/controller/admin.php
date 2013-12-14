@@ -19,17 +19,18 @@ class Admin extends \Controller\Admin {
     {
         parent::before();
         
-        \Lang::load('module', 'module');
+        \Lang::load('messages', 'modules.messages');
+        \Lang::load('navigation/admin', 'modules.navigation.admin');
         
         \Breadcrumb\Container::instance()->set_crumb('admin', __('global.admin'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/modules', __('module.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/modules', __('modules.navigation.admin.breadcrumb._section'));
     }
     
     public function action_list()
     {
         static::restrict('modules.admin[list]');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/modules/list', __('module.breadcrumb.list'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/modules/list', __('modules.navigation.admin.breadcrumb.list'));
         
         $pagination_config = array(
             'pagination_url'    => \Uri::create('admin/modules/list'),
@@ -51,9 +52,9 @@ class Admin extends \Controller\Admin {
         
         $table = \Table\Table::forge()->headers(array(
             html_tag('input', array('type' => 'checkbox')),
-            __('module.model.module.name'),
-            __('module.model.module.slug'),
-            __('module.model.module.version'),
+            __('modules.model.module.name'),
+            __('modules.model.module.slug'),
+            __('modules.model.module.version'),
             __('global.tools'),
         ));
         
@@ -63,15 +64,15 @@ class Admin extends \Controller\Admin {
             {
                 \Module::load($module->slug);
                 
-                \Lang::load($module->slug . '::module', 'module.modules.' . $module->slug);
+                \Lang::load($module->slug . '::description', 'modules.module.' . $module->slug);
                 
-                $module->description = \Lang::get('module.modules.' . $module->slug . '.description');
+                $module->description = \Lang::get('modules.module.' . $module->slug . '.description');
                 
                 $row = $table->get_body()->add_row();
                 
                 $row->set_meta('module', $module)
                     ->add_cell(new \Gasform\Input_Checkbox('module_id', array(), $module->id))
-                    ->add_cell( \Auth::has_access('modules.admin[read]') ? \Html::anchor('admin/modules/details/' . $module->id, e($module->name)) : e($module->name) )
+                    ->add_cell( \Auth::has_access('modules.admin[read]') ? \Html::anchor('admin/modules/details/' . $module->slug, e($module->name)) : e($module->name) )
                     ->add_cell(e($module->slug))
                     ->add_cell(e($module->version))
                     ->add_cell('');
@@ -88,7 +89,7 @@ class Admin extends \Controller\Admin {
     
     public function get_upload()
     {
-        throw new \HttpServerErrorException();
+        throw new \HttpNotFoundException();
     }
     
     
@@ -110,11 +111,11 @@ class Admin extends \Controller\Admin {
         
         \Module::load($module->slug);
         
-        \Lang::load($module->slug . '::module', 'module.modules.' . $module->slug);
+        \Lang::load($module->slug . '::description', 'modules.module.' . $module->slug . '.description');
         
-        $module->description = \Lang::get('module.modules.' . $module->slug . '.description');
+        $module->description = \Lang::get('modules.module.' . $module->slug . '.description');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/modules/', __('module.breadcrumb.details'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/modules/', __('modules.navigation.admin.breadcrumb.details'));
         \Breadcrumb\Container::instance()->set_crumb('admin/modules/details/' . $id_or_slug, e($module->name));
         
         $this->view = static::$theme
@@ -142,11 +143,11 @@ class Admin extends \Controller\Admin {
         {
             $module->enable();
             
-            \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Module enabled!')->is_flash());
+            \Message\Container::push(\Message\Item::forge('success', __('modules.messages.enable.success.message', array('name' => e($module->name))), __('modules.messages.enable.success.heading'))->is_flash(true));
         }
         catch ( \Exception $e )
         {
-            \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Enabling failed!')->is_flash());
+            \Message\Container::push(\Message\Item::forge('danger', __('modules.messages.enable.failure.message', array('name' => e($module->name))), __('modules.messages.enable.failure.heading'))->is_flash(true));
         }
         
         return \Response::redirect_back('admin/modules/list');
@@ -172,11 +173,11 @@ class Admin extends \Controller\Admin {
         {
             $module->disable();
             
-            \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Module disabled!')->is_flash());
+            \Message\Container::push(\Message\Item::forge('success', __('modules.messages.disable.success.message', array('name' => e($module->name))), __('modules.messages.disable.success.heading'))->is_flash(true));
         }
         catch ( \Exception $e )
         {
-            \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Disabling failed!')->is_flash());
+            \Message\Container::push(\Message\Item::forge('danger', __('modules.messages.disable.failure.message', array('name' => e($module->name))), __('modules.messages.disable.failure.heading'))->is_flash(true));
         }
         
         return \Response::redirect_back('admin/modules/list');
@@ -200,19 +201,19 @@ class Admin extends \Controller\Admin {
         
         if ( $module->is_enabled() )
         {
-            \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Cannot delete disabled module!')->is_flash());
+            \Message\Container::push(\Message\Item::forge('warning', __('modules.messages.delete.enabled.message', array('name' => e($module->name))), __('modules.messages.delete.enabled.heading'))->is_flash(true));
             
             return \Response::redirect_back('admin/modules/list');
         }
         
         if ( $module->protected )
         {
-            \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Cannot delete protected module!')->is_flash());
+            \Message\Container::push(\Message\Item::forge('warning', __('modules.messages.delete.protected.message', array('name' => e($module->name))), __('modules.messages.delete.protected.heading'))->is_flash(true));
             
             return \Response::redirect_back('admin/modules/list');
         }
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/modules/delete', __('module.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/modules/delete', __('modules.navigation.admin.breadcrumb.delete'));
         \Breadcrumb\Container::instance()->set_crumb('admin/modules/delete/' . $id_or_slug, e($module->name));
         
         $form = $module->to_form();
@@ -246,18 +247,19 @@ class Admin extends \Controller\Admin {
             {
                 try
                 {
+                    $name = $module->name;
                     $module->delete();
                     
-                    \Message\Container::instance()->set(null, \Message\Item::forge('success', 'Yes!', 'Deleted!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('success', __('modules.messages.delete.success.message', array('name' => e($name))), __('modules.messages.delete.success.heading'))->is_flash(true));
                 }
                 catch ( \Exception $e )
                 {
-                    \Message\Container::instance()->set(null, \Message\Item::forge('danger', 'No!', 'Failure!')->is_flash());
+                    \Message\Container::push(\Message\Item::forge('danger', __('modules.messages.delete.failure.message', array('name' => e($module->name))), __('modules.messages.delete.failure.heading'))->is_flash(true));
                 }
             }
             else
             {
-                \Message\Container::instance()->set(null, \Message\Item::forge('warning', 'No!', 'Not confirmed!')->is_flash());
+                \Message\Container::push(\Message\Item::forge('danger', __('modules.messages.delete.unconfirmed.message', array('name' => e($module->name))), __('modules.messages.delete.unconfirmed.heading'))->is_flash(true));
             }
             
             return \Response::redirect('admin/modules/list');

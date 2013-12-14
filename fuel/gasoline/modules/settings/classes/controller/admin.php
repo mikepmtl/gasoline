@@ -17,9 +17,9 @@ class Admin extends \Controller\Admin {
     {
         parent::before();
         
-        \Lang::load('setting', true);
+        \Lang::load('navigation', 'setting.navigation');
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/settings', __('setting.breadcrumb.section'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/settings', __('setting.navigation.breadcrumb._section'));
     }
     
     public function router($method, $arguments)
@@ -43,7 +43,7 @@ class Admin extends \Controller\Admin {
         
         foreach ( \Config::get('module_paths', array()) as $module_path )
         {
-            if ( file_exists($path = $module_path . $method . DS . 'classes' . DS . 'controller' . DS . 'settings.php') )
+            if ( glob($path = $module_path . $method . DS . 'classes' . DS . 'controller' . DS . 'settings*') )
             {
                 try
                 {
@@ -75,9 +75,7 @@ class Admin extends \Controller\Admin {
         // Loop through all modules and display their settings widget
         foreach ( \Config::get('module_paths') as $module_path )
         {
-            $controllers = glob($module_path . '*/classes/controller/widget.php');
-            
-            if ( ! $controllers )
+            if ( ! ( $controllers = glob($module_path . '*/classes/controller/widgets/settings*') ) )
             {
                 continue;
             }

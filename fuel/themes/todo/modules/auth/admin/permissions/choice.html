@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.permission.page-title.' . $scope)); ?></header>
+      <header class="panel-heading bg-light lter">Please choose a scope to manage</header>
       
       <?php if ( isset($table) && count($table) ) : ?>
         <?php
@@ -18,7 +18,7 @@
           
           echo $table->render();
         ?>
-        <footer class="panel-footer bg-info dker">
+        <footer class="panel-footer bg-light lter">
           <small>Please choose a scope to manage</small>
         </footer>
       <?php else : ?>

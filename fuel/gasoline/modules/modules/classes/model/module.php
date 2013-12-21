@@ -20,7 +20,7 @@ class Module extends \Gasoline\Model\Base {
     protected static $_properties = array(
         'id',
         'name' => array(
-            'label'     => 'module.model.module.name',
+            'label'     => 'modules.model.module.name',
             'form'      => array(
                 'type'  => 'text',
             ),
@@ -34,7 +34,7 @@ class Module extends \Gasoline\Model\Base {
             'null'      => false,
         ),
         'slug' => array(
-            'label'     => 'module.model.module.slug',
+            'label'     => 'modules.model.module.slug',
             'form'      => array(
                 'type'  => false,
             ),
@@ -48,7 +48,7 @@ class Module extends \Gasoline\Model\Base {
             'character_maximum_length'  => 255,
         ),
         'author' => array(
-            'label'     => 'module.model.module.author',
+            'label'     => 'modules.model.module.author',
             'form'      => array(
                 'type'  => 'text',
             ),
@@ -61,7 +61,7 @@ class Module extends \Gasoline\Model\Base {
             'null'      => false,
         ),
         'website' => array(
-            'label'     => 'module.model.module.website',
+            'label'     => 'modules.model.module.website',
             'form'      => array(
                 'type'  => 'text',
             ),
@@ -73,7 +73,7 @@ class Module extends \Gasoline\Model\Base {
             'null'      => false,
         ),
         'version' => array(
-            'label'     => 'module.model.module.version',
+            'label'     => 'modules.model.module.version',
             'form'      => array(
                 'type'  => false,
             ),
@@ -85,7 +85,7 @@ class Module extends \Gasoline\Model\Base {
             'character_maximum_length'  => 255,
         ),
         // 'description' => array(
-        //     'label'     => 'module.model.module.description',
+        //     'label'     => 'modules.model.module.description',
         //     'form'      => array(
         //         'type'  => 'textarea',
         //     ),
@@ -94,12 +94,12 @@ class Module extends \Gasoline\Model\Base {
         //     'null'      => false,
         // ),
         'status' => array(
-            'label'     => 'module.model.module.status',
+            'label'     => 'modules.model.module.status',
             'form'      => array(
                 'type'  => 'radio',
                 'options' => array(
-                    0 => 'module.model.module.options.status.0',
-                    1 => 'module.model.module.options.status.1',
+                    0 => 'modules.model.module.options.status.0',
+                    1 => 'modules.model.module.options.status.1',
                 ),
             ),
             'validation'  => array(
@@ -115,14 +115,14 @@ class Module extends \Gasoline\Model\Base {
         // 2 = has admin.php controller,
         // 3 = has both, public and admin.php controller,
         'scope' => array(
-            'label'     => 'module.model.module.scope',
+            'label'     => 'modules.model.module.scope',
             'form'      => array(
                 'type'  => 'select',
                 'options' => array(
-                    0 => 'module.model.module.options.scope.0',
-                    1 => 'module.model.module.options.scope.1',
-                    2 => 'module.model.module.options.scope.2',
-                    3 => 'module.model.module.options.scope.3',
+                    0 => 'modules.model.module.options.scope.0',
+                    1 => 'modules.model.module.options.scope.1',
+                    2 => 'modules.model.module.options.scope.2',
+                    3 => 'modules.model.module.options.scope.3',
                 ),
             ),
             'validation'  => array(
@@ -133,7 +133,7 @@ class Module extends \Gasoline\Model\Base {
             'null'      => false,
         ),
         'protected' => array(
-            'label'     => 'module.model.module.protected',
+            'label'     => 'modules.model.module.protected',
             'form'      => array(
                 'type'  => false,
             ),
@@ -145,7 +145,7 @@ class Module extends \Gasoline\Model\Base {
             'null'      => false,
         ),
         'user_id' => array(
-            'label'     => 'module.model.module.user_id',
+            'label'     => 'modules.model.module.user_id',
             'form'      => array(
                 'type' => false,
             ),
@@ -154,7 +154,7 @@ class Module extends \Gasoline\Model\Base {
             'null'      => false,
         ),
         'created_at' => array(
-            'label'     => 'module.model.module.created_at',
+            'label'     => 'modules.model.module.created_at',
             'form'      => array(
                 'type' => false,
             ),
@@ -163,7 +163,7 @@ class Module extends \Gasoline\Model\Base {
             'null'      => false,
         ),
         'updated_at' => array(
-            'label'     => 'module.model.module.updated_at',
+            'label'     => 'modules.model.module.updated_at',
             'form'      => array(
                 'type' => false,
             ),

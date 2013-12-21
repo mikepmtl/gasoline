@@ -46,7 +46,7 @@ class Metadata extends \Model\Base {
             ),
         ),
         'created_at' => array(
-            'label'     => 'auth.metadata.created_at',
+            'label'     => 'auth.model.metadata.created_at',
             'default'   => 0,
             'null'      => false,
             'form'      => array(
@@ -54,7 +54,7 @@ class Metadata extends \Model\Base {
             ),
         ),
         'updated_at' => array(
-            'label'     => 'auth.metadata.updated_at',
+            'label'     => 'auth.model.metadata.updated_at',
             'form'      => array(
                 'type' => false,
             ),

@@ -264,6 +264,16 @@ class Module extends \Gasoline\Model\Base {
     }
     
     
+    public function load_description()
+    {
+        $path = \Module::exists($this->slug);
+        
+        \Lang::load($this->slug . '::description', 'modules.module.' . $this->slug . '.description');
+        
+        $this->set('description', \Lang::get('modules.module.' . $this->slug . '.description'));
+    }
+    
+    
     /**
      * [enable description]
      * @return [type] [description]

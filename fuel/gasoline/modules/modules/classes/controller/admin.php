@@ -64,9 +64,7 @@ class Admin extends \Controller\Admin {
             {
                 \Module::load($module->slug);
                 
-                \Lang::load($module->slug . '::description', 'modules.module.' . $module->slug);
-                
-                $module->description = \Lang::get('modules.module.' . $module->slug . '.description');
+                $module->load_description();
                 
                 $row = $table->get_body()->add_row();
                 
@@ -109,11 +107,7 @@ class Admin extends \Controller\Admin {
             throw new \HttpNotFoundException();
         }
         
-        \Module::load($module->slug);
-        
-        \Lang::load($module->slug . '::description', 'modules.module.' . $module->slug . '.description');
-        
-        $module->description = \Lang::get('modules.module.' . $module->slug . '.description');
+        $module->load_description();
         
         \Breadcrumb\Container::instance()->set_crumb('admin/modules/', __('modules.navigation.admin.breadcrumb.details'));
         \Breadcrumb\Container::instance()->set_crumb('admin/modules/details/' . $id_or_slug, e($module->name));

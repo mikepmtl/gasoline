@@ -52,7 +52,7 @@ return array(
     
     'delete_batch'  => array(
         'success' => array(
-            'heading'   => 'User(s) delete!',
+            'heading'   => 'User(s) deleted!',
             'message'   => 'Successfully deleted the following users: :usernames.',
         ),
         'failure'   => array(

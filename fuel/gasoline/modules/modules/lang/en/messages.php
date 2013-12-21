@@ -82,7 +82,7 @@ return array(
     
     'delete_batch'  => array(
         'success' => array(
-            'heading'   => 'Module(s) delete!',
+            'heading'   => 'Module(s) deleted!',
             'message'   => 'Successfully deleted the following modules: :names.',
         ),
         'failure'   => array(

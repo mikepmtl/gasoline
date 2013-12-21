@@ -52,7 +52,7 @@ return array(
     
     'delete_batch'  => array(
         'success' => array(
-            'heading'   => 'Role(s) delete!',
+            'heading'   => 'Role(s) deleted!',
             'message'   => 'Successfully deleted the following roles: :names.',
         ),
         'failure'   => array(

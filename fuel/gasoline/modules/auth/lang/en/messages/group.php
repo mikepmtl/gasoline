@@ -52,7 +52,7 @@ return array(
     
     'delete_batch'  => array(
         'success' => array(
-            'heading'   => 'Group(s) delete!',
+            'heading'   => 'Group(s) deleted!',
             'message'   => 'Successfully deleted the following groups: :names.',
         ),
         'failure'   => array(

@@ -205,8 +205,8 @@ class Admin_Permissions extends \Controller\Admin {
                             
                             foreach ( $perm->actions as $k => $action )
                             {
-                                $cbx = new \Gasform\Input_Checkbox('permission[' . $perm->id . ']', array(), $k);
-                                $perms[] = $cbx->render(new \Gasform\Render_Simple) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
+                                $perms[] = \Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', array(), $k)
+                                    ->render(new \Gasform\Render_Simple()) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
                             }
                             
                             return implode('<br />', $perms);
@@ -254,8 +254,8 @@ class Admin_Permissions extends \Controller\Admin {
                             
                             foreach ( $perm->actions as $k => $action )
                             {
-                                $cbx = new \Gasform\Input_Checkbox('permission[' . $perm->id . ']', array(), $k);
-                                $perms[] = $cbx->render(new \Gasform\Render_Simple) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
+                                $perms[] = \Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', array(), $k)
+                                    ->render(new \Gasform\Render_Simple()) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
                             }
                             
                             return implode('<br />', $perms);
@@ -296,8 +296,8 @@ class Admin_Permissions extends \Controller\Admin {
                             
                             foreach ( $perm->actions as $k => $action )
                             {
-                                $cbx = new \Gasform\Input_Checkbox('permission[' . $perm->id . ']', array(), $k);
-                                $perms[] = $cbx->render(new \Gasform\Render_Simple) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
+                                $perms[] = \Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', array(), $k)
+                                    ->render(new \Gasform\Render_Simple()) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
                             }
                             
                             return implode('<br />', $perms);

@@ -68,7 +68,7 @@ class Admin_Roles extends \Controller\Admin {
                 $row = $table->get_body()->add_row();
                 
                 $row->set_meta('role', $role)
-                    ->add_cell(new \Gasform\Input_Checkbox('role_id[]', array(), $role->id))
+                    ->add_cell(\Gasform\Input_Checkbox::forge('role_id[]', $role->id, array()))
                     ->add_cell( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->slug, e($role->name)) : e($role->name) )
                     ->add_cell(e($role->slug))
                     ->add_cell('');
@@ -77,17 +77,12 @@ class Admin_Roles extends \Controller\Admin {
         
         $form = new \Gasform\Form(\Uri::create('admin/auth/roles/action'));
         $bulk_actions = new \Gasform\Input_Select();
-        
-        $bulk = new \Gasform\Input_Option(__('global.bulk_actions'), array(), '');
-        $bulk_actions['bulk'] = $bulk;
-        
-        $delete = new \Gasform\Input_Option(__('button.delete'), array(), 'delete');
-        $bulk_actions['delete'] = $delete;
+        $bulk_actions['bulk'] = \Gasform\Input_Option::forge(__('global.bulk_actions'), '', array());
+        $bulk_actions['delete'] = \Gasform\Input_Option::forge(__('button.delete'), 'delete', array());;
         
         $form['bulk_action'] = $bulk_actions->set_name('action');
         
-        $submit = new \Gasform\Input_Submit('submit', array(), __('button.submit'));
-        $form['submit'] = $submit;
+        $form['submit'] = \Gasform\Input_Submit::forge('submit', __('button.submit'), array());;
         
         $this->view = static::$theme
             ->view('admin/roles/list')
@@ -147,8 +142,7 @@ class Admin_Roles extends \Controller\Admin {
         }
         
         $btn_group = new \Gasform\Input_ButtonGroup();
-        $submit = new \Gasform\Input_Submit('submit', array(), __('button.create'));
-        $btn_group['submit'] = $submit;
+        $btn_group['submit'] = \Gasform\Input_Submit::forge('submit', __('button.create'), array());
         
         $form['btn-group'] = $btn_group;
         
@@ -224,8 +218,7 @@ class Admin_Roles extends \Controller\Admin {
         }
         
         $btn_group = new \Gasform\Input_ButtonGroup();
-        $submit = new \Gasform\Input_Submit('submit', array(), __('button.update'));
-        $btn_group['submit'] = $submit;
+        $btn_group['submit'] = \Gasform\Input_Submit::forge('submit', __('button.update'), array());
         
         $form['btn-group'] = $btn_group;
         
@@ -291,13 +284,12 @@ class Admin_Roles extends \Controller\Admin {
         }
         
         $cbx_group = new \Gasform\Input_CheckboxGroup();
-        $cbx = new \Gasform\Input_Checkbox('confirm', array(), 'yes');
-        $cbx_group['yes'] = $cbx->set_label(__('global.confirm_delete'));
+        $cbx_group['yes'] = \Gasform\Input_Checkbox::forge('confirm', 'yes', array())
+            ->set_label(__('global.confirm_delete'));
         $form['confirm'] = $cbx_group->set_label(__('global.confirmation'));
         
         $btn_group = new \Gasform\Input_ButtonGroup();
-        $submit = new \Gasform\Input_Submit('submit', array(), __('button.delete'));
-        $btn_group['submit'] = $submit;
+        $btn_group['submit'] = \Gasform\Input_Submit::forge('submit', __('button.delete'), array());
         
         $form['btn-group'] = $btn_group;
         

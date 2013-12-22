@@ -115,9 +115,7 @@ abstract class Base extends \Orm\Model {
         {
             foreach ( static::primary_key() as $pk )
             {
-                $hidden = new \Gasform\Input_Hidden($pk, array(), $this->{$pk});
-                
-                $form[$pk] = $hidden;
+                $form[$pk] = \Gasform\Input_Hidden::forge($pk, $this->{$pk}, array());
             }
         }
         
@@ -148,7 +146,7 @@ abstract class Base extends \Orm\Model {
                 case 'url':
                 case 'week':
                     $class = '\\Gasform\\Input_' . ucwords($type);
-                    $el = new $class();
+                    $el = $class::forge();
                     
                     if ( in_array('required', \Arr::get($options, 'validation', array())) )
                     {
@@ -180,11 +178,11 @@ abstract class Base extends \Orm\Model {
                     }
                     elseif ( $_options = \Arr::get($options, 'form.options', false) )
                     {
-                        $el = new \Gasform\Input_Select();
+                        $el = \Gasform\Input_Select::forge();
                         
                         foreach ( $_options as $value => $content )
                         {
-                            $el[$value] = new \Gasform\Input_Option( \Lang::get($content, array(), false) ? : $content , array(), $value);
+                            $el[$value] = \Gasform\Input_Option::forge( \Lang::get($content, array(), false) ? : $content , $value, array());
                         }
                     }
                     else
@@ -222,9 +220,8 @@ abstract class Base extends \Orm\Model {
                         
                         foreach ( $_options as $value => $content )
                         {
-                            $item = new $toggle_class(null, array(), $value);
-                            $item->set_label( \Lang::get($content, array(), false) ? : $content );
-                            $group[$value] = $item;
+                            $group[$value] = $toggle_class::forge(null, $value, array())
+                                ->set_label( \Lang::get($content, array(), false) ? : $content );
                         }
                         
                         $group->set_name($p)->set_label($label);
@@ -281,7 +278,7 @@ abstract class Base extends \Orm\Model {
         
         // Load the gasform package and create a new form select item
         \Package::load('gasform');
-        $select = new \Gasform\Input_Select();
+        $select = \Gasform\Input_Select::forge();
         
         // Get the rows from the table
         $query = \DB::select($content, $value)
@@ -304,7 +301,7 @@ abstract class Base extends \Orm\Model {
             // And parse them
             foreach ( $options as $_content => $_value )
             {
-                $select[] = new \Gasform\Input_Option($_content, array(), $_value);
+                $select[] = \Gasform\Input_Option::forge($_content, $_value, array());
             }
         }
         

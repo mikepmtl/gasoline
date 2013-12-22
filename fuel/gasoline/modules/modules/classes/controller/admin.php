@@ -69,7 +69,7 @@ class Admin extends \Controller\Admin {
                 $row = $table->get_body()->add_row();
                 
                 $row->set_meta('module', $module)
-                    ->add_cell(new \Gasform\Input_Checkbox('module_id', array(), $module->id))
+                    ->add_cell(\Gasform\Input_Checkbox::forge('module_id', $module->id, array()))
                     ->add_cell( \Auth::has_access('modules.admin[read]') ? \Html::anchor('admin/modules/details/' . $module->slug, e($module->name)) : e($module->name) )
                     ->add_cell(e($module->slug))
                     ->add_cell(e($module->version))
@@ -214,13 +214,13 @@ class Admin extends \Controller\Admin {
         
         $form->disable_fields();
         
-        $cbx_group = new \Gasform\Input_CheckboxGroup();
-        $cbx = new \Gasform\Input_Checkbox('confirm', array(), 'yes');
+        $cbx_group = \Gasform\Input_Checkbox::forgeGroup();
+        $cbx = \Gasform\Input_Checkbox::forge('confirm', 'yes', array());
         $cbx_group['yes'] = $cbx->set_label(__('global.confirm_delete'));
         $form['confirm'] = $cbx_group->set_label(__('global.confirmation'));
         
         $btn_group = new \Gasform\Input_ButtonGroup();
-        $submit = new \Gasform\Input_Submit('submit', array(), __('button.delete'));
+        $submit = new \Gasform\Input_Submit('submit', __('button.delete'), array());
         $btn_group['submit'] = $submit;
         
         $form['btn-group'] = $btn_group;

@@ -22,24 +22,24 @@ class Auth extends \Controller\Base {
         
         $form = new \Gasform\Form();
         
-        $remember_default = new \Gasform\Input_Hidden('remember', array(), '');
+        $remember_default = new \Gasform\Input_Hidden('remember', '', array());
         $form['remember_default'] = $remember_default;
-        $redirect = new \Gasform\Input_Hidden('redirect', array(), \Input::get('redirect', ''));
+        $redirect = new \Gasform\Input_Hidden('redirect', \Input::get('redirect', ''), array());
         $form['redirect'] = $redirect;
         
         $identity = new \Gasform\Input_Text('identity');
         $form['identity'] = $identity->set_label('Identity');
         $password = new \Gasform\Input_Password('password');
         $form['password'] = $password->set_label('Password');
-        $cbx_group = new \Gasform\Input_CheckboxGroup();
-        $remember = new \Gasform\Input_Checkbox('remember', array(), 'me');
+        $cbx_group = \Gasform\Input_Checkbox::forgeGroup();
+        $remember = \Gasform\Input_Checkbox::forge('remember', 'me', array());
         $cbx_group['remember'] = $remember->set_label('Remember me');
         $form['remember'] = $cbx_group;
         
         $btngroup = new \Gasform\Input_ButtonGroup();
-        $submit = new \Gasform\Input_Submit('submit', array(), 'Login');
+        $submit = new \Gasform\Input_Submit('submit', 'Login', array());
         $btngroup['submit'] = $submit;
-        $recover = new \Gasform\Input_Button('recover', array(), 'Recover');
+        $recover = new \Gasform\Input_Button('recover', 'Recover', array());
         $btngroup['recover'] = $recover;
         
         $form['btngroup'] = $btngroup;

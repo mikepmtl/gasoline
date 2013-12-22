@@ -68,7 +68,7 @@ class Admin_Users extends \Controller\Admin {
                 $row = $table->get_body()->add_row();
                 
                 $row->set_meta('user', $user)
-                    ->add_cell(new \Gasform\Input_Checkbox('user_id[]', array(), $user->id))
+                    ->add_cell(\Gasform\Input_Checkbox::forge('user_id[]', $user->id, array()))
                     ->add_cell( \Auth::has_access('users.admin[read]') ? \Html::anchor('admin/auth/users/details/' . $user->username, e($user->username)) : e($user->username) )
                     ->add_cell(e($user->email))
                     ->add_cell('');
@@ -78,15 +78,15 @@ class Admin_Users extends \Controller\Admin {
         $form = new \Gasform\Form(\Uri::create('admin/auth/users/action'));
         $bulk_actions = new \Gasform\Input_Select();
         
-        $bulk = new \Gasform\Input_Option(__('global.bulk_actions'), array(), '');
+        $bulk = new \Gasform\Input_Option(__('global.bulk_actions'), '', array());
         $bulk_actions['bulk'] = $bulk;
         
-        $delete = new \Gasform\Input_Option(__('button.delete'), array(), 'delete');
+        $delete = new \Gasform\Input_Option(__('button.delete'), 'delete', array());
         $bulk_actions['delete'] = $delete;
         
         $form['bulk_action'] = $bulk_actions->set_name('action');
         
-        $submit = new \Gasform\Input_Submit('submit', array(), __('button.submit'));
+        $submit = new \Gasform\Input_Submit('submit', __('button.submit'), array());
         $form['submit'] = $submit;
         
         $this->view = static::$theme
@@ -139,7 +139,7 @@ class Admin_Users extends \Controller\Admin {
         }
         
         $btn_group = new \Gasform\Input_ButtonGroup();
-        $submit = new \Gasform\Input_Submit('submit', array(), __('button.create'));
+        $submit = new \Gasform\Input_Submit('submit', __('button.create'), array());
         $btn_group['submit'] = $submit;
         
         $form['btn-group'] = $btn_group;
@@ -220,7 +220,7 @@ class Admin_Users extends \Controller\Admin {
         }
         
         $btn_group = new \Gasform\Input_ButtonGroup();
-        $submit = new \Gasform\Input_Submit('submit', array(), __('button.update'));
+        $submit = new \Gasform\Input_Submit('submit', __('button.update'), arary());
         $btn_group['submit'] = $submit;
         
         $form['btn-group'] = $btn_group;

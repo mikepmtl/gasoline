@@ -24,7 +24,7 @@
 	url = https://github.com/hubspace/fuel-seed.git
 [submodule "fuel/packages/gasform"]
 	path = fuel/packages/gasform
-	url = https://github.com/hubspace/gasform.git
+	url = https://github.com/hubspace/gasoline-pkg-gasform.git
 [submodule "fuel/packages/table"]
 	path = fuel/packages/table
 	url = https://github.com/hubspace/fuel-tables.git

@@ -150,17 +150,18 @@ class Helpers {
             }
         }
         
-        //  If empty values are not allowed
-        if ( $purge === true )
-        {
-            // Unset the empty key
-            unset($array[$attribute]);
-        }
         // If empty values are allowed
-        else
+        if ( $allow_empty === true )
         {
             // Implode the array
             $array[$attribute] = implode(' ', $array[$attribute]);
+            
+        }
+        // If empty values are not allowed
+        else
+        {
+            // Unset the empty key
+            unset($array[$attribute]);
         }
     }
     
@@ -178,12 +179,18 @@ class Helpers {
      * 
      * @return  boolean     Returns true if $value is in $array, otherwise false
      */
-    public static function has_attribute($array, $attribute, $value, $case_sensitive = false)
+    public static function has_attribute($array, $attribute, $value = null, $case_sensitive = false)
     {
         // Key not in array? Then value cannot be there either
         if ( ! isset($array[$attribute]) )
         {
             return false;
+        }
+        
+        // If no value is to be searched for, just check whether the attribute exists
+        if ( is_null($value) )
+        {
+            return array_key_exists($attribute, $array);
         }
         
         // Split the value of $attribute to an array so we can loop over it

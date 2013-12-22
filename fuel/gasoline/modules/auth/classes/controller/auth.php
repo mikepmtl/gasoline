@@ -31,7 +31,7 @@ class Auth extends \Controller\Base {
         $form['identity'] = $identity->set_label('Identity');
         $password = new \Gasform\Input_Password('password');
         $form['password'] = $password->set_label('Password');
-        $cbx_group = \Gasform\Input_Checkbox::forgeGroup();
+        $cbx_group = \Gasform\Input_CheckboxGroup::forge();
         $remember = \Gasform\Input_Checkbox::forge('remember', 'me', array());
         $cbx_group['remember'] = $remember->set_label('Remember me');
         $form['remember'] = $cbx_group;

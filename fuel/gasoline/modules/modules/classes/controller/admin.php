@@ -214,7 +214,7 @@ class Admin extends \Controller\Admin {
         
         $form->disable_fields();
         
-        $cbx_group = \Gasform\Input_Checkbox::forgeGroup();
+        $cbx_group = \Gasform\Input_CheckboxGroup::forge();
         $cbx = \Gasform\Input_Checkbox::forge('confirm', 'yes', array());
         $cbx_group['yes'] = $cbx->set_label(__('global.confirm_delete'));
         $form['confirm'] = $cbx_group->set_label(__('global.confirmation'));

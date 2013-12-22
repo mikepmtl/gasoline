@@ -238,7 +238,7 @@ class DataContainer implements ArrayAccess, Countable {
     {
         $this_fail = uniqid('__FAIL__', true);
         
-        $result = \Arr::get($this->data, $key, $default, $this_fail);
+        $result = \Arr::get($this->data, $key, $this_fail);
         
         if ( $result === $this_fail )
         {

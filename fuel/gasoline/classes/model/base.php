@@ -184,6 +184,11 @@ abstract class Base extends \Orm\Model {
                         {
                             $el[$value] = \Gasform\Input_Option::forge( \Lang::get($content, array(), false) ? : $content , $value, array());
                         }
+                        
+                        if ( false !== ( $default = \Arr::get($options, 'default', false) ) )
+                        {
+                            $el->populate($default);
+                        }
                     }
                     else
                     {
@@ -290,6 +295,15 @@ abstract class Base extends \Orm\Model {
             foreach ( $order_by as $col => $dirn )
             {
                 $query = $query->order_by($col, $dirn);
+            }
+        }
+        
+        // Default where on the model? Apply it here
+        if ( $where = static::condition('where') )
+        {
+            foreach ( $where as $_where )
+            {
+                $query = $query->where($_where[0], $_where[1], $_where[2]);
             }
         }
         

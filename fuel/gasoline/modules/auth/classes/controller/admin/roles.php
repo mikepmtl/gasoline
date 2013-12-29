@@ -54,7 +54,7 @@ class Admin_Roles extends \Controller\Admin {
         
         \Package::load('table');
         
-        $table = \Table\Table::forge()->headers(array(
+        $table = \Table\Table::forge()->add_header(array(
             html_tag('input', array('type' => 'checkbox')),
             __('auth.model.role.name'),
             __('auth.model.role.slug'),
@@ -65,13 +65,15 @@ class Admin_Roles extends \Controller\Admin {
         {
             foreach ( $roles as &$role )
             {
-                $row = $table->get_body()->add_row();
+                $row = \Table\Row::forge()
+                    ->set_meta('role', $role);
                 
-                $row->set_meta('role', $role)
-                    ->add_cell(\Gasform\Input_Checkbox::forge('role_id[]', $role->id, array()))
-                    ->add_cell( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->slug, e($role->name)) : e($role->name) )
-                    ->add_cell(e($role->slug))
-                    ->add_cell('');
+                $row['cbx']     = \Table\Cell::forge(\Gasform\Input_Checkbox::forge('role_id[]', $role->id, array()));
+                $row['name']    = \Table\Cell::forge( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->slug, e($role->name)) : e($role->name) );
+                $row['slug']    = \Table\Cell::forge(e($role->slug));
+                $row['actions'] = \Table\Cell::forge('');
+                
+                $table[$role->id] = $row;
             }
         }
         

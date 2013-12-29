@@ -8,15 +8,15 @@
       
       \Package::load('table');
       
-      $table = \Table\Table::forge()->set_attribute('class', 'table table-striped table-hover');
+      $table = \Table\Table::forge(array('class' => 'table table-striped table-responsive table-hover'));
       
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('auth.model.user.username'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(e($user->username), array(), \Table\Cell::BODY)
+      $table[] = \Table\Row::forge(array(
+        \Table\Cell::forge(__('auth.model.user.username'))->set_type(\Table\Cell::HEADER),
+        \Table\Cell::forge(e($user->username))
       ));
       
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('auth.model.user.email'), array(), \Table\Cell::HEADER),
+      $table[] = \Table\Row::forge(array(
+        \Table\Cell::forge(__('auth.model.user.email'))->set_type(\Table\Cell::HEADER),
         \Table\Cell::forge(
           e($user->email)
           . ' '
@@ -35,23 +35,22 @@
                 'title'       => __('global.send_email'),
               )
             )
-          ),
-          array(),
-          \Table\Cell::BODY)
+          )
+        )
       ));
       
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('auth.model.user.group_id'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(e($user->group->name), array(), \Table\Cell::BODY)
+      $table[] = \Table\Row::forge(array(
+        \Table\Cell::forge(__('auth.model.user.group_id'))->set_type(\Table\Cell::HEADER),
+        \Table\Cell::forge(e($user->group->name))
       ));
       
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('auth.model.user.created_at'), array(), \Table\Cell::HEADER),
-        \Table\Cell::forge(html_tag('span', array('data-toggle' => 'tooltip', 'title' => \Date::forge($user->created_at)->format(), 'data-placement' => 'right'), \Date::time_ago($user->created_at)), array(), \Table\Cell::BODY)
+      $table[] = \Table\Row::forge(array(
+        \Table\Cell::forge(__('auth.model.user.created_at'))->set_type(\Table\Cell::HEADER),
+        \Table\Cell::forge(html_tag('span', array('data-toggle' => 'tooltip', 'title' => \Date::forge($user->created_at)->format(), 'data-placement' => 'right'), \Date::time_ago($user->created_at)))
       ));
       
-      $table->get_body()->add_row(array(
-        \Table\Cell::forge(__('auth.model.user.updated_at'), array(), \Table\Cell::HEADER),
+      $table[] = \Table\Row::forge(array(
+        \Table\Cell::forge(__('auth.model.user.updated_at'))->set_type(\Table\Cell::HEADER),
         \Table\Cell::forge(
           $user->updated_at
           ? \Date::time_ago($user->updated_at)
@@ -69,13 +68,11 @@
                 : __('global.n/a')
               )
             )
-          : __('global.never'),
-          array(),
-          \Table\Cell::BODY
+          : __('global.never')
         )
       ));
       
-      echo $table;
+      echo $table->render();
       
       ?>
     </section>

@@ -54,7 +54,7 @@ class Admin_Users extends \Controller\Admin {
         
         \Package::load('table');
         
-        $table = \Table\Table::forge()->headers(array(
+        $table = \Table\Table::forge()->add_header(array(
             html_tag('input', array('type' => 'checkbox')),
             __('auth.model.user.username'),
             __('auth.model.user.email'),
@@ -65,13 +65,15 @@ class Admin_Users extends \Controller\Admin {
         {
             foreach ( $users as &$user )
             {
-                $row = $table->get_body()->add_row();
+                $row = \Table\Row::forge()
+                    ->set_meta('user', $user);
                 
-                $row->set_meta('user', $user)
-                    ->add_cell(\Gasform\Input_Checkbox::forge('user_id[]', $user->id, array()))
-                    ->add_cell( \Auth::has_access('users.admin[read]') ? \Html::anchor('admin/auth/users/details/' . $user->username, e($user->username)) : e($user->username) )
-                    ->add_cell(e($user->email))
-                    ->add_cell('');
+                $row['cbx']         = \Table\Cell::forge(\Gasform\Input_Checkbox::forge('user_id[]', $user->id, array()));
+                $row['username']    = \Table\Cell::forge( \Auth::has_access('users.admin[read]') ? \Html::anchor('admin/auth/users/details/' . $user->username, e($user->username)) : e($user->username) );
+                $row['email']       = \Table\Cell::forge(e($user->email));
+                $row['actions']     = \Table\Cell::forge('');
+                
+                $table[$user->id] = $row;
             }
         }
         

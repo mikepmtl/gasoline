@@ -54,7 +54,7 @@ class Admin_Groups extends \Controller\Admin {
         
         \Package::load('table');
         
-        $table = \Table\Table::forge()->headers(array(
+        $table = \Table\Table::forge()->add_header(array(
             html_tag('input', array('type' => 'checkbox')),
             __('auth.model.group.name'),
             __('auth.model.group.slug'),
@@ -65,14 +65,15 @@ class Admin_Groups extends \Controller\Admin {
         {
             foreach ( $groups as &$group )
             {
-                $row = $table->get_body()->add_row();
+                $row = \Table\Row::forge()
+                    ->set_meta('group', $group);
                 
-                $row->set_meta('group', $group);
+                $row['cbx']     = \Table\Cell::forge(\Gasform\Input_Checkbox::forge('group_id[]', $group->id, array()));
+                $row['name']    = \Table\Cell::forge( \Auth::has_access('groups.admin[read]') ? \Html::anchor('admin/auth/groups/details/' . $group->slug, e($group->name)) : e($group->name) );
+                $row['slug']    = \Table\Cell::forge(e($group->slug));
+                $row['actions'] = \Table\Cell::forge('');
                 
-                $row->add_cell(\Gasform\Input_Checkbox::forge('group_id[]', $group->id, array()))
-                    ->add_cell( \Auth::has_access('groups.admin[read]') ? \Html::anchor('admin/auth/groups/details/' . $group->slug, e($group->name)) : e($group->name) )
-                    ->add_cell(e($group->slug))
-                    ->add_cell('');
+                $table[$group->id] = $row;
             }
         }
         

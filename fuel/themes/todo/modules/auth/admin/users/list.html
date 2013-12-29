@@ -8,14 +8,14 @@
     <section class="panel">
       <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.admin.user.page-title.list')); ?></header>
       <?php if ( count($table) ) : ?>
+        <?php echo \Form::open('admin/auth/users/action'); ?>
         <div class="table-responsive">
           <?php
           $table->set_attribute('class', 'table table-striped table-hover');
           
-          foreach ( $table as $row )
+          foreach ( $table->get_data() as $row )
           {
-            $cbx = $row[0]->get_content();
-            $row[0]->set_content($cbx->render($engine));
+            $row['cbx']->set_content($simple_engine->render($row['cbx']->get_content()));
             
             if ( ! ( $user = $row->get_meta('user') ) )
             {
@@ -57,10 +57,10 @@
               );
             }
             
-            $row[count($row) - 1]->set_content(html_tag('div', array('class' => 'btn-group'), implode('', $tools)));
+            $row['actions']->set_content(html_tag('div', array('class' => 'btn-group'), implode('', $tools)));
           }
           
-          echo $table;
+          echo $table->render();
           ?>
         </div>
         <?php else : ?>

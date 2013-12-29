@@ -268,6 +268,8 @@ class Module extends \Gasoline\Model\Base {
     {
         $path = \Module::exists($this->slug);
         
+        \Module::load($this->slug);
+        
         \Lang::load($this->slug . '::description', 'modules.module.' . $this->slug . '.description');
         
         $this->set('description', \Lang::get('modules.module.' . $this->slug . '.description'));

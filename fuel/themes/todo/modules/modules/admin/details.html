@@ -10,50 +10,50 @@
           
           \Package::load('table');
           
-          $table = \Table\Table::forge()->set_attribute('class', 'table table-striped table-hover');
+          $table = \Table\Table::forge(array('class' => 'table table-striped table-responsive table-hover'));
           
-          $table->get_body()->add_row(array(
-            \Table\Cell::forge(__('modules.model.module.name'), array(), \Table\Cell::HEADER),
-            \Table\Cell::forge(e($module->name), array(), \Table\Cell::BODY)
+          $table[] = \Table\Row::forge(array(
+            \Table\Cell::forge(__('modules.model.module.name'))->set_type(\Table\Cell::HEADER),
+            \Table\Cell::forge(e($module->name))
           ));
           
-          $table->get_body()->add_row(array(
-            \Table\Cell::forge(__('modules.model.module.slug'), array(), \Table\Cell::HEADER),
-            \Table\Cell::forge(e($module->slug), array(), \Table\Cell::BODY)
+          $table[] = \Table\Row::forge(array(
+            \Table\Cell::forge(__('modules.model.module.slug'))->set_type(\Table\Cell::HEADER),
+            \Table\Cell::forge(e($module->slug))
           ));
           
-          $table->get_body()->add_row(array(
-            \Table\Cell::forge(__('modules.model.module.author'), array(), \Table\Cell::HEADER),
-            \Table\Cell::forge(e($module->author), array(), \Table\Cell::BODY)
+          $table[] = \Table\Row::forge(array(
+            \Table\Cell::forge(__('modules.model.module.author'))->set_type(\Table\Cell::HEADER),
+            \Table\Cell::forge(e($module->author))
           ));
           
-          $table->get_body()->add_row(array(
-            \Table\Cell::forge(__('modules.model.module.version'), array(), \Table\Cell::HEADER),
-            \Table\Cell::forge(e($module->version), array(), \Table\Cell::BODY)
+          $table[] = \Table\Row::forge(array(
+            \Table\Cell::forge(__('modules.model.module.version'))->set_type(\Table\Cell::HEADER),
+            \Table\Cell::forge(e($module->version))
           ));
           
-          $table->get_body()->add_row(array(
-            \Table\Cell::forge(__('modules.model.module.status'), array(), \Table\Cell::HEADER),
-            \Table\Cell::forge(__('modules.model.module.options.status.' . $module->status), array(), \Table\Cell::BODY)
+          $table[] = \Table\Row::forge(array(
+            \Table\Cell::forge(__('modules.model.module.status'))->set_type(\Table\Cell::HEADER),
+            \Table\Cell::forge(__('modules.model.module.options.status.' . $module->status))
           ));
           
-          $table->get_body()->add_row(array(
-            \Table\Cell::forge(__('modules.model.module.scope'), array(), \Table\Cell::HEADER),
-            \Table\Cell::forge(__('modules.model.module.options.scope.' . $module->scope), array(), \Table\Cell::BODY)
+          $table[] = \Table\Row::forge(array(
+            \Table\Cell::forge(__('modules.model.module.scope'))->set_type(\Table\Cell::HEADER),
+            \Table\Cell::forge(__('modules.model.module.options.scope.' . $module->scope))
           ));
           
-          $table->get_body()->add_row(array(
-            \Table\Cell::forge(__('modules.model.module.protected'), array(), \Table\Cell::HEADER),
-            \Table\Cell::forge(__('modules.model.module.options.protected.' . $module->protected), array(), \Table\Cell::BODY)
+          $table[] = \Table\Row::forge(array(
+            \Table\Cell::forge(__('modules.model.module.protected'))->set_type(\Table\Cell::HEADER),
+            \Table\Cell::forge(__('modules.model.module.options.protected.' . $module->protected))
           ));
           
-          $table->get_body()->add_row(array(
-            \Table\Cell::forge(__('modules.model.module.created_at'), array(), \Table\Cell::HEADER),
-            \Table\Cell::forge(\Date::time_ago($module->created_at), array(), \Table\Cell::BODY)
+          $table[] = \Table\Row::forge(array(
+            \Table\Cell::forge(__('modules.model.module.created_at'))->set_type(\Table\Cell::HEADER),
+            \Table\Cell::forge(\Date::time_ago($module->created_at))
           ));
           
-          $table->get_body()->add_row(array(
-            \Table\Cell::forge(__('modules.model.module.updated_at'), array(), \Table\Cell::HEADER),
+          $table[] = \Table\Row::forge(array(
+            \Table\Cell::forge(__('modules.model.module.updated_at'))->set_type(\Table\Cell::HEADER),
             \Table\Cell::forge(
               $module->updated_at
               ? \Date::time_ago($module->updated_at)
@@ -79,9 +79,7 @@
                     : __('global.n/a')
                   )
                 )
-              : __('global.never'),
-              array(),
-              \Table\Cell::BODY
+              : __('global.never')
             )
           ));
           

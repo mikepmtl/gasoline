@@ -50,7 +50,7 @@ class Admin extends \Controller\Admin {
         
         \Package::load('table');
         
-        $table = \Table\Table::forge()->headers(array(
+        $table = \Table\Table::forge()->add_header(array(
             html_tag('input', array('type' => 'checkbox')),
             __('modules.model.module.name'),
             __('modules.model.module.slug'),
@@ -62,18 +62,18 @@ class Admin extends \Controller\Admin {
         {
             foreach ( $modules as &$module )
             {
-                \Module::load($module->slug);
-                
                 $module->load_description();
                 
-                $row = $table->get_body()->add_row();
+                $row = \Table\Row::forge()
+                    ->set_meta('module', $module);
                 
-                $row->set_meta('module', $module)
-                    ->add_cell(\Gasform\Input_Checkbox::forge('module_id', $module->id, array()))
-                    ->add_cell( \Auth::has_access('modules.admin[read]') ? \Html::anchor('admin/modules/details/' . $module->slug, e($module->name)) : e($module->name) )
-                    ->add_cell(e($module->slug))
-                    ->add_cell(e($module->version))
-                    ->add_cell('');
+                $row['cbx']     = \Table\Cell::forge(\Gasform\Input_Checkbox::forge('module_id', $module->id, array()));
+                $row['name']    = \Table\Cell::forge( \Auth::has_access('modules.admin[read]') ? \Html::anchor('admin/modules/details/' . $module->slug, e($module->name)) : e($module->name) );
+                $row['slug']    = \Table\Cell::forge(e($module->slug));
+                $row['version'] = \Table\Cell::forge(e($module->version));
+                $row['actions'] = \Table\Cell::forge('');
+                
+                $table[$module->id] = $row;
             }
         }
         

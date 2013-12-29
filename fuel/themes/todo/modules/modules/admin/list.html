@@ -1,30 +1,30 @@
 <?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/list')); ?>
 
+<?php $engine = new \Gasform\Render_Bootstrap(); ?>
+<?php $simple_engine = new \Gasform\Render_Simple(); ?>
+
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('module.page-title.list')); ?></header>
+      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('modules.navigation.admin.page-title.list')); ?></header>
       <?php if ( count($table) ) : ?>
-        <?php echo \Form::open(); ?>
+        <?php echo \Form::open('admin/modules/action'); ?>
         <div class="table-responsive">
           <?php
-          $table->set_attribute('class', 'table table-striped table-hover');
+          $table->set_attribute('class', 'table table-striped table-hover table-responsive');
           
-          $engine = new \Gasform\Render_Bootstrap();
-          
-          foreach ( $table as $row )
+          foreach ( $table->get_data() as $row )
           {
-            $cbx = $row[0]->get_content();
-            $row[0]->set_content($cbx->render($engine));
-            
-            $tools = array();
+            $row['cbx']->set_content($simple_engine->render($row['cbx']->get_content()));
             
             if ( ! ( $module = $row->get_meta('module') ) )
             {
               continue;
             }
             
-            $row[1]->set_content(
+            $tools = array();
+            
+            $row['name']->set_content(
               html_tag(
                 'span',
                 array(
@@ -44,7 +44,7 @@
                   )
                 )
               )
-              . $row[1]->get_content()
+              . $row['name']->get_content()
             );
             
             if ( \Auth::has_access('modules.admin[read]') )
@@ -98,10 +98,11 @@
               );
             }
             
-            $row[count($row) - 1]->set_content(html_tag('div', array('class' => 'btn-group'), implode('', $tools)));
+            $row['actions']->set_content(html_tag('div', array('class' => 'btn-group'), implode('', $tools)));
           }
           
-          echo $table;
+          echo $table->render();
+          
           ?>
         </div>
         <?php echo \Form::close(); ?>

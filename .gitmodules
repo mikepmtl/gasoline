@@ -28,3 +28,6 @@
 [submodule "fuel/packages/gasform"]
 	path = fuel/packages/gasform
 	url = https://github.com/hubspace/gasoline-pkg-gasform.git
+[submodule "fuel/packages/breadcrumb"]
+	path = fuel/packages/breadcrumb
+	url = https://github.com/hubspace/fuel-breadcrumb.git

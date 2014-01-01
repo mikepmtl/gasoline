@@ -26,13 +26,13 @@ return array(
     /**
      * The active theme to use.  This can also be set in code using Theme::active('foo');
      */
-    'active' => 'bootstrap',
+    'active' => 'dropper',
 
     /**
      * The fallback theme to use.  If a view is not found in the active theme, this theme
      * is used as a fallback.  This can also be set in code using Theme::fallback('foo');
      */
-    'fallback' => 'bootstrap',
+    'fallback' => 'dropper',
 
     /**
      * The theme search paths.  They are searched in the order given.  You can add paths

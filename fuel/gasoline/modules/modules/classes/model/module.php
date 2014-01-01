@@ -11,7 +11,7 @@
  * @link        http://hubspace.github.io/gasoline
  */
 
-class Module extends \Gasoline\Model\Base {
+class Module extends \Gasoline\Model\Base implements \Gasoline\Orm\Interface_Delete {
     
     protected static $_table_name = 'modules';
     
@@ -140,7 +140,7 @@ class Module extends \Gasoline\Model\Base {
             'validation'  => array(
                 'max_length'    => array(255),
             ),
-            'data_type' => 'boolean',
+            'data_type' => 'tinyint',
             'default'   => 0,
             'null'      => false,
         ),
@@ -298,7 +298,7 @@ class Module extends \Gasoline\Model\Base {
     
     public function is_deletable()
     {
-        return $this->status === 0;
+        return ( $this->status === 0 && $this->protected === 0 );
     }
     
     

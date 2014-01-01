@@ -29,5 +29,11 @@
       $('#' + this.id).colorpicker();
     })
     
+    
+    /////////////////////////////
+    // CAROUSEL
+    /////////////////////////////
+    $('.carousel').carousel()
+    
   })
 }(window.jQuery)

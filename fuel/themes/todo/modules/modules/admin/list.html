@@ -7,138 +7,149 @@
   <div class="col-md-10">
     <section class="panel">
       <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('modules.navigation.admin.page-title.list')); ?></header>
-      <?php if ( count($table) ) : ?>
-        <?php echo \Form::open('admin/modules/action'); ?>
-        <div class="table-responsive">
-          <?php
-          $table->set_attribute('class', 'table table-striped table-hover table-responsive');
-          
-          foreach ( $table->get_data() as $row )
-          {
-            $row['cbx']->set_content($simple_engine->render($row['cbx']->get_content()));
+      <?php echo \Form::open('admin/modules/action'); ?>
+        <?php if ( count($table) ) : ?>
+          <div class="table-responsive">
+            <?php
+            $table->set_attribute('class', 'table table-striped table-hover table-responsive');
             
-            if ( ! ( $module = $row->get_meta('module') ) )
+            foreach ( $table->get_data() as $row )
             {
-              continue;
-            }
-            
-            $tools = array();
-            
-            $row['name']->set_content(
-              html_tag(
-                'span',
-                array(
-                  'class' => 'pull-right text-xs clearfix',
-                ),
-                \Html::anchor(
-                  '#',
-                  '<span class="text-info"><i class="fa fa-info"></i></span>',
+              $row['cbx']->set_content($simple_engine->render($row['cbx']->get_content()));
+              
+              if ( ! ( $module = $row->get_meta('module') ) )
+              {
+                continue;
+              }
+              
+              $tools = array();
+              
+              $row['name']->set_content(
+                html_tag(
+                  'span',
                   array(
-                    'class'           => 'btn btn-xs btn-text',
-                    'data-toggle'     => 'popover',
-                    'data-trigger'    => 'hover',
-                    'data-html'       => 'true',
-                    'data-placement'  => 'right',
-                    'data-content'    => $module->description['short'],
-                    'data-title'      => __('modules.model.module.description.short'),
+                    'class' => 'pull-right text-xs clearfix',
+                  ),
+                  \Html::anchor(
+                    '#',
+                    '<span class="text-info"><i class="fa fa-info"></i></span>',
+                    array(
+                      'class'           => 'btn btn-xs btn-text',
+                      'data-toggle'     => 'popover',
+                      'data-trigger'    => 'hover',
+                      'data-html'       => 'true',
+                      'data-placement'  => 'right',
+                      'data-content'    => $module->description['short'],
+                      'data-title'      => __('modules.model.module.description.short'),
+                    )
                   )
                 )
-              )
-              . $row['name']->get_content()
-            );
-            
-            if ( \Auth::has_access('modules.admin[read]') )
-            {
-              $tools[] = \Html::anchor(
-                'admin/modules/details/' . $module->id,
-                '<i class="fa fa-info"></i>',
-                array(
-                  'class' => 'btn btn-default btn-xs',
-                  'title' => __('button.details'),
-                  'data-toggle' => 'tooltip',
-                )
+                . $row['name']->get_content()
               );
+              
+              if ( \Auth::has_access('modules.admin[read]') )
+              {
+                $tools[] = \Html::anchor(
+                  'admin/modules/details/' . $module->id,
+                  '<i class="fa fa-info"></i>',
+                  array(
+                    'class' => 'btn btn-default btn-xs',
+                    'title' => __('button.details'),
+                    'data-toggle' => 'tooltip',
+                  )
+                );
+              }
+              
+              if ( $module->is_disabled() && \Auth::has_access('modules.admin[enable]') )
+              {
+                $tools[] = \Html::anchor(
+                  'admin/modules/enable/' . $module->id,
+                  '<i class="fa fa-plus"></i>',
+                  array(
+                    'class' => 'btn btn-default btn-xs',
+                    'title' => __('button.enable'),
+                    'data-toggle' => 'tooltip',
+                  )
+                );
+              }
+              elseif ( $module->is_enabled() && \Auth::has_access('modules.admin[disable]') )
+              {
+                $tools[] = \Html::anchor(
+                  'admin/modules/disable/' . $module->id,
+                  '<i class="fa fa-minus"></i>',
+                  array(
+                    'class' => 'btn btn-default btn-xs',
+                    'title' => __('button.disable'),
+                    'data-toggle' => 'tooltip',
+                  )
+                );
+              }
+              
+              if ( $module->is_deletable() && \Auth::has_access('modules.admin[delete]') )
+              {
+                $tools[] = \Html::anchor(
+                  'admin/modules/delete/' . $module->id,
+                  '<i class="fa fa-trash-o"></i>',
+                  array(
+                    'class' => 'btn btn-default btn-xs',
+                    'title' => __('button.delete'),
+                    'data-toggle' => 'tooltip',
+                  )
+                );
+              }
+              
+              $row['actions']->set_content(html_tag('div', array('class' => 'btn-group'), implode('', $tools)));
             }
             
-            if ( $module->is_disabled() && \Auth::has_access('modules.admin[enable]') )
-            {
-              $tools[] = \Html::anchor(
-                'admin/modules/enable/' . $module->id,
-                '<i class="fa fa-plus"></i>',
-                array(
-                  'class' => 'btn btn-default btn-xs',
-                  'title' => __('button.enable'),
-                  'data-toggle' => 'tooltip',
-                )
-              );
-            }
-            elseif ( $module->is_enabled() && \Auth::has_access('modules.admin[disable]') )
-            {
-              $tools[] = \Html::anchor(
-                'admin/modules/disable/' . $module->id,
-                '<i class="fa fa-minus"></i>',
-                array(
-                  'class' => 'btn btn-default btn-xs',
-                  'title' => __('button.disable'),
-                  'data-toggle' => 'tooltip',
-                )
-              );
-            }
+            echo $table->render();
             
-            if ( $module->is_deletable() && \Auth::has_access('modules.admin[delete]') )
-            {
-              $tools[] = \Html::anchor(
-                'admin/modules/delete/' . $module->id,
-                '<i class="fa fa-trash-o"></i>',
-                array(
-                  'class' => 'btn btn-default btn-xs',
-                  'title' => __('button.delete'),
-                  'data-toggle' => 'tooltip',
-                )
-              );
-            }
-            
-            $row['actions']->set_content(html_tag('div', array('class' => 'btn-group'), implode('', $tools)));
-          }
-          
-          echo $table->render();
-          
-          ?>
-        </div>
-        <?php echo \Form::close(); ?>
-        <?php else : ?>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-              <section class="panel text-center no-border bg-warning dker">
-                <div class="panel-body">
-                  <p><i class="fa fa-exclamation-triangle fa-4x"></i></p>
-                  <p class="h5"><?php echo __('global.no_data'); ?></p>
+            ?>
+          </div>
+          <footer class="panel-footer">
+            <div class="row">
+              <!-- bulk actions -->
+              <div class="col-xs-4 col-md-4">
+                <div class="input-group">
+                  <?php
+                    $form_bulk['bulk_action']->set_attribute('class', 'input-sm form-control input-s-sm inline');
+                    echo $simple_engine->render($form_bulk['bulk_action']);
+                  ?>
+                  <span class="input-group-btn">
+                  <?php
+                    $form_bulk['submit']->set_attribute('class', 'btn btn-primary btn-sm');
+                    echo $simple_engine->render($form_bulk['submit']);
+                  ?>
+                  </span>
                 </div>
-              </section>
+              </div>
+              <!-- /bulk-actions -->
+              <!-- page-info -->
+              <div class="col-xs-4 col-md-4">
+              
+              </div>
+              <!-- /page-info -->
+              <!-- pagination -->
+              <div class="col-md-4 text-right text-center-xs">
+                <?php echo ( isset($pagination) ? $pagination->render() : '' ); ?>
+              </div>
+              <!-- /pagination -->
+            </div>
+          </footer>
+        <?php else : ?>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-6 col-md-offset-3">
+                <section class="panel text-center no-border bg-warning dker">
+                  <div class="panel-body">
+                    <p><i class="fa fa-exclamation-triangle fa-4x"></i></p>
+                    <p class="h5"><?php echo __('global.no_data'); ?></p>
+                  </div>
+                </section>
+              </div>
             </div>
           </div>
-        </div>
         <?php endif; ?>
-      <footer class="panel-footer">
-        <div class="row">
-          <!-- bulk actions -->
-          <div class="col-xs-4 col-md-4">
-            
-          </div>
-          <!-- /bulk-actions -->
-          <!-- page-info -->
-          <div class="col-xs-4 col-md-4">
-          
-          </div>
-          <!-- /page-info -->
-          <!-- pagination -->
-          <div class="col-md-4 text-right text-center-xs">
-            <?php echo ( isset($pagination) ? $pagination->render() : '' ); ?>
-          </div>
-          <!-- /pagination -->
-        </div>
-      </footer>
+      <?php echo \Form::close(); ?>
     </section>
   </div>
   <div class="col-md-2">

@@ -67,7 +67,7 @@ class Admin extends \Controller\Admin {
                 $row = \Table\Row::forge()
                     ->set_meta('module', $module);
                 
-                $row['cbx']     = \Table\Cell::forge(\Gasform\Input_Checkbox::forge('module_id', $module->id, array()));
+                $row['cbx']     = \Table\Cell::forge(\Gasform\Input_Checkbox::forge('module_id[]', $module->id, array()));
                 $row['name']    = \Table\Cell::forge( \Auth::has_access('modules.admin[read]') ? \Html::anchor('admin/modules/details/' . $module->slug, e($module->name)) : e($module->name) );
                 $row['slug']    = \Table\Cell::forge(e($module->slug));
                 $row['version'] = \Table\Cell::forge(e($module->version));
@@ -77,11 +77,35 @@ class Admin extends \Controller\Admin {
             }
         }
         
+        $form_bulk = new \Gasform\Form(\Uri::create('admin/auth/users/action'));
+        $bulk_actions = new \Gasform\Input_Select();
+        
+        $bulk = new \Gasform\Input_Option(__('global.bulk_actions'), '', array());
+        $bulk_actions['bulk'] = $bulk;
+        
+        $disable = new \Gasform\Input_Option(__('button.disable'), 'disable', array());
+        $bulk_actions['disable'] = $disable;
+        
+        $enable = new \Gasform\Input_Option(__('button.enable'), 'enable', array());
+        $bulk_actions['enable'] = $enable;
+        
+        // $download = new \Gasform\Input_Option(__('button.download'), 'download', array());
+        // $bulk_actions['download'] = $download;
+        
+        $delete = new \Gasform\Input_Option(__('button.delete'), 'delete', array());
+        $bulk_actions['delete'] = $delete;
+        
+        $form_bulk['bulk_action'] = $bulk_actions->set_name('action');
+        
+        $submit = new \Gasform\Input_Submit('submit', __('button.submit'), array());
+        $form_bulk['submit'] = $submit;
+        
         $this->view = static::$theme
             ->view('admin/list')
             ->set('modules', $modules)
             ->set('pagination', $pagination, false)
-            ->set('table', $table, false);
+            ->set('table', $table, false)
+            ->set('form_bulk', $form_bulk);;
     }
     
     
@@ -260,6 +284,200 @@ class Admin extends \Controller\Admin {
         }
         
         return $this->get_delete();
+    }
+    
+    
+    public function post_action()
+    {
+        switch ( \Input::post('action', false) )
+        {
+            default:
+                throw new \HttpNotFoundException();
+            
+            break;
+            
+            case 'delete':
+                static::restrict('modules.admin[delete]');
+                
+                if ( $ids = \Input::post('module_id', \Input::post('module_ids', false)) )
+                {
+                    is_array($ids) OR $ids = array($ids);
+                    
+                    if ( ! $ids )
+                    {
+                        break;
+                    }
+                    
+                    try
+                    {
+                        $modules = \Modules\Model\Module::query()
+                            ->where('id', 'IN', $ids)
+                            ->get();
+                    }
+                    catch ( \Exception $e )
+                    {
+                        break;
+                    }
+                    
+                    if ( ! $modules )
+                    {
+                        break;
+                    }
+                    
+                    $success = $failed = $enabled = $protected = array();
+                    
+                    foreach ( $modules as &$module )
+                    {
+                        if ( $module->is_enabled() )
+                        {
+                            $enabled[] = e($module->name);
+                            
+                            continue;
+                        }
+                        
+                        if ( $module->is_protected() )
+                        {
+                            $protected[] = e($module->name);
+                            
+                            continue;
+                        }
+                        
+                        try
+                        {
+                            $name = $module->name;
+                            
+                            $module->delete();
+                            
+                            $success[] = e($name);
+                        }
+                        catch ( \Exception $e )
+                        {
+                            $failed[] = e($module->name);
+                        }
+                    }
+                    
+                    $success && \Message\Container::push(\Message\Item::forge('success', __('modules.messages.delete_batch.success.message', array('names' => implode(', ', $success))), __('modules.messages.delete_batch.success.heading'))->is_flash(true));
+                    
+                    $enabled && \Message\Container::push(\Message\Item::forge('warning', __('modules.messages.delete_batch.enabled.message', array('names' => implode(', ', $enabled))), __('modules.messages.delete_batch.enabled.heading'))->is_flash(true));
+                    
+                    $protected && \Message\Container::push(\Message\Item::forge('warning', __('modules.messages.delete_batch.protected.message', array('names' => implode(', ', $protected))), __('modules.messages.delete_batch.protected.heading'))->is_flash(true));
+                    
+                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('modules.messages.delete_batch.failure.message', array('names' => implode(', ', $failed))), __('modules.messages.delete_batch.failure.heading'))->is_flash(true));
+                }
+            break;
+            
+            case 'disable':
+                static::restrict('modules.admin[disable]');
+                
+                if ( $ids = \Input::post('module_id', \Input::post('module_ids', false)) )
+                {
+                    is_array($ids) OR $ids = array($ids);
+                    
+                    if ( ! $ids )
+                    {
+                        break;
+                    }
+                    
+                    try
+                    {
+                        $modules = \Modules\Model\Module::query()
+                            ->where('id', 'IN', $ids)
+                            ->get();
+                    }
+                    catch ( \Exception $e )
+                    {
+                        break;
+                    }
+                    
+                    if ( ! $modules )
+                    {
+                        break;
+                    }
+                    
+                    $success = $failed = array();
+                    
+                    foreach ( $modules as &$module )
+                    {
+                        if ( $module->is_disabled() )
+                        {
+                            continue;
+                        }
+                        
+                        try
+                        {
+                            $module->disable();
+                            
+                            $success[] = e($module->name);
+                        }
+                        catch ( \Exception $e )
+                        {
+                            $failed[] = e($module->name);
+                        }
+                    }
+                    
+                    $success && \Message\Container::push(\Message\Item::forge('success', __('modules.messages.disable_batch.success.message', array('names' => implode(', ', $success))), __('modules.messages.disable_batch.success.heading'))->is_flash(true));
+                    
+                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('modules.messages.disable_batch.failure.message', array('names' => implode(', ', $failed))), __('modules.messages.disable_batch.failure.heading'))->is_flash(true));
+                }
+            break;
+            
+            case 'enable':
+                static::restrict('modules.admin[enable]');
+                
+                if ( $ids = \Input::post('module_id', \Input::post('module_ids', false)) )
+                {
+                    is_array($ids) OR $ids = array($ids);
+                    
+                    if ( ! $ids )
+                    {
+                        break;
+                    }
+                    
+                    try
+                    {
+                        $modules = \Modules\Model\Module::query()
+                            ->where('id', 'IN', $ids)
+                            ->get();
+                    }
+                    catch ( \Exception $e )
+                    {
+                        break;
+                    }
+                    
+                    if ( ! $modules )
+                    {
+                        break;
+                    }
+                    
+                    $success = $failed = array();
+                    
+                    foreach ( $modules as &$module )
+                    {
+                        if ( $module->is_enabled() )
+                        {
+                            continue;
+                        }
+                        
+                        try
+                        {
+                            $module->enable();
+                            
+                            $success[] = e($module->name);
+                        }
+                        catch ( \Exception $e )
+                        {
+                            $failed[] = e($module->name);
+                        }
+                    }
+                    
+                    $success && \Message\Container::push(\Message\Item::forge('success', __('modules.messages.enable_batch.success.message', array('names' => implode(', ', $success))), __('modules.messages.enable_batch.success.heading'))->is_flash(true));
+                    
+                    $failed && \Message\Container::push(\Message\Item::forge('danger', __('modules.messages.enable_batch.failure.message', array('names' => implode(', ', $failed))), __('modules.messages.enable_batch.failure.heading'))->is_flash(true));
+                }
+            break;
+        }
+        
+        return \Response::redirect('admin/modules');
     }
     
 }

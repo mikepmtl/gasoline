@@ -51,9 +51,9 @@ abstract class Base extends \Controller {
         
         if ( ! $permitted )
         {
-            \Message::flash('danger', __('message.access_denied.heading'), __('message.acccess_denied.body'));
+            \Message\Container::push(\Message\Item::forge('danger', __('global.messages.access_denied.message'), __('global.messages.access_denied.heading'))->is_flash(true));
             
-            return \Response::redirect($redirect !== null ? $redirect : \Session::get('last_page', $redirect));
+            return \Response::redirect($redirect !== null ? $redirect : '/');
         }
     }
     
@@ -146,7 +146,7 @@ abstract class Base extends \Controller {
             // Module disabled?
             if ( $module->status === 0 )
             {
-                logger(\Fuel::L_INFO, 'Access to disabled module [' . $module->slug . '] at ' . microtime() . ' from ' . \Input::real_ip());
+                logger(\Fuel::L_INFO, 'Access to disabled module [' . $module->slug . '] at ' . \Date::forge()->format('mysql_time') . ' from ' . \Input::real_ip());
                 
                 throw new \HttpNotFoundException();
             }

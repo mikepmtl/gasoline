@@ -57,6 +57,17 @@ return array(
         ),
     ),
     
+    'disable_batch'    => array(
+        'success'   => array(
+            'heading'   => 'Module(s) disabled!',
+            'message'   => 'Successfully disabled modules :names.',
+        ),
+        'failure'   => array(
+            'heading'   => 'Disabling failed!',
+            'message'   => 'There was an unexpected error disabling modules :names.',
+        ),
+    ),
+    
     'delete'    => array(
         'success' => array(
             'heading'   => 'Module deleted!',
@@ -92,6 +103,14 @@ return array(
         'unconfirmed' => array(
             'heading'   => 'Deleting not performed!',
             'message'   => 'Modules :names were not deleted because deleting hasn\'t been confirmed.',
+        ),
+        'enabled' => array(
+            'heading'   => 'Deleting not performed!',
+            'message'   => 'Modules :names were not deleted because they are still enabled. Disable the modules before deleting them.',
+        ),
+        'protected' => array(
+            'heading'   => 'Deleting not performed!',
+            'message'   => 'Modules :names were not deleted because they are protected. Protected modules cannot be deleted.',
         ),
     ),
     

@@ -45,7 +45,7 @@ Autoloader::add_classes(array(
     'Gasoline\\Controller\\Admin'           => __DIR__ . '/classes/controller/admin.php',
     'Gasoline\\Controller\\Authenticated'   => __DIR__ . '/classes/controller/authenticated.php',
     'Gasoline\\Controller\\Base'            => __DIR__ . '/classes/controller/base.php',
-    'Gasoline\\Controller\\Public'          => __DIR__ . '/classes/controller/public.php',
+    'Gasoline\\Controller\\Frontend'        => __DIR__ . '/classes/controller/frontend.php',
     'Gasoline\\Controller\\Widget'          => __DIR__ . '/classes/controller/widget.php',
     
     'Gasoline\\Model\\Base'     => __DIR__ . '/classes/model/base.php',

@@ -1,6 +1,6 @@
 <?php namespace Gasoline\Controller;
 
-abstract class Public extends Authenticated {
+abstract class Frontend extends Authenticated {
     
     public function before()
     {

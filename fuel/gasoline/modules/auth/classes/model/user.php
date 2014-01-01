@@ -159,13 +159,13 @@ class User extends \Model\Base {
      * 
      * @var array
      */
-    protected static $_conditions = array(
-        'where' => array(
-            array(
-                'id', '!=', '0',
-            ),
-        ),
-    );
+    // protected static $_conditions = array(
+    //     'where' => array(
+    //         array(
+    //             'id', '!=', '0',
+    //         ),
+    //     ),
+    // );
     
     /**
      * @var array   belongs_to relationships

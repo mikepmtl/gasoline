@@ -19,9 +19,12 @@ return array(
     
     'page-title'    => array(
         '_section'  => 'Permissions',
-        'group'     => 'Group permission for group :name',
-        'role'      => 'Role permission for role :name',
-        'user'      => 'User permission for user :username',
+        'group'     => 'Group :name',
+        'role'      => 'Role :name',
+        'user'      => 'User :username',
+        'groups'    => 'Groups',
+        'roles'     => 'Roles',
+        'users'     => 'Users',
     ),
     
 );

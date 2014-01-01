@@ -103,7 +103,8 @@ class Admin_Permissions extends \Controller\Admin {
     {
         \Package::load('table');
         
-        $table = \Table\Table::forge()->headers(array());
+        $table = \Table\Table::forge();
+        $data = array();
         
         switch ( $scope )
         {
@@ -112,41 +113,44 @@ class Admin_Permissions extends \Controller\Admin {
             break;
             
             case 'users':
-                $users = \Model\Auth_User::find('all');
+                $users = $data = \Model\Auth_User::find('all');
                 
                 foreach ( $users as &$user )
                 {
-                    $row = $table->get_body()->add_row();
+                    $row = \Table\Row::forge()
+                        ->set_meta('data', $user);
                     
-                    $row->set_meta('data', $user)
-                        ->add_cell('')
-                        ->add_cell(\Html::anchor('admin/auth/permissions/users/' . $user->username, e($user->username)));
+                    $row['name'] = \Table\Cell::forge(\Html::anchor('admin/auth/permissions/users/' . $user->username, e($user->username)));
+                    
+                    $table[$user->id] = $row;
                 }
             break;
             
             case 'roles':
-                $roles = \Model\Auth_Role::find('all', array('where' => array(array('filter', '=', ''))));
+                $roles = $data = \Model\Auth_Role::find('all', array('where' => array(array('filter', '=', ''))));
                 
                 foreach ( $roles as &$role )
                 {
-                    $row = $table->get_body()->add_row();
+                    $row = \Table\Row::forge()
+                        ->set_meta('data', $role);
                     
-                    $row->set_meta('data', $role)
-                        ->add_cell('')
-                        ->add_cell(\Html::anchor('admin/auth/permissions/roles/' . $role->slug, e($role->name)));
+                    $row['name'] = \Table\Cell::forge(\Html::anchor('admin/auth/permissions/roles/' . $role->name, e($role->name)));
+                    
+                    $table[$role->id] = $row;
                 }
             break;
             
             case 'groups':
-                $groups = \Model\Auth_Group::find('all');
+                $groups = $data = \Model\Auth_Group::find('all');
                 
                 foreach ( $groups as &$group )
                 {
-                    $row = $table->get_body()->add_row();
+                    $row = \Table\Row::forge()
+                        ->set_meta('data', $group);
                     
-                    $row->set_meta('data', $group)
-                        ->add_cell('')
-                        ->add_cell(\Html::anchor('admin/auth/permissions/groups/' . $group->slug, e($group->name)));
+                    $row['name'] = \Table\Cell::forge(\Html::anchor('admin/auth/permissions/groups/' . $group->name, e($group->name)));
+                    
+                    $table[$group->id] = $row;
                 }
             break;
         }
@@ -154,15 +158,26 @@ class Admin_Permissions extends \Controller\Admin {
         $this->view = static::$theme
             ->view('admin/permissions/choice')
             ->set('table', $table, false)
-            ->set('scope', $scope);
+            ->set('scope', $scope)
+            ->set('data', $data);
     }
     
     
+    /**
+     * [list_permissions description]
+     * 
+     * @todo    Update this to load the lang lines per permission from the module
+     *          sth like \Lang::load($perm->area . '::permissions');
+     * 
+     * @param  [type] $scope [description]
+     * @param  [type] $id    [description]
+     * @return [type]        [description]
+     */
     protected function list_permissions($scope, $id)
     {
         \Package::load('table');
         
-        $table = \Table\Table::forge()->headers(array(
+        $table = \Table\Table::forge()->add_header(array(
             'Area',
             'Permission',
             'Actions',
@@ -193,24 +208,29 @@ class Admin_Permissions extends \Controller\Admin {
                 $perms = \Model\Auth_Permission::query()
                     ->get();
                 
+                $render_simple = new \Gasform\Render_Simple();
+                
                 foreach ( $perms as &$perm )
                 {
-                    $row = $table->get_body()->add_row();
+                    $row = \Table\Row::forge()
+                        ->set_meta('permission', $perm);
                     
-                    $row->set_meta('permission', $perm)
-                        ->add_cell(e($perm->area))
-                        ->add_cell(e($perm->permission))
-                        ->add_cell(function() use ($perm, $user) {
+                    $row['area']        = \Table\Cell::forge(e($perm->area));
+                    $row['permission']  = \Table\Cell::forge(e($perm->permission));
+                    $row['actions']     = \Table\Cell::forge(function() use ($render_simple, $perm, $user) {
                             $perms = array();
                             
                             foreach ( $perm->actions as $k => $action )
                             {
-                                $perms[] = \Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', array(), $k)
-                                    ->render(new \Gasform\Render_Simple()) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
+                                $perms[] = $render_simple->render(\Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', $k)->set_checked( (bool) array_key_exists('[' . $user->id . '][' . $perm->id . ']', $user->userpermissions) ))
+                                    . '&nbsp;'
+                                    . __('auth.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
                             }
                             
                             return implode('<br />', $perms);
                         });
+                    
+                    $table[$perm->id] = $row;
                 }
                 
                 $data = $user;
@@ -242,24 +262,33 @@ class Admin_Permissions extends \Controller\Admin {
                 $perms = \Model\Auth_Permission::query()
                     ->get();
                 
+                $render_simple = new \Gasform\Render_Simple();
+                
                 foreach ( $perms as &$perm )
                 {
-                    $row = $table->get_body()->add_row();
+                    \Module::exists($perm->area) && \Module::load($perm->area);
                     
-                    $row->set_meta('permission', $perm)
-                        ->add_cell(e($perm->area))
-                        ->add_cell(e($perm->permission))
-                        ->add_cell(function() use ($perm, $role) {
+                    $lang = ( \Lang::load($perm->area . '::permissions', 'auth.permissions') ? : \Lang::load('permissions.' . $perm->area, 'auth.permissions') );
+                    
+                    $row = \Table\Row::forge()
+                        ->set_meta('permission', $perm);
+                    
+                    $row['area']        = \Table\Cell::forge(e($perm->area));
+                    $row['permission']  = \Table\Cell::forge(e($perm->permission));
+                    $row['actions']     = \Table\Cell::forge(function() use ($render_simple, $perm, $role) {
                             $perms = array();
                             
                             foreach ( $perm->actions as $k => $action )
                             {
-                                $perms[] = \Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', array(), $k)
-                                    ->render(new \Gasform\Render_Simple()) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
+                                $perms[] = $render_simple->render(\Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', $k)->set_checked( (bool) array_key_exists('[' . $role->id . '][' . $perm->id . ']', $role->rolepermissions) ))
+                                    . '&nbsp;'
+                                    . __('auth.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
                             }
                             
                             return implode('<br />', $perms);
                         });
+                    
+                    $table[$perm->id] = $row;
                 }
                 
                 $data = $role;
@@ -284,24 +313,29 @@ class Admin_Permissions extends \Controller\Admin {
                 $perms = \Model\Auth_Permission::query()
                     ->get();
                 
+                $render_simple = new \Gasform\Render_Simple();
+                
                 foreach ( $perms as &$perm )
                 {
-                    $row = $table->get_body()->add_row();
+                    $row = \Table\Row::forge()
+                        ->set_meta('permission', $perm);
                     
-                    $row->set_meta('permission', $perm)
-                        ->add_cell(e($perm->area))
-                        ->add_cell(e($perm->permission))
-                        ->add_cell(function() use ($perm, $group) {
+                    $row['area']        = \Table\Cell::forge(e($perm->area));
+                    $row['permission']  = \Table\Cell::forge(e($perm->permission));
+                    $row['actions']     = \Table\Cell::forge(function() use ($render_simple, $perm, $group) {
                             $perms = array();
                             
                             foreach ( $perm->actions as $k => $action )
                             {
-                                $perms[] = \Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', array(), $k)
-                                    ->render(new \Gasform\Render_Simple()) . '&nbsp' . __('auth.permission.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
+                                $perms[] = $render_simple->render(\Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', $k)->set_checked( (bool) array_key_exists('[' . $group->id . '][' . $perm->id . ']', $group->grouppermissions) ))
+                                    . '&nbsp;'
+                                    . __('auth.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
                             }
                             
                             return implode('<br />', $perms);
                         });
+                    
+                    $table[$perm->id] = $row;
                 }
                 
                 $data = $group;

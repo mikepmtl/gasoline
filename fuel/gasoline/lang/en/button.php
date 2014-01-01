@@ -22,6 +22,7 @@ return array(
     'delete'    => 'Delete',
     'details'   => 'Details',
     'disable'   => 'Disable',
+    'download'  => 'Download',
     
     'edit'      => 'Edit',
     'enable'    => 'Enable',

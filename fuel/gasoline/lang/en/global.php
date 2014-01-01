@@ -31,6 +31,10 @@ return array(
     'enabled'           => 'Enabled',
     'execution_stats'   => 'Executed in {exec_time}s with a memory usage of {mem_usage}MB.',
     'export'            => 'Export',
+    'external_link'     => 'External link',
+    
+    'follow_external_link'  => 'Follow external link',
+    'follow_link'           => 'Follow link',
     
     'n/a'           => 'n/a',
     

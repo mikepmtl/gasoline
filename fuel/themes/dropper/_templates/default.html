@@ -45,7 +45,11 @@
       <!-- /Page-header -->
       <?php endif; ?>
       <!-- Breadcrumb -->
-        <?php #echo Breadcrumb::render(); ?>
+      <?php
+      $engine = new \Breadcrumb\Render_Bootstrap();
+      
+      echo $engine->render(\Breadcrumb\Container::instance());
+      ?>
       <!-- /Breadcrumb -->
       
       <?php echo ( isset($content) ? $content : '' ); ?>
@@ -55,7 +59,7 @@
   
   <div id="footer">
     <div class="container">
-      <p class="text-muted credit"><span class="credit">&copy; 2013 <a href="//philipptempel.github.io">Philipp Tempel</a>.</span> <?php echo __('general.execution_stats'); ?></p>
+      <p class="text-muted credit"><span class="credit">&copy; 2013 &ndash; 2014<a href="//philipptempel.github.io">Philipp Tempel</a>.</span> <?php echo __('general.execution_stats'); ?></p>
     </div>
   </div>
   

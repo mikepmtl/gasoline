@@ -334,7 +334,7 @@ class Admin_Groups extends \Controller\Admin {
         }
         
         $cbx_group = \Gasform\Input_CheckboxGroup::forge();
-        $cbx_group['yes'] = \Gasform\Input_Checkbox::forg('confirm', 'yes', array())
+        $cbx_group['yes'] = \Gasform\Input_Checkbox::forge('confirm', 'yes', array())
             ->set_label(__('global.confirm_delete'));
         $form['confirm'] = $cbx_group
             ->set_label(__('global.confirmation'))

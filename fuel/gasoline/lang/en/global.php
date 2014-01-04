@@ -38,6 +38,7 @@ return array(
     
     'n/a'           => 'n/a',
     
+    'loading'       => 'Loading',
     'login'         => 'Log in',
     'logout'        => 'Log out',
     

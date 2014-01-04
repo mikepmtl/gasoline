@@ -136,6 +136,7 @@ abstract class Base extends \Orm\Model {
                 case 'datetime':
                 case 'datetime-local':
                 case 'email':
+                case 'file':
                 case 'month':
                 case 'number':
                 case 'password':

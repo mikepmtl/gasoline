@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-12">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.admin.permission.page-title.' . $scope, array('name' => html_tag('small', array(), ( $scope != 'user' ? e($data->name) : null ) ), 'username' => html_tag('small', array(), ( $scope == 'user' ? e($data->username) : null ))))); ?></header>
+      <header class="panel-heading"><?php echo html_tag('h4', array('class' => 'panel-title'), __('auth.navigation.admin.permission.page-title.' . $scope, array('name' => html_tag('small', array(), ( $scope != 'user' ? e($data->name) : null ) ), 'username' => html_tag('small', array(), ( $scope == 'user' ? e($data->username) : null ))))); ?></header>
       
       <?php if ( isset($table) && count($table) ) : ?>
         <?php

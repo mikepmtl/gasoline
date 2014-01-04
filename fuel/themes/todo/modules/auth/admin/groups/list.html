@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.admin.group.page-title.list')); ?></header>
+      <header class="panel-heading"><?php echo html_tag('h4', array('class' => 'panel-title'), __('auth.navigation.admin.group.page-title.list')); ?></header>
       <?php if ( count($table) ) : ?>
         <?php echo \Form::open('admin/auth/groups/action'); ?>
         <div class="table-responsive">

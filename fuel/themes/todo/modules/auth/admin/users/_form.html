@@ -13,7 +13,7 @@
     <?php echo \Message\Container::instance('user-form')->render(); ?>
     
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('auth.navigation.admin.user.page-title.' . $action, array('username' => html_tag('small', array(), e($user->username))))); ?></header>
+      <header class="panel-heading"><?php echo html_tag('h4', array('class' => 'panel-title'), __('auth.navigation.admin.user.page-title.' . $action, array('username' => html_tag('small', array(), e($user->username))))); ?></header>
       <div class="panel-body">
         <?php
         $engine = new \Gasform\Render_Bootstrap();

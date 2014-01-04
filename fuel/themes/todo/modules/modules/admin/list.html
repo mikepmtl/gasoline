@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('span', array('class' => 'h4'), __('modules.navigation.admin.page-title.list')); ?></header>
+      <header class="panel-heading"><?php echo html_tag('h4', array('class' => 'panel-title'), __('modules.navigation.admin.page-title.list')); ?></header>
       <?php echo \Form::open('admin/modules/action'); ?>
         <?php if ( count($table) ) : ?>
           <div class="table-responsive">

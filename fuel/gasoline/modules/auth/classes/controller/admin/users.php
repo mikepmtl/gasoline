@@ -36,7 +36,7 @@ class Admin_Users extends \Controller\Admin {
         
         $pagination_config = array(
             'pagination_url'    => \Uri::create('admin/auth/users'),
-            'total_items'       => \Model\Auth_User::count(),
+            'total_items'       => ( \Model\Auth_User::count() - 1 ),
             'per_page'          => 15,
             'uri_segment'       => 'page',
             'name'              => 'todo-sm',
@@ -46,6 +46,7 @@ class Admin_Users extends \Controller\Admin {
         $pagination = \Pagination::forge('users-pagination', $pagination_config);
         
         $users = \Model\Auth_User::query()
+            ->where('id', '!=', '0')
             ->limit($pagination->per_page)
             ->offset($pagination->offset)
             ->related('roles')
@@ -159,6 +160,7 @@ class Admin_Users extends \Controller\Admin {
         static::restrict('users.admin[update]');
         
         $query = \Model\Auth_User::query()
+            ->where('id', '!=', '0')
             ->related('group')
             ->related('auditor')
             ->related('metadata')
@@ -240,6 +242,7 @@ class Admin_Users extends \Controller\Admin {
         static::restrict('users.admin[read]');
         
         $query = \Model\Auth_User::query()
+            ->where('id', '!=', '0')
             ->related('group')
             ->related('auditor')
             ->related('metadata')
@@ -295,6 +298,7 @@ class Admin_Users extends \Controller\Admin {
                     try
                     {
                         $users = \Model\Auth_User::query()
+                            ->where('id', '!=', '0')
                             ->where('id', 'IN', $ids)
                             ->related('metadata')
                             ->get();

@@ -79,7 +79,7 @@
   </div>
   <div class="col-md-2">
     <section class="panel">
-      <header class="panel-heading bg-primary lter"><?php echo html_tag('span', array('class' => 'h5'), __('global.navigation')); ?></header>
+      <header class="panel-heading bg-primary lter"><?php echo html_tag('h4', array('class' => 'panel-title'), __('global.navigation')); ?></header>
       <div class="list-group">
         <?php
           echo \Html::anchor(
@@ -137,7 +137,7 @@
 <div class="row">
   <div class="col-xs-4 col-md-4">
     <section class="panel">
-      <header class="panel-heading bg-light dk"><span class="h4"><i class="fa fa-file fa-fw"></i>&nbsp;&nbsp;Metadata</span></header>
+      <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-file fa-fw"></i>&nbsp;&nbsp;Metadata</h4></header>
       <div class="list-group scrollable alt">
         <?php if ( $user->metadata ) : ?>
           <?php foreach ( $user->metadata as $metadata ) : ?>
@@ -155,7 +155,7 @@
   
   <div class="col-xs-4 col-md-4">
     <section class="panel">
-      <header class="panel-heading bg-light dk"><span class="h4"><i class="fa fa-group fa-fw"></i>&nbsp;&nbsp;Roles</span></header>
+      <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-group fa-fw"></i>&nbsp;&nbsp;Roles</h4></header>
       <div class="list-group scrollable">
         <?php if ( $user->roles ) : ?>
           <?php foreach ( $user->roles as $role ) : ?>
@@ -181,7 +181,7 @@
   
   <div class="col-xs-4 col-md-4">
     <section class="panel">
-      <header class="panel-heading bg-light dk"><span class="h4"><i class="fa fa-legal fa-fw"></i>&nbsp;&nbsp;Permissions</span></header>
+      <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-legal fa-fw"></i>&nbsp;&nbsp;Permissions</h4></header>
       <div class="list-group scrollable">
         <?php if ( $user->userpermissions ) : ?>
           <?php foreach ( $user->userpermissions as $user_perm ) : ?>

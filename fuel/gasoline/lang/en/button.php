@@ -17,6 +17,7 @@ return array(
     'back'      => 'Back',
     
     'cancel'    => 'Cancel',
+    'close'     => 'Close',
     'create'    => 'Create',
     
     'delete'    => 'Delete',
@@ -31,10 +32,13 @@ return array(
     'install'   => 'Install',
     
     'list'      => 'List',
-        
+    
+    'manage'    => 'Manage',
+    
     'new'       => 'New',
     
     'permissions'   => 'Permissions',
+    'preview'       => 'Preview',
     'print'         => 'Print',
     
     'save'      => 'Save',

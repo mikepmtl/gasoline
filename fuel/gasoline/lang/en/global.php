@@ -51,6 +51,8 @@ return array(
     'no_data_found'     => 'No data found',
     'no_data_available' => 'No data available',
     
+    'preview'       => 'Preview',
+    
     'send_email'    => 'Send an email',
     'sign_in'       => 'Sign in',
     'sign_off'      => 'Sign off',

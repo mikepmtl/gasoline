@@ -145,6 +145,15 @@ class Admin_Groups extends \Controller\Admin {
                     
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.create.success.message', array('name' => e($group->name))), __('auth.messages.group.create.success.heading'))->is_flash(true));
                     
+                    try
+                    {
+                        \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.roles');
+                    }
+                    catch ( \Exception $e )
+                    {
+                        
+                    }
+                    
                     return \Response::redirect('admin/auth/groups/details/' . $group->slug);
                 }
                 catch ( \Orm\ValidationFailed $e )
@@ -245,6 +254,15 @@ class Admin_Groups extends \Controller\Admin {
                     
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.update.success.message', array('name' => e($group->name))), __('auth.messages.group.update.success.heading'))->is_flash(true));
                     
+                    try
+                    {
+                        \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.roles');
+                    }
+                    catch ( \Exception $e )
+                    {
+                        
+                    }
+                    
                     return \Response::redirect('admin/auth/groups/details/' . $group->slug);
                 }
                 catch ( \Orm\ValidationFailed $e )
@@ -323,6 +341,15 @@ class Admin_Groups extends \Controller\Admin {
                     logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
                     
                     \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.group.delete.failure.message', array('name' => e($group->name))), __('auth.messages.group.delete.failure.heading'))->is_flash(true));
+                }
+                
+                try
+                {
+                    \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.roles');
+                }
+                catch ( \Exception $e )
+                {
+                    
                 }
             }
             else
@@ -429,6 +456,15 @@ class Admin_Groups extends \Controller\Admin {
                         {
                             $failed[] = e($group->name);
                         }
+                    }
+                    
+                    try
+                    {
+                        \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.roles');
+                    }
+                    catch ( \Exception $e )
+                    {
+                        
                     }
                     
                     $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.delete_batch.success.message', array('names' => implode(', ', $success))), __('auth.messages.group.delete_batch.success.heading'))->is_flash(true));

@@ -226,7 +226,7 @@ class Admin_Permissions extends \Controller\Admin {
                             
                             foreach ( $perm->actions as $k => $action )
                             {
-                                $perms[] = $render_simple->render(\Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', $k)->set_checked( (bool) array_key_exists('[' . $user->id . '][' . $perm->id . ']', $user->userpermissions) ))
+                                $perms[] = $render_simple->render(\Gasform\Input_Checkbox::forge('permission[' . $perm->id . '][]', $k)->set_checked( (bool) array_key_exists($key = '[' . $user->id . '][' . $perm->id . ']', $user->userpermissions) && in_array($k, $user->userpermissions[$key]->actions) ))
                                     . '&nbsp;'
                                     . __('auth.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
                             }
@@ -284,7 +284,7 @@ class Admin_Permissions extends \Controller\Admin {
                             
                             foreach ( $perm->actions as $k => $action )
                             {
-                                $perms[] = $render_simple->render(\Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', $k)->set_checked( (bool) array_key_exists('[' . $role->id . '][' . $perm->id . ']', $role->rolepermissions) ))
+                                $perms[] = $render_simple->render(\Gasform\Input_Checkbox::forge('permission[' . $perm->id . '][]', $k)->set_checked( (bool) array_key_exists($key = '[' . $role->id . '][' . $perm->id . ']', $role->rolepermissions) && in_array($k, $role->rolepermissions[$key]->actions) ))
                                     . '&nbsp;'
                                     . __('auth.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
                             }
@@ -335,7 +335,7 @@ class Admin_Permissions extends \Controller\Admin {
                             
                             foreach ( $perm->actions as $k => $action )
                             {
-                                $perms[] = $render_simple->render(\Gasform\Input_Checkbox::forge('permission[' . $perm->id . ']', $k)->set_checked( (bool) array_key_exists('[' . $group->id . '][' . $perm->id . ']', $group->grouppermissions) ))
+                                $perms[] = $render_simple->render(\Gasform\Input_Checkbox::forge('permission[' . $perm->id . '][]', $k)->set_checked( (bool) array_key_exists($key = '[' . $group->id . '][' . $perm->id . ']', $group->grouppermissions) && in_array($k, $group->grouppermissions[$key]->actions) ))
                                     . '&nbsp;'
                                     . __('auth.permissions.' . $perm->area . '.' . $perm->permission . '.' . $action);
                             }
@@ -360,10 +360,14 @@ class Admin_Permissions extends \Controller\Admin {
     
     protected function set_permissions($scope, $id = null)
     {
-        if ( ! $id )
+        if ( ! $id OR ( \Input::post($scope . '_id') != $id ) )
         {
             throw new \HttpNotFoundException();
         }
+        
+        $new_perms = \Input::post('permission', \Input::post('permissions', array()));
+        
+        $redirect = '';
         
         switch ( $scope )
         {
@@ -372,17 +376,172 @@ class Admin_Permissions extends \Controller\Admin {
             break;
             
             case 'user':
+                $query = \Model\Auth_User::query()
+                    ->related('userpermissions')
+                    ->related('userpermissions.permission')
+                    ->where('id', '!=', '0')
+                    ->where('id', '=', $id);
                 
+                if ( ! $user = $query->get_one() )
+                {
+                    throw new \HttpNotFoundException();
+                }
+                
+                if ( $user->userpermissions )
+                {
+                    foreach ( $user->userpermissions as $userpermission )
+                    {
+                        // Permission is still set?
+                        if ( in_array($userpermission->perms_id, $new_perms) )
+                        {
+                            // Then just update the assigned actions
+                            $userpermission->actions = $new_perms[$userpermission->perms_id];
+                        }
+                        // Permission was revoked
+                        else
+                        {
+                            unset($new_perms[array_search($userpermission->perms_id, $new_perms)]);
+                            
+                            $userpermission->delete();
+                        }
+                    }
+                }
+                
+                if ( $new_perms )
+                {
+                    foreach ( $new_perms as $perm_id => $_new_perms )
+                    {
+                        $userpermission = \Model\Auth_Userpermission::forge(array(
+                            'user_id'   => $id,
+                            'perms_id'  => $perm_id,
+                            'actions'   => $_new_perms,
+                        ));
+                        
+                        $userpermission->save();
+                    }
+                }
+                
+                try
+                {
+                    \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.permissions.user_' . $user->id);
+                }
+                catch ( \Exception $e )
+                {
+                    
+                }
+                
+                $redirect = '/users/' . $user->username;
             break;
             
             case 'role':
+                $query = \Model\Auth_Role::query()
+                    ->related('rolepermissions')
+                    ->related('rolepermissions.permission')
+                    ->where('id', '!=', '0')
+                    ->where('id', '=', $id);
                 
+                if ( ! $role = $query->get_one() )
+                {
+                    throw new \HttpNotFoundException();
+                }
+                
+                if ( $role->rolepermissions )
+                {
+                    foreach ( $role->rolepermissions as $rolepermission )
+                    {
+                        // Permission is still set?
+                        if ( in_array($rolepermission->perms_id, $new_perms) )
+                        {
+                            // Then just update the assigned actions
+                            $rolepermission->actions = $new_perms[$rolepermission->perms_id];
+                        }
+                        // Permission was revoked
+                        else
+                        {
+                            unset($new_perms[array_search($rolepermission->perms_id, $new_perms)]);
+                            
+                            $rolepermission->delete();
+                        }
+                    }
+                }
+                
+                if ( $new_perms )
+                {
+                    foreach ( $new_perms as $perm_id => $_new_perms )
+                    {
+                        $rolepermission = \Model\Auth_Rolepermission::forge(array(
+                            'role_id'   => $id,
+                            'perms_id'  => $perm_id,
+                            'actions'   => $_new_perms,
+                        ));
+                        
+                        $rolepermission->save();
+                    }
+                }
+                
+                $redirect = '/roles/' . $role->name;
             break;
             
             case 'group':
+                $query = \Model\Auth_Group::query()
+                    ->related('grouppermissions')
+                    ->related('grouppermissions.permission')
+                    ->where('id', '!=', '0')
+                    ->where('id', '=', $id);
                 
+                if ( ! $group = $query->get_one() )
+                {
+                    throw new \HttpNotFoundException();
+                }
+                
+                if ( $group->grouppermissions )
+                {
+                    foreach ( $group->grouppermissions as $grouppermission )
+                    {
+                        // Permission is still set?
+                        if ( in_array($grouppermission->perms_id, $new_perms) )
+                        {
+                            // Then just update the assigned actions
+                            $grouppermission->actions = $new_perms[$grouppermission->perms_id];
+                        }
+                        // Permission was revoked
+                        else
+                        {
+                            unset($new_perms[array_search($grouppermission->perms_id, $new_perms)]);
+                            
+                            $grouppermission->delete();
+                        }
+                    }
+                }
+                
+                if ( $new_perms )
+                {
+                    foreach ( $new_perms as $perm_id => $_new_perms )
+                    {
+                        $grouppermission = \Model\Auth_Grouppermission::forge(array(
+                            'group_id'   => $id,
+                            'perms_id'  => $perm_id,
+                            'actions'   => $_new_perms,
+                        ));
+                        
+                        $grouppermission->save();
+                    }
+                }
+                
+                try
+                {
+                    \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
+                }
+                catch ( \Exception $e )
+                {
+                    
+                }
+                
+                $redirect = '/groups/' . $group->name;
             break;
         }
+        
+        return \Response::redirect_back('admin/auth/permissions' . $redirect);
     }
     
 }

@@ -21,52 +21,43 @@
  *         action_2 => Human readable 2
  */
 return array(
-    'users' => array(
+    'auth' => array(
         'admin' => array(
-            'create'    => 'Create user',
-            'read'      => 'Show details for a user',
-            'update'    => 'Update user',
-            'delete'    => 'Delete user',
-            'list'      => 'List users',
-        ),
-    ),
-    
-    'roles' => array(
-        'admin' => array(
-            'create'    => 'Create role',
-            'read'      => 'Show details for a role',
-            'update'    => 'Update role',
-            'delete'    => 'Delete role',
-            'list'      => 'List roles',
-        ),
-    ),
-    
-    'groups' => array(
-        'admin' => array(
-            'create'    => 'Create group',
-            'read'      => 'Show details for a group',
-            'update'    => 'Update group',
-            'delete'    => 'Delete group',
-            'list'      => 'List groups',
-        ),
-    ),
-    
-    'permissions' => array(
-        'admin' => array(
-            'user'          => 'Manage any user\'s permissions',
-            'user_create'   => 'Allow permission for user',
-            'user_update'   => 'Change permissions of user',
-            'user_delete'   => 'Withdraw permission of user',
+            'users[list]'   => 'List ',
+            'users[create]' => 'Create new user',
+            'users[read]'   => 'Show details of a user',
+            'users[update]' => 'Update a user',
+            'users[delete]' => 'Delete a user',
             
-            'role'          => 'Manage any role\'s permissions',
-            'role_create'   => 'Allow permission for role',
-            'role_update'   => 'Change permissions of role',
-            'role_delete'   => 'Withdraw permission of role',
             
-            'group'         => 'Manage any group\'s permissions',
-            'group_create'  => 'Allow permission for group',
-            'group_update'  => 'Change permissions of group',
-            'group_delete'  => 'Withdraw permission of group',
+            'roles[list]'   => 'List ',
+            'roles[create]' => 'Create new role',
+            'roles[read]'   => 'Show details of a role',
+            'roles[update]' => 'Update a role',
+            'roles[delete]' => 'Delete a role',
+            
+            
+            'groups[list]'      => 'List ',
+            'groups[create]'    => 'Create new group',
+            'groups[read]'      => 'Show details of a group',
+            'groups[update]'    => 'Update a group',
+            'groups[delete]'    => 'Delete a group',
+            
+            
+            'permissions[user]'             => 'Manger any user\'s permissions',
+            'permissions[user[create]]'     => 'Allow permission for a user',
+            'permissions[user[update]]'     => 'Change permissions for a user',
+            'permissions[user[delete]]'     => 'Withdraw permissions for auser',
+            
+            'permissions[roles]'            => 'Manage any role\'s permissions',
+            'permissions[roles[create]]'    => 'Allow permission for a role',
+            'permissions[roles[update]]'    => 'Change permissions for a role',
+            'permissions[roles[delete]]'    => 'Withdraw permissions for arole',
+            
+            'permissions[groups]'           => 'Manage any group\'s permissions',
+            'permissions[groups[create]]'   => 'Allow permission for a group',
+            'permissions[groups[update]]'   => 'Change permissions for a group',
+            'permissions[groups[delete]]'   => 'Withdraw permissions for agroup',
         ),
     ),
 );

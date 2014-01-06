@@ -165,6 +165,8 @@ class Admin extends \Controller\Admin {
         }
         catch ( \Exception $e )
         {
+            logger(\Fuel::L_DEBUG, $e->getMessage());
+            
             \Message\Container::push(\Message\Item::forge('danger', __('modules.messages.enable.failure.message', array('name' => e($module->name))), __('modules.messages.enable.failure.heading'))->is_flash(true));
         }
         
@@ -195,6 +197,8 @@ class Admin extends \Controller\Admin {
         }
         catch ( \Exception $e )
         {
+            logger(\Fuel::L_DEBUG, $e->getMessage());
+            
             \Message\Container::push(\Message\Item::forge('danger', __('modules.messages.disable.failure.message', array('name' => e($module->name))), __('modules.messages.disable.failure.heading'))->is_flash(true));
         }
         

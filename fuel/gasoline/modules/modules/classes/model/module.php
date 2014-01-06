@@ -242,6 +242,19 @@ class Module extends \Gasoline\Model\Base implements \Gasoline\Orm\Interface_Del
     {
         $slug = $this->_data['slug'];
         
+        // Let's first load the module and see if there's a "down" method on te
+        // installer
+        \Module::load($this->get('slug'));
+        
+        $class = '\\' . ucwords($this->get('slug')) . '\\Installer';
+        
+        // \<Module>\Installer::down() ?
+        if ( class_exists($class) && method_exists($class, 'down') && is_callable(array($class, 'down')) )
+        {
+            // Call it
+            $class::down();
+        }
+        
         // Delete the DB record and its relations (if any)
         if ( parent::delete($cascade, $use_transaction) )
         {
@@ -282,6 +295,15 @@ class Module extends \Gasoline\Model\Base implements \Gasoline\Orm\Interface_Del
      */
     public function enable()
     {
+        \Module::load($this->get('slug'));
+        
+        $class = '\\' . ucwords($this->get('slug')) . '\\Installer';
+        
+        if ( class_exists($class) && method_exists($class, 'enable') && is_callable(array($class, 'enable')) )
+        {
+            $class::enable();
+        }
+        
         $this->status = 1;
         
         $this->save();
@@ -290,6 +312,15 @@ class Module extends \Gasoline\Model\Base implements \Gasoline\Orm\Interface_Del
     
     public function disable()
     {
+        \Module::load($this->get('slug'));
+        
+        $class = '\\' . ucwords($this->get('slug')) . '\\Installer';
+        
+        if ( class_exists($class) && method_exists($class, 'disable') && is_callable(array($class, 'disable')) )
+        {
+            $class::disable();
+        }
+        
         $this->status = 0;
         
         $this->save();

@@ -33,6 +33,7 @@ return array(
     'export'            => 'Export',
     'external_link'     => 'External link',
     
+    'file'                  => 'File',
     'follow_external_link'  => 'Follow external link',
     'follow_link'           => 'Follow link',
     

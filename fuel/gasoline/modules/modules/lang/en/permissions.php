@@ -20,7 +20,7 @@ return array(
             'enable'    => 'Enable module',
             'disable'   => 'Disable module',
             'upload'    => 'Upload new module',
-            'register'  => 'Register module',
+            'download'  => 'Download module',
         ),
     ),
 );

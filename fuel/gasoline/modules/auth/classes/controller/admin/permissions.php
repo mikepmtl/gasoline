@@ -113,7 +113,7 @@ class Admin_Permissions extends \Controller\Admin {
             break;
             
             case 'users':
-                $users = $data = \Model\Auth_User::find('all');
+                $users = $data = \Model\Auth_User::find('all', array('where' => array(array('id', '!=', '0'))));
                 
                 foreach ( $users as &$user )
                 {
@@ -193,6 +193,7 @@ class Admin_Permissions extends \Controller\Admin {
                 $query = \Model\Auth_User::query()
                     ->related('userpermissions')
                     ->related('userpermissions.permission')
+                    ->where('id', '!=', '0')
                     ->and_where_open()
                         ->where('id', '=', $id)
                         ->or_where('username', '=', $id)
@@ -212,6 +213,9 @@ class Admin_Permissions extends \Controller\Admin {
                 
                 foreach ( $perms as &$perm )
                 {
+                    \Module::exists($perm->area) && \Module::load($perm->area);
+                    
+                    $lang = ( \Lang::load($perm->area . '::permissions', 'auth.permissions') ? : \Lang::load('permissions.' . $perm->area, 'auth.permissions') );
                     $row = \Table\Row::forge()
                         ->set_meta('permission', $perm);
                     
@@ -317,6 +321,10 @@ class Admin_Permissions extends \Controller\Admin {
                 
                 foreach ( $perms as &$perm )
                 {
+                    \Module::exists($perm->area) && \Module::load($perm->area);
+                    
+                    $lang = ( \Lang::load($perm->area . '::permissions', 'auth.permissions') ? : \Lang::load('permissions.' . $perm->area, 'auth.permissions') );
+                    
                     $row = \Table\Row::forge()
                         ->set_meta('permission', $perm);
                     

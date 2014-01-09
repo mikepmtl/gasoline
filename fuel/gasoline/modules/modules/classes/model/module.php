@@ -285,7 +285,7 @@ class Module extends \Gasoline\Model\Base implements \Gasoline\Orm\Interface_Del
         
         \Lang::load($this->slug . '::description', 'modules.module.' . $this->slug . '.description');
         
-        $this->set('description', \Lang::get('modules.module.' . $this->slug . '.description'));
+        $this->set('description', \Lang::get('modules.module.' . $this->slug . '.description', array(), array('short' => '', 'long' => '')));
     }
     
     

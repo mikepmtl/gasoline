@@ -224,7 +224,7 @@ class Admin_Users extends \Controller\Admin {
         }
         
         $btn_group = new \Gasform\Input_ButtonGroup();
-        $submit = new \Gasform\Input_Submit('submit', __('button.update'), arary());
+        $submit = new \Gasform\Input_Submit('submit', __('button.update'), array());
         $btn_group['submit'] = $submit;
         
         $form['btn-group'] = $btn_group;

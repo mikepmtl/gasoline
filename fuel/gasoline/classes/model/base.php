@@ -204,7 +204,7 @@ abstract class Base extends \Orm\Model {
                         continue;
                     }
                     
-                    ( $help = \Arr::get($options, 'form.help', false) ) && $el->set_meta('help', $help);
+                    ( $help = \Arr::get($options, 'form.help', false) ) && $el->set_meta('help', \Lang::get($help, array(), false) ? : $help);
                     
                     \Arr::get($options, 'validation', false) && $el->set_validation(\Arr::get($options, 'validation'));
                     
@@ -232,7 +232,7 @@ abstract class Base extends \Orm\Model {
                         
                         $group->set_name($p)->set_label($label);
                         
-                        ( $help = \Arr::get($options, 'form.help', false) ) && $group->set_meta('help', $help);
+                        ( $help = \Arr::get($options, 'form.help', false) ) && $group->set_meta('help', \Lang::get($help, array(), false) ? : $help);
                         
                         \Arr::get($options, 'validation', false) && $group->set_validation(\Arr::get($options, 'validation'));
                         

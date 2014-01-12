@@ -13,13 +13,18 @@
 
 abstract class Base extends \Orm\Model {
     
+    /**
+     * Can be any of the following
+     * 
+     * boolean  Indicates whether this model supports "as checkbox", "as radio",
+     *          and "as select" (true supports all, false supports none)
+     * string   Indicates which type the model supports. Can be any of "checkbox",
+     *          "radio, or "select"
+     * array    Indicates which types the model supports. For example
+     *          array('radio', 'select')
+     * 
+     */
     // protected static $_form_element_support = false;
-    
-    // protected static $_form_element_options = array(
-    //     'content'    => null,    // What to display in the dropdown
-    //     'group'      => null,    // Whether to allow grouping
-    //     'value'      => null,    // What the submitted value will be
-    // );
     
     protected static $_form_elements_cached = array();
     
@@ -263,28 +268,55 @@ abstract class Base extends \Orm\Model {
      * 
      * @return  \Gasform\Input_Select
      */
-    public static function to_form_element($content = null, $value = null)
+    public static function to_form_element($type = 'select')
     {
         $me = get_called_class();
         
-        if ( ! ( isset(static::$_form_element_support) && static::$_form_element_support === true ) )
+        // Check that the model supports form element output
+        if ( ! isset(static::$_form_element_support) )
         {
             throw new \RuntimeException('Model ' . $me . ' does not support method to_form_element');
         }
+        else
+        {
+            if ( ( is_bool(static::$_form_element_support) && static::$_form_element_support !== true )
+                || ( is_string(static::$_form_element_support) && $type != static::$_form_element_support )
+                || ( is_array(static::$_form_element_support) && ! in_array($type, static::$_form_element_support) )
+                )
+            {
+                throw new \RuntimeException('Model ' . $me . ' does not support to_form_element with specified type [' . $type . ']');
+            }
+            elseif ( ! in_array($type, array('checkbox', 'radio', 'select')) )
+            {
+                throw new \RuntimeException('Invalid form type [' . $type .'] given when calling ' . $me . '::to_form_element()');
+            }
+            // else
+            // {
+            //     throw new \RuntimeException('Model ' . $me . ' has an invalid definiton for property $_form_element_support');
+            // }
+        }
         
-        $content OR $content = static::$_form_element_options['content'];
-        $value   OR $value   = static::$_form_element_options['value'];
+        // Correct options defined?
+        if ( ! ( isset(static::$_form_element_options) && is_array(static::$_form_element_options) ) )
+        {
+            throw new \RuntimeException('Model ' . $me . ' has an invalid definition for property $_form_element_options');
+        }
         
-        // Check if we already processed the form element with the given content and value
-        $hash = md5($me . $content . $value);
+        // Get the options
+        $content = static::$_form_element_options['content'];
+        $value   = static::$_form_element_options['value'];
+        
+        // See if we have already cached the form element
+        $hash = md5($me . $type . $content . $value);
+        
         if ( isset(static::$_form_elements_cached[$hash]) )
         {
             return static::$_form_elements_cached[$hash];
         }
         
-        // Load the gasform package and create a new form select item
+        // Nothing cached, so load the gasform package and proceed with getting
+        // data in
         \Package::load('gasform');
-        $select = \Gasform\Input_Select::forge();
         
         // Get the rows from the table
         $query = \DB::select($content, $value)
@@ -308,19 +340,34 @@ abstract class Base extends \Orm\Model {
             }
         }
         
-        // Get the options
-        if ( $options = $query->execute() )
+        // Query the database
+        $options = $query->execute();
+        
+        // Make code easier and extract the container's element class and the
+        // element's class
+        $container  = ( $type == 'select' ? '\\Gasform\\Input_Select' : '\\Gasform\\Input_' . ucwords($type) . 'Group' );
+        $element    = ( $type == 'select' ? '\\Gasform\\Input_Option' : '\\Gasform\\Input_' . ucwords($type) );
+        
+        // Forge a new container
+        $el = $container::forge();
+        
+        // Got options?
+        if ( $options )
         {
+            // Get them as array with key as per $content and value as per $value
             $options = $options->as_array($content, $value);
             
-            // And parse them
+            // Loop over them results
             foreach ( $options as $_content => $_value )
             {
-                $select[] = \Gasform\Input_Option::forge($_content, $_value, array());
+                // Forge a new element and assign it to the element container
+                $el[$_value] = $element::forge($_content, $_value)
+                    ->set_label(e($_content));
             }
         }
         
-        return static::$_form_elements_cached[$hash] = $select;
+        // Return the cached form element we just created
+        return static::$_form_elements_cached[$hash] = $el;
     }
     
 }

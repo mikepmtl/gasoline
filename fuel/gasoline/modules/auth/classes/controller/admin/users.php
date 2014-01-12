@@ -343,7 +343,7 @@ class Admin_Users extends \Controller\Admin {
         }
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/delete', __('auth.navigation.admin.user.breadcrumb.delete'));
-        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/delete/' . $user->slug, e($user->username));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/delete/' . $user->username, e($user->username));
         
         $form = $user->to_form();
         

@@ -193,7 +193,7 @@ abstract class Base extends \Orm\Model {
                         
                         if ( false !== ( $default = \Arr::get($options, 'default', false) ) )
                         {
-                            $el->populate($default);
+                            $el->populate(array($el->get_name() => (array) $default));
                         }
                     }
                     else

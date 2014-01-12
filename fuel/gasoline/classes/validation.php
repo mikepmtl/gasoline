@@ -167,6 +167,11 @@ class Validation extends \Fuel\Core\Validation {
      */
     public static function _validation_exists($val, $tbl_fld)
     {
+        if ( is_null($val) )
+        {
+            return true;
+        }
+        
         // Get table and field from the options passed
         list($table, $field) = explode('.', $tbl_fld, 2);
         

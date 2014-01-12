@@ -110,6 +110,12 @@ class Role extends \Model\Base {
         ),
     );
     
+    protected static $_conditions = array(
+        'order_by'  => array(
+            'name'  => 'asc',
+        ),
+    );
+    
     /**
      * @var array   defined observers
      */

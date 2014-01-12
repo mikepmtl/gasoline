@@ -92,6 +92,13 @@ class Permission extends \Model\Base {
         ),
     );
     
+    protected static $_conditions = array(
+        'order_by'  => array(
+            'area'          => 'asc',
+            'permission'    => 'asc',
+        ),
+    );
+    
     /**
      * @var array   defined observers
      */

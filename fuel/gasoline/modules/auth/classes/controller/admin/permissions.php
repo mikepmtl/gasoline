@@ -215,7 +215,7 @@ class Admin_Permissions extends \Controller\Admin {
                 {
                     \Module::exists($perm->area) && \Module::load($perm->area);
                     
-                    $lang = ( \Lang::load($perm->area . '::permissions', 'auth.permissions') ? : \Lang::load('permissions.' . $perm->area, 'auth.permissions') );
+                    $lang = ( \Lang::load($perm->area . '::permissions', 'auth.permissions') ? : \Lang::load('permissions/' . $perm->area, 'auth.permissions') );
                     $row = \Table\Row::forge()
                         ->set_meta('permission', $perm);
                     
@@ -272,7 +272,7 @@ class Admin_Permissions extends \Controller\Admin {
                 {
                     \Module::exists($perm->area) && \Module::load($perm->area);
                     
-                    $lang = ( \Lang::load($perm->area . '::permissions', 'auth.permissions') ? : \Lang::load('permissions.' . $perm->area, 'auth.permissions') );
+                    $lang = ( \Lang::load($perm->area . '::permissions', 'auth.permissions') ? : \Lang::load('permissions/' . $perm->area, 'auth.permissions') );
                     
                     $row = \Table\Row::forge()
                         ->set_meta('permission', $perm);
@@ -323,7 +323,7 @@ class Admin_Permissions extends \Controller\Admin {
                 {
                     \Module::exists($perm->area) && \Module::load($perm->area);
                     
-                    $lang = ( \Lang::load($perm->area . '::permissions', 'auth.permissions') ? : \Lang::load('permissions.' . $perm->area, 'auth.permissions') );
+                    $lang = ( \Lang::load($perm->area . '::permissions', 'auth.permissions') ? : \Lang::load('permissions/' . $perm->area, 'auth.permissions') );
                     
                     $row = \Table\Row::forge()
                         ->set_meta('permission', $perm);

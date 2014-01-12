@@ -107,7 +107,9 @@ class Admin_Roles extends \Controller\Admin {
         
         if ( \Input::method() === "POST" )
         {
-            $val = \Validation::forge()->add_model($role);
+            $val = $form->forge_validation();
+            
+            $form->repopulate(\Input::post());
             
             if ( $val->run() )
             {
@@ -136,17 +138,19 @@ class Admin_Roles extends \Controller\Admin {
                 catch ( \Orm\ValidationFailed $e )
                 {
                     \Message\Container::instance('role-form')->push(\Message\Item::forge('warning', __('auth.messages.role.validation_failed.message'), __('auth.messages.role.validation_failed.heading')));
+                    
+                    $form->set_errors($e->get_fieldset());
                 }
                 catch ( \Exception $e )
                 {
+                    logger(\Fuel::L_DEBUG, $e->getMessage());
+                    
                     \Message\Container::instance('role-form')->push(\Message\Item::forge('danger', __('auth.messages.role.create.failure.message'), __('auth.messages.role.create.failure.heading')));
                 }
             }
             else
             {
                 \Message\Container::instance('role-form')->push(\Message\Item::forge('warning', __('auth.messages.role.validation_failed.message'), __('auth.messages.role.validation_failed.heading')));
-                
-                $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
             }
@@ -192,7 +196,9 @@ class Admin_Roles extends \Controller\Admin {
         
         if ( \Input::method() === "POST" )
         {
-            $val = \Validation::forge()->add_model($role);
+            $val = $form->forge_validation();
+            
+            $form->repopulate(\Input::post());
             
             if ( $val->run() )
             {
@@ -221,17 +227,19 @@ class Admin_Roles extends \Controller\Admin {
                 catch ( \Orm\ValidationFailed $e )
                 {
                     \Message\Container::instance('role-form')->push(\Message\Item::forge('warning', __('auth.messages.role.validation_failed.message'), __('auth.messages.role.validation_failed.heading')));
+                    
+                    $form->set_errors($e->get_fieldset());
                 }
                 catch ( \Exception $e )
                 {
+                    logger(\Fuel::L_DEBUG, $e->getMessage());
+                    
                     \Message\Container::instance('role-form')->push(\Message\Item::forge('danger', __('auth.messages.role.update.failure.message'), __('auth.messages.role.update.failure.heading')));
                 }
             }
             else
             {
                 \Message\Container::instance('role-form')->push(\Message\Item::forge('warning', __('auth.messages.role.validation_failed.message'), __('auth.messages.role.validation_failed.heading')));
-                
-                $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
             }

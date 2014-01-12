@@ -111,24 +111,53 @@ class Admin_Users extends \Controller\Admin {
         
         $form = $user->to_form();
         
-        $roles = \Model\Auth_Role::to_form_element();
-        $form['roles'] = $roles->set_name('roles[]')->set_label(__('auth.model.user.roles'))->allow_multiple(true);
-        
         if ( \Input::method() === "POST" )
         {
-            $val = \Validation::forge()->add_model($user);
+            $val = $form->forge_validation();
+            
+            $form->repopulate(\Input::post());
             
             if ( $val->run() )
             {
-                if ( $user_id = \Auth::create_user($val->validated('username'), $val->validated('password'), $val->validated('email'), $val->validated('group_id'), array()) )
+                try
                 {
+                    $user = \Model\Auth_User::forge(array(
+                        'username'  => $val->validated('username'),
+                        'email'     => $val->validated('email'),
+                        'group_id'  => $val->validated('group_id'),
+                        'password'  => \Auth::hash_password($val->validated('password')),
+                    ));
+                    
+                    if ( $roles = \Input::post('roles', \Input::post('role_ids', \Input::post('role_id', false))) )
+                    {
+                        try
+                        {
+                            $roles = \Model\Auth_Role::query()
+                                ->where('id', 'IN', $roles)
+                                ->get();
+                            
+                            $user->roles = $roles;
+                        }
+                        catch ( \Exception $e ) {}
+                    }
+                    
+                    $user->save();
+                    
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.create.success.message', array('username' => e($user->username))), __('auth.messages.user.create.success.heading'))->is_flash(true));
                     
-                    return \Response::redirect('admin/auth/users/details/' . $user_id);
+                    return \Response::redirect('admin/auth/users/details/' . $user->username);
                 }
-                else
+                catch ( \Orm\ValidationFailed $e )
                 {
-                    \Message\Container::instance('user-form')->push(\Message\Item::forge('danger', __('auth.messages.user.create.failure.message'), __('auth.messages.user.create.failure.heading')));
+                    \Message\Container::instance('user-form')->push(\Message\Item::forge('warning', __('auth.messages.user.validation_failed.message'), __('auth.messages.user.validation_failed.heading')));
+                    
+                    $form->set_errors($e->get_fieldset());
+                }
+                catch ( \Exception $e )
+                {
+                    logger(\Fuel::L_DEBUG, $e->getMessage());
+                    
+                    \Message\Container::instance('user-form')->push(\Message\Item::forge('danger', __('auth.messages.user.create.failure.message', array('username' => $user->username)), __('auth.messages.user.create.failure.heading')));
                 }
             }
             else
@@ -182,21 +211,66 @@ class Admin_Users extends \Controller\Admin {
         
         $form = $user->to_form();
         
-        $password_repeat = new \Gasform\Input_Password('password_repeat');
-        $form['password_repeat'] = $password_repeat->set_label(__('auth.model.user.password_repeat'));
+        // $password_repeat = new \Gasform\Input_Password('password_repeat');
+        // $form['password_repeat'] = $password_repeat->set_label(__('auth.model.user.password_repeat'));
         
         if ( \Input::method() === "POST" )
         {
-            $val = \Validation::forge()->add_model($user);
+            $val = $form->forge_validation();
+            
+            $form->repopulate(\Input::post());
             
             if ( $val->run() )
             {
                 try
                 {
-                    // $user->from_array(array(
-                    //     'name'      => $val->validated('name'),
-                    //     'filter'    => $val->validated('filter'),
-                    // ));
+                    $user->from_array(array(
+                        'username'  => $val->validated('username'),
+                        'group_id'  => $val->validated('group_id'),
+                        'email'     => $val->validated('email'),
+                    ));
+                    
+                    if ( $val->validated('password') )
+                    {
+                        $user->set('password', \Auth::hash_password($val->validated('password')));
+                    }
+                    
+                    if ( $roles = \Input::post('roles', \Input::post('role_ids', \Input::post('role_id', false))) )
+                    {
+                        is_array($roles) OR $roles = (array) $roles;
+                        
+                        foreach ( $user->roles as $id => $role )
+                        {
+                            if ( ! in_array($id, $roles) )
+                            {
+                                unset($user->roles[$id]);
+                            }
+                            else
+                            {
+                                unset($roles[array_search($id, $roles)]);
+                            }
+                        }
+                        
+                        if ( $roles )
+                        {
+                            try
+                            {
+                                $roles = \Model\Auth_Role::query()
+                                    ->where('id', 'IN', $roles)
+                                    ->get();
+                                
+                                foreach ( $roles as $role )
+                                {
+                                    $user->roles[] = $role;
+                                }
+                            }
+                            catch ( \Exception $e ) {}
+                        }
+                    }
+                    else
+                    {
+                        unset($user->roles);
+                    }
                     
                     $user->save();
                     
@@ -207,9 +281,13 @@ class Admin_Users extends \Controller\Admin {
                 catch ( \Orm\ValidationFailed $e )
                 {
                     \Message\Container::instance('user-form')->push(\Message\Item::forge('warning', __('auth.messages.user.validation_failed.message'), __('auth.messages.user.validation_failed.heading')));
+                    
+                    $form->set_errors($e->get_fieldset());
                 }
                 catch ( \Exception $e )
                 {
+                    logger(\Fuel::L_DEBUG, $e->getMessage());
+                    
                     \Message\Container::instance('user-form')->push(\Message\Item::forge('danger', __('auth.messages.user.update.failure.message', array('username' => $user->username)), __('auth.messages.user.update.failure.heading')));
                 }
             }
@@ -232,6 +310,95 @@ class Admin_Users extends \Controller\Admin {
         $this->view = static::$theme
             ->view('admin/users/_form')
             ->set('action', 'update')
+            ->set('form', $form)
+            ->set('user', $user);
+    }
+    
+    
+    public function action_delete($id)
+    {
+        static::restrict('users.admin[delete]');
+        
+        $query = \Model\Auth_User::query()
+            ->where('id', '!=', '0')
+            ->related('group')
+            ->related('auditor')
+            ->related('metadata')
+            ->related('userpermissions')
+            ->related('roles')
+            ->related('permissions')
+            ->and_where_open()
+                ->where('id', '=', $id)
+                ->or_where('username', '=', $id)
+            ->and_where_close();
+        
+        if ( ! ( $user = $query->get_one() ) )
+        {
+            throw new \HttpNotFoundException();
+        }
+        
+        if ( ! $user->is_deletable() )
+        {
+            return \Response::redirect_back('admin/auth/users');
+        }
+        
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/delete', __('auth.navigation.admin.user.breadcrumb.delete'));
+        \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/delete/' . $user->slug, e($user->username));
+        
+        $form = $user->to_form();
+        
+        $form->disable_fields();
+        
+        if ( \Input::method() === "POST" )
+        {
+            if ( \Input::post('confirm') === 'yes' )
+            {
+                try
+                {
+                    $username = $user->username;
+                    $user->delete();
+                    
+                    \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.delete.success.message', array('username' => e($username))), __('auth.messages.user.delete.success.heading'))->is_flash(true));
+                }
+                catch ( \Exception $e )
+                {
+                    logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
+                    
+                    \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.user.delete.failure.message', array('username' => e($user->username))), __('auth.messages.user.delete.failure.heading'))->is_flash(true));
+                }
+                
+                try
+                {
+                    \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.roles');
+                }
+                catch ( \Exception $e )
+                {
+                    
+                }
+            }
+            else
+            {
+                \Message\Container::push(\Message\Item::forge('warning', __('auth.messages.user.warning.delete.message', array('username' => e($user->username))), __('auth.messages.user.warning.delete.heading'))->is_flash(true));
+            }
+            
+            return \Response::redirect('admin/auth/users');
+        }
+        
+        $cbx_group = \Gasform\Input_CheckboxGroup::forge();
+        $cbx_group['yes'] = \Gasform\Input_Checkbox::forge('confirm', 'yes', array())
+            ->set_label(__('global.confirm_delete'));
+        $form['confirm'] = $cbx_group
+            ->set_label(__('global.confirmation'))
+            ->allow_multiple(false);
+        
+        $btn_group = new \Gasform\Input_ButtonGroup();
+        $btn_group['submit'] = \Gasform\Input_Submit::forge('submit', __('button.delete'), array());
+        
+        $form['btn-group'] = $btn_group;
+        
+        $this->view = static::$theme
+            ->view('admin/users/_form')
+            ->set('action', 'delete')
             ->set('form', $form)
             ->set('user', $user);
     }
@@ -317,6 +484,11 @@ class Admin_Users extends \Controller\Admin {
                     
                     foreach ( $users as &$user )
                     {
+                        if ( ! $user->is_deletable() )
+                        {
+                            continue;
+                        }
+                        
                         try
                         {
                             $username = $user->username;

@@ -1,11 +1,11 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/groups/page-headers/_form')->set('action', $action)); ?>
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/groups/page-headers/_form')->set('action', $action)->set('group', $group)); ?>
 
 <div class="row">
   <div class="col-md-10">
     <?php echo \Message\Container::instance('group-form')->render(); ?>
     
     <section class="panel">
-      <header class="panel-heading"><?php echo html_tag('h4', array('class' => 'panel-title'), __('auth.navigation.admin.group.page-title.' . $action)); ?></header>
+      <header class="panel-heading"><?php echo html_tag('h4', array('class' => 'panel-title'), __('auth.navigation.admin.group.page-title.' . $action, array('name' => html_tag('small', array(), e($group->name))))); ?></header>
       <div class="panel-body">
         <?php
         $engine = new \Gasform\Render_Bootstrap();

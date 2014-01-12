@@ -78,6 +78,7 @@ class User extends \Model\Base {
             ),
             'validation'  => array(
                 'min_length' => array(4),
+                'required_with' => array('password_repeat'),
             )
         ),
         'last_login' => array(
@@ -282,6 +283,50 @@ class User extends \Model\Base {
         list(, $user_id) = \Auth::get_user_id();
         
         return ( $this->id != $user_id );
+    }
+    
+    
+    /**
+     * [to_form description]
+     * @param  [type] $form [description]
+     * @return [type]       [description]
+     */
+    public function to_form($form = null)
+    {
+        $form = parent::to_form($form);
+        
+        if ( $this->is_new() )
+        {
+            $form['password']->set_validation(\Arr::merge(array('required'), $form['password']->get_validation()));
+        }
+        else
+        {
+            $form['password']->set_validation(\Arr::merge(array('required_with' => array('password_repeat')), $form['password']->get_validation()));
+        }
+        
+        $password_repeat = \Gasform\Input_Password::forge('password_repeat', null)
+            ->set_label(__('auth.model.user.password_repeat'))
+            ->set_validation(array('required_with' => array('password'), 'match_field' => array('password')));
+        
+        if ( $this->is_new() )
+        {
+            $password_repeat->set_validation(\Arr::merge(array('required'), $password_repeat->get_validation()));
+        }
+        else
+        {
+            $password_repeat->set_validation(\Arr::merge(array('required_with' => array('password')), $password_repeat->get_validation()));
+        }
+        
+        $form->insert_after_key(array('password_repeat' => $password_repeat), 'password', true);
+        
+        $roles = \Model\Auth_Role::to_form_element('select');
+        $form['roles'] = $roles->set_name('roles[]')
+            ->set_label(__('auth.model.user.roles'))
+            ->allow_multiple(true);
+        
+        $form->populate(array('roles' => array_keys($this->roles)));
+        
+        return $form;
     }
     
     

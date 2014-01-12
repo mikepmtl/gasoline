@@ -210,6 +210,31 @@ class Group extends \Model\Base {
     
     
     
+    /**
+     * [to_form description]
+     * @param  [type] $form [description]
+     * @return [type]       [description]
+     */
+    public function to_form($form = null)
+    {
+        $form = parent::to_form($form);
+        
+        $form['roles'] = \Model\Auth_Role::to_form_element('select')
+            ->allow_multiple(true)
+            ->set_label(__('auth.model.group.roles'))
+            ->set_name('roles')
+            ->set_validation(array('exists' => array(\Model\Auth_Role::table() . '.id')));
+        
+        $form->populate(array('roles' => array_keys($this->roles)));
+        
+        return $form;
+    }
+    
+    
+    /**
+     * [is_deletable description]
+     * @return boolean [description]
+     */
     public function is_deletable()
     {
         return ( count($this->users) == 0 );

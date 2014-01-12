@@ -106,16 +106,12 @@ class Admin_Groups extends \Controller\Admin {
         $group = \Model\Auth_Group::forge();
         
         $form = $group->to_form();
-        $form['role_id'] = \Model\Auth_Role::to_form_element()
-            ->allow_multiple(true)
-            ->set_label(__('auth.model.group.roles'))
-            ->set_name('role_id[]');
         
         if ( \Input::method() === "POST" )
         {
-            $val = \Validation::forge()->add_model($group);
-            $val->add('role_id', __('auth.model.group.roles'))
-                ->add_rule('exists', 'users_roles.id');
+            $val = $form->forge_validation();
+            
+            $form->repopulate(\Input::post());
             
             if ( $val->run() )
             {
@@ -125,18 +121,17 @@ class Admin_Groups extends \Controller\Admin {
                         'name'  => $val->validated('name'),
                     ));
                     
-                    if ( $roles = \Input::post('role_id', false) )
+                    if ( $roles = \Input::post('roles', \Input::post('role_id', \Input::post('roles_ids', false))) )
                     {
+                        is_array($roles) OR $roles = (array) $roles;
+                        
                         try
                         {
                             $roles = \Model\Auth_Role::query()
                                 ->where('id', 'IN', $roles)
                                 ->get();
                             
-                            foreach ( $roles as &$role )
-                            {
-                                $group->roles[] = $role;
-                            }
+                            $group->roles = $roles;
                         }
                         catch ( \Exception $e ) {}
                     }
@@ -159,17 +154,19 @@ class Admin_Groups extends \Controller\Admin {
                 catch ( \Orm\ValidationFailed $e )
                 {
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.create.success.message', array('name' => e($group->name))), __('auth.messages.group.create.success.heading'))->is_flash(true));
+                    
+                    $form->set_errors($e->get_fieldset());
                 }
                 catch ( \Exception $e )
                 {
+                    logger(\Fuel::L_DEBUG, $e->getMessage());
+                    
                     \Message\Container::instance('group-form')->push(\Message\Item::forge('danger', __('auth.messages.group.create.failure.message'), __('auth.messages.group.create.failure.heading')));
                 }
             }
             else
             {
                 \Message\Container::instance('group-form')->push(\Message\Item::forge('warning', __('auth.messages.group.validation_failed.message'), __('auth.messages.group.validation_failed.heading')));
-                
-                $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
             }
@@ -213,16 +210,12 @@ class Admin_Groups extends \Controller\Admin {
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/update/' . $group->slug, e($group->name));
         
         $form = $group->to_form();
-        $form['role_id'] = \Model\Auth_Role::to_form_element()
-            ->allow_multiple(true)
-            ->set_label(__('auth.model.group.roles'))
-            ->set_name('role_id[]');
         
         if ( \Input::method() === "POST" )
         {
-            $val = \Validation::forge()->add_model($group);
-            $val->add('role_id', __('auth.model.group.roles'))
-                ->add_rule('exists', 'users_roles.id');
+            $val = $form->forge_validation();
+            
+            $form->repopulate(\Input::post());
             
             if ( $val->run() )
             {
@@ -232,22 +225,41 @@ class Admin_Groups extends \Controller\Admin {
                         'name'      => $val->validated('name'),
                     ));
                     
-                    unset($group->roles);
-                    
-                    if ( $roles = \Input::post('role_id', false) )
+                    if ( $roles = \Input::post('roles', \Input::post('role_ids', \Input::post('role_id', false))) )
                     {
-                        try
+                        is_array($roles) OR $roles = (array) $roles;
+                        
+                        foreach ( $group->roles as $id => $role )
                         {
-                            $roles = \Model\Auth_Role::query()
-                                ->where('id', 'IN', $roles)
-                                ->get();
-                            
-                            foreach ( $roles as &$role )
+                            if ( ! in_array($id, $roles) )
                             {
-                                $group->roles[] = $role;
+                                unset($group->roles[$id]);
+                            }
+                            else
+                            {
+                                unset($roles[array_search($id, $roles)]);
                             }
                         }
-                        catch ( \Exception $e ) {}
+                        
+                        if ( $roles )
+                        {
+                            try
+                            {
+                                $roles = \Model\Auth_Role::query()
+                                    ->where('id', 'IN', $roles)
+                                    ->get();
+                                
+                                foreach ( $roles as $role )
+                                {
+                                    $group->roles[] = $role;
+                                }
+                            }
+                            catch ( \Exception $e ) {}
+                        }
+                    }
+                    else
+                    {
+                        unset($group->roles);
                     }
                     
                     $group->save();
@@ -268,17 +280,19 @@ class Admin_Groups extends \Controller\Admin {
                 catch ( \Orm\ValidationFailed $e )
                 {
                     \Message\Container::instance('group-form')->push(\Message\Item::forge('warning', __('auth.messages.group.validation_failed.message'), __('auth.messages.group.validation_failed.heading')));
+                    
+                    $form->set_errors($e->get_fieldset());
                 }
                 catch ( \Exception $e )
                 {
+                    logger(\Fuel::L_DEBUG, $e->getMessage());
+                    
                     \Message\Container::instance('group-form')->push(\Message\Item::forge('danger', __('auth.messages.group.update.failure.message'), __('auth.messages.group.update.failure.heading')));
                 }
             }
             else
             {
                 \Message\Container::instance('group-form')->push(\Message\Item::forge('warning', __('auth.messages.group.validation_failed.message'), __('auth.messages.group.validation_failed.heading')));
-                
-                $form->repopulate(\Input::post());
                 
                 $form->set_errors($val->error());
             }

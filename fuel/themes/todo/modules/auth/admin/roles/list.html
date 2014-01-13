@@ -81,11 +81,15 @@
               </div>
             </div>
             <!-- /bulk-actions -->
-            <!-- page-info -->
-            <div class="col-md-4 hidden-xs">
             
+            <!-- page-info -->
+            <div class="col-md-4 text-center hidden-xs">
+              <?php if ( isset($pagination) ) : ?>
+                <small class="text-muted inline m-t-sm m-b-sm">showing <?php echo ( ( $pagination->current_page - 1 )*$pagination->per_page + 1 ); ?>&ndash;<?php echo ( $pagination->total_items > ( $pagination->current_page*$pagination->per_page ) ? $pagination->current_page * $pagination->per_page : $pagination->total_items ); ?> of <?php echo $pagination->total_items; ?> items</small>
+              <?php endif; ?>
             </div>
             <!-- /page-info -->
+            
             <!-- pagination -->
             <div class="col-md-4 text-right text-center-xs">
               <?php echo ( isset($pagination) ? $pagination->render() : '' ); ?>

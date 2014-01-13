@@ -3,10 +3,10 @@
 <div class="row">
   <div class="col-md-10">
     <section class="panel">
-      <?php echo \Form::open('admin/auth/permissions/' . $scope . 's/' . ( $scope == 'user' ? $data->username : $data->slug ), array($scope . '_id' => $data->id)); ?>
-        <header class="panel-heading"><?php echo html_tag('h4', array('class' => 'panel-title'), __('auth.navigation.admin.permission.page-title.' . $scope, array('name' => html_tag('small', array(), ( $scope != 'user' ? e($data->name) : null ) ), 'username' => html_tag('small', array(), ( $scope == 'user' ? e($data->username) : null ))))); ?></header>
+      <header class="panel-heading"><?php echo html_tag('h4', array('class' => 'panel-title'), __('auth.navigation.admin.permission.page-title.' . $scope, array('name' => html_tag('small', array(), ( $scope != 'user' ? e($data->name) : null ) ), 'username' => html_tag('small', array(), ( $scope == 'user' ? e($data->username) : null ))))); ?></header>
         
-        <?php if ( isset($table) && count($table) ) : ?>
+      <?php if ( isset($table) && count($table) ) : ?>
+        <?php echo \Form::open('admin/auth/permissions/' . $scope . 's/' . ( $scope == 'user' ? $data->username : $data->slug ), array($scope . '_id' => $data->id)); ?>
           <?php
             $table->set_attribute('class', 'table table-striped table-hover table-responsive scrollable');
             

@@ -13,6 +13,14 @@
 
 class Auth extends \Controller\Base {
     
+    public function before()
+    {
+        parent::before();
+        
+        \Lang::load('messages/auth', 'auth.messages.auth');
+    }
+    
+    
     public function action_login()
     {
         if ( \Auth::check() )
@@ -22,25 +30,25 @@ class Auth extends \Controller\Base {
         
         $form = new \Gasform\Form();
         
-        $remember_default = new \Gasform\Input_Hidden('remember', '', array());
-        $form['remember_default'] = $remember_default;
-        $redirect = new \Gasform\Input_Hidden('redirect', \Input::get('redirect', ''), array());
-        $form['redirect'] = $redirect;
+        if ( \Input::get('redirect') )
+        {
+            $form->set_attribute('action', \Uri::create(null, array(), array('redirect' => \Input::get('redirect'))));
+            
+            $form['redirect'] = \Gasform\Input_Hidden::forge('redirect', \Input::get('redirect', ''), array());
+        }
         
-        $identity = new \Gasform\Input_Text('identity');
-        $form['identity'] = $identity->set_label('Identity');
-        $password = new \Gasform\Input_Password('password');
-        $form['password'] = $password->set_label('Password');
+        $form['remember_default'] = \Gasform\Input_Hidden::forge('remember', '', array());
+        
+        $form['identity'] = \Gasform\Input_Text::forge('identity')->set_label('Identity');
+        $form['password'] = \Gasform\Input_Password::forge('password')->set_label('Password');
         $cbx_group = \Gasform\Input_CheckboxGroup::forge();
-        $remember = \Gasform\Input_Checkbox::forge('remember', 'me', array());
-        $cbx_group['remember'] = $remember->set_label('Remember me');
+        $cbx_group['remember'] = \Gasform\Input_Checkbox::forge('remember', 'me', array())
+            ->set_label('Remember me');
         $form['remember'] = $cbx_group;
         
         $btngroup = new \Gasform\Input_ButtonGroup();
-        $submit = new \Gasform\Input_Submit('submit', 'Login', array());
-        $btngroup['submit'] = $submit;
-        $recover = new \Gasform\Input_Button('recover', 'Recover', array());
-        $btngroup['recover'] = $recover;
+        $btngroup['submit'] = \Gasform\Input_Submit::forge('submit', 'Login', array());
+        $btngroup['recover'] = \Gasform\Input_Button::forge('recover', 'Recover', array());
         
         $form['btngroup'] = $btngroup;
         
@@ -51,6 +59,7 @@ class Auth extends \Controller\Base {
             ->view('auth/login')
             ->set('form', $form);
     }
+    
     
     public function post_login()
     {
@@ -70,11 +79,16 @@ class Auth extends \Controller\Base {
                 \Auth::dont_remember_me();
             }
             
+            \Message\Container::push(\Message\Item::forge('success', __('auth.messages.auth.login.success.message', array('username' => \Auth::get_screen_name())), __('auth.messages.auth.login.success.heading'))->is_flash(true));
+            
             return \Response::redirect(\Input::post('redirect', \Router::get('dashboard.user') ? : '/'));
         }
         
+        \Message\Container::instance('login-form')->push(\Message\Item::forge('warning', __('auth.messages.auth.login.invalid.message'), __('auth.messages.auth.login.invalid.heading')));
+        
         $this->action_login();
     }
+    
     
     public function action_logout()
     {
@@ -83,26 +97,15 @@ class Auth extends \Controller\Base {
             return \Response::redirect_back('/');
         }
         
+        $username = \Auth::get_screen_name();
+        
         \Auth::dont_remember_me();
         
         \Auth::logout();
         
-        \Message\Container::push(\Message\Item::forge('success', 'Bye bye', 'Logout successful')->is_flash(true));
-        
-        // \Message\Container::push(\Message\Item::forge('danger', 'Logout failed', 'Somehow!')->is_flash(true));
+        \Message\Container::push(\Message\Item::forge('warning', __('auth.messages.auth.logout.success.message', array('username' => $username)), __('auth.messages.auth.logout.success.heading'))->is_flash(true));
         
         return \Response::redirect('/');
-    }
-    
-    
-    public function action_restricted()
-    {
-        if ( ! \Auth::check() )
-        {
-            return 'access denied';
-        }
-        
-        return 'restricted';
     }
     
 }

@@ -18,10 +18,10 @@
 
 // Add the namespace for the gasoline-package as a core namespace to the autoloader.
 //  The second argument allows the namespace to be added as the first core namespace.
-Autoloader::add_core_namespace('Gasoline', true);
+// Autoloader::add_core_namespace('Gasoline', true);
 
 // Also add the whole namespace
-Autoloader::add_namespace('Gasoline', __DIR__ . 'classes/');
+Autoloader::add_namespace('Gasoline', __DIR__ . '/classes/');
 
 // This is needed because these classes would actually reside under namespace Gasoline
 //  but since they need to be globally accessible, we add them here as classes

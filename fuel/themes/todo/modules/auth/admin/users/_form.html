@@ -1,6 +1,6 @@
 <?php
 
-\Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/users/page-headers/_form', array('username' => $user->username))->set('action', $action));
+\Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/_partials/page-header', array('username' => $user->username))->set('action', $action));
 
 // \Theme::instance()->asset->js('select2/select2.min.js', array('jquery.min.js'), 'footer.js');
 // \Theme::instance()->asset->js('select2/select2.init.js', array('select2/select2.min.js'), 'footer.js');

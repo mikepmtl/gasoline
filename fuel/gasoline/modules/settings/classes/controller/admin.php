@@ -70,38 +70,11 @@ class Admin extends \Controller\Admin {
     
     public function action_index()
     {
-        $widgets = array();
-        
-        // Loop through all modules and display their settings widget
-        foreach ( \Config::get('module_paths') as $module_path )
-        {
-            if ( ! ( $controllers = glob($module_path . '*/classes/controller/widgets/settings*') ) )
-            {
-                continue;
-            }
-            
-            foreach ( $controllers as $controller )
-            {
-                $path = explode(DS, str_replace($module_path, '', $controller));
-                
-                $module = $path[0];
-                
-                try
-                {
-                    $response = \Request::forge($module . '/widget/settings/admin', false)->execute()->response();
-                    
-                    $widgets[] = array(
-                        'module'    => $module,
-                        'body'      => $response->body,
-                    );
-                }
-                catch ( \Exception $e ) {}
-            }
-        }
+        \Module::load('widgets');
         
         $this->view = static::$theme
             ->view('admin/index')
-            ->set('widgets', $widgets);
+            ->set('widgets', \Widgets\Model\Area::get('settings.admin'));
     }
     
 }

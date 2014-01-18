@@ -5,7 +5,7 @@
     <?php $counter = 1; ?>
     <?php foreach ( $widgets as $widget ) : ?>
       <div class="col-xs-6 col-md-3">
-        <?php echo \Html::anchor('admin/settings/' . $widget['module'], $widget['body']); ?>
+        <?php echo \Html::anchor('admin/settings/' . $widget->get('module'), $widget->get('content')); ?>
       </div>
       <?php if ( ++$counter % 3 == 0 ) : ?>
         </div>

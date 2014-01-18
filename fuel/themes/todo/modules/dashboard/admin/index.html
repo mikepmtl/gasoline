@@ -5,7 +5,7 @@
   <div class="row">
   <?php foreach ( $widgets as $widget ) : ?>
     <div class="col-md-4">
-      <?php echo $widget['body']; ?>
+      <?php echo $widget->get('content'); ?>
     </div>
     <?php if ( ++$i % 3 == 0 ) : ?>
       </div>

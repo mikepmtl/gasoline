@@ -1,4 +1,4 @@
-<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/page-headers/list')); ?>
+<?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/_partials/page-header')); ?>
 
 <?php $engine = new \Gasform\Render_Bootstrap(); ?>
 <?php $simple_engine = new \Gasform\Render_Simple(); ?>
@@ -11,7 +11,7 @@
         <?php if ( count($table) ) : ?>
           <div class="table-responsive">
             <?php
-            $table->set_attribute('class', 'table table-striped table-hover table-responsive');
+            $table->set_attribute('class', 'table table-striped table-hover');
             
             foreach ( $table->get_data() as $row )
             {

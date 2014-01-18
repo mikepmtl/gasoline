@@ -26,25 +26,27 @@
       <p class="list-group-item">No recent</p>
     <?php endif; ?>
   </div>
-  <footer class="panel-footer">
-    <?php
-      echo html_tag(
-        'span',
-        array(
-          'class' => 'clearfix',
-        ),
-        html_tag(
+  <?php if ( \Auth::has_access('users.admin') ) : ?>
+    <footer class="panel-footer">
+      <?php
+        echo html_tag(
           'span',
           array(
-            'class' => 'btn btn-white btn-xs pull-right text-xs',
+            'class' => 'clearfix',
           ),
-          \Html::anchor(
-            'admin/auth/users',
-            '<i class="fa fa-user fa-fw"></i>&nbsp;'
-            . 'Manage Users'
+          html_tag(
+            'span',
+            array(
+              'class' => 'btn btn-white btn-xs pull-right text-xs',
+            ),
+            \Html::anchor(
+              'admin/auth/users',
+              '<i class="fa fa-user fa-fw"></i>&nbsp;'
+              . 'Manage Users'
+            )
           )
-        )
-      );
-    ?>
-  </footer>
+        );
+      ?>
+    </footer>
+  <?php endif; ?>
 </section>

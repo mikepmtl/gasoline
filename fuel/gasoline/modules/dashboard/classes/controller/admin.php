@@ -28,47 +28,11 @@ class Admin extends \Controller\Admin {
     
     public function action_index()
     {
-        try
-        {
-            $widgets = \Cache::get('dashboard.user.id_' . static::$me->id);
-        }
-        catch ( \Exception $e )
-        {
-            $widgets = array();
-            
-            // Loop through all modules and display their dashboard widget
-            foreach ( \Config::get('module_paths') as $module_path )
-            {
-                if ( ! ( $controller = glob($module_path . '*/classes/controller/widgets/dashboard*') ) )
-                {
-                    continue;
-                }
-                
-                foreach ( $controller as $module )
-                {
-                    $path = explode(DS, str_replace($module_path, '', $module));
-                    
-                    $_module = $path[0];
-                    
-                    try
-                    {
-                        $response = \Request::forge($_module . '/widgets/dashboard/admin', false)->execute()->response();
-                        
-                        $widgets[] = array(
-                            'module'    => $_module,
-                            'body'      => $response->body,
-                        );
-                    }
-                    catch ( \Exception $e ) {}
-                }
-            }
-            
-            \Cache::set('dashboard.admin.id_' . static::$me->id, $widgets);
-        }
+        \Module::load('widgets');
         
         $this->view = static::$theme
             ->view('admin/index')
-            ->set('widgets', $widgets, false)
+            ->set('widgets', \Widgets\Model\Area::get('dashboard.admin'), false)
             ->set('user', static::$me);
     }
     

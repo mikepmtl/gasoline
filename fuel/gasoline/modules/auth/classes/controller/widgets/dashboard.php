@@ -16,9 +16,9 @@ class Widgets_Dashboard extends \Controller\Widget {
     public function action_admin()
     {
         $recent = \Model\Auth_User::query()
-            ->order_by('created_at', 'desc')
-            ->limit('5')
             ->where('id', '!=', '0')
+            ->limit('5')
+            ->order_by('created_at', 'desc')
             ->get();
         
         $this->view = static::$theme

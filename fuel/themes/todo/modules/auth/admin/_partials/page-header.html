@@ -8,8 +8,8 @@
   <div class="collapse navbar-collapse pull-in">
     <ul class="nav navbar-nav m-l-n">
       <li class="<?php echo ( \Uri::segment(3) == 'users' ? 'active' : '' ); ?>"><?php echo \Html::anchor('admin/auth/users', '<i class="fa fa-user fa-fw"></i>&nbsp;' . __('auth.navigation.admin.user.page-title._section')) ?></li>
-      <li class="<?php echo ( \Uri::segment(3) == 'roles' ? 'active' : '' ); ?>"><?php echo \Html::anchor('admin/auth/roles', '<i class="fa fa-group fa-fw"></i>&nbsp;' . __('auth.navigation.admin.role.page-title._section')) ?></li>
-      <li class="<?php echo ( \Uri::segment(3) == 'groups' ? 'active' : '' ); ?>"><?php echo \Html::anchor('admin/auth/groups', '<i class="fa fa-shield fa-fw"></i>&nbsp;' . __('auth.navigation.admin.group.page-title._section')) ?></li>
+      <li class="<?php echo ( \Uri::segment(3) == 'groups' ? 'active' : '' ); ?>"><?php echo \Html::anchor('admin/auth/groups', '<i class="fa fa-group fa-fw"></i>&nbsp;' . __('auth.navigation.admin.group.page-title._section')) ?></li>
+      <li class="<?php echo ( \Uri::segment(3) == 'roles' ? 'active' : '' ); ?>"><?php echo \Html::anchor('admin/auth/roles', '<i class="fa fa-shield fa-fw"></i>&nbsp;' . __('auth.navigation.admin.role.page-title._section')) ?></li>
       <li class="<?php echo ( \Uri::segment(3) == 'permissions' ? 'active' : '' ); ?>"><?php echo \Html::anchor('admin/auth/permissions', '<i class="fa fa-legal fa-fw"></i>&nbsp;' . __('auth.navigation.admin.permission.page-title._section')) ?></li>
     </ul>
   </div>

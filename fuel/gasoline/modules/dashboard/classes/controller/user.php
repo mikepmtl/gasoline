@@ -22,7 +22,7 @@ class User extends \Controller\Authenticated {
         
         static::$me = \Auth::get_user();
         
-        \Breadcrumb\Container::instance()->set('dashboard', __('global.dashboard'));
+        \Breadcrumb\Container::instance()->set_crumb('dashboard', __('global.dashboard'));
     }
     
     

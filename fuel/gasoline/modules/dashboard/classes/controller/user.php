@@ -11,7 +11,7 @@
  * @link        http://hubspace.github.io/gasoline
  */
 
-class Admin extends \Controller\Admin {
+class User extends \Controller\Authenticated {
     
     protected static $me;
     
@@ -22,7 +22,7 @@ class Admin extends \Controller\Admin {
         
         static::$me = \Auth::get_user();
         
-        \Breadcrumb\Container::instance()->set_crumb('admin/dashboard', __('global.dashboard'));
+        \Breadcrumb\Container::instance()->set('dashboard', __('global.dashboard'));
     }
     
     
@@ -52,7 +52,7 @@ class Admin extends \Controller\Admin {
                     
                     try
                     {
-                        $response = \Request::forge($_module . '/widgets/dashboard/admin', false)->execute()->response();
+                        $response = \Request::forge($_module . '/widgets/dashboard/user', false)->execute()->response();
                         
                         $widgets[] = array(
                             'module'    => $_module,
@@ -63,16 +63,16 @@ class Admin extends \Controller\Admin {
                 }
             }
             
-            \Cache::set('dashboard.admin.id_' . static::$me->id, $widgets);
+            \Cache::set('dashboard.user.id_' . static::$me->id, $widgets);
         }
         
         $this->view = static::$theme
-            ->view('admin/index')
+            ->view('user/index')
             ->set('widgets', $widgets, false)
             ->set('user', static::$me);
     }
     
 }
 
-/* End of file admin.php */
-/* Location: ./fuel/gasoline/modules/dashboard/classes/controller/admin.php */
+/* End of file user.php */
+/* Location: ./fuel/gasoline/modules/dashboard/classes/controller/user.php */

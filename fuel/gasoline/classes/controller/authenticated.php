@@ -11,7 +11,7 @@
  * @link        http://hubspace.github.io/gasoline
  */
 
-abstract class Authenticated extends Base {
+abstract class Authenticated extends Frontend {
     
     public function before()
     {

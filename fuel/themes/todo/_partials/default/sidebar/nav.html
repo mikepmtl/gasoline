@@ -37,8 +37,8 @@
         <ul class="dropdown-menu">
           <li><?php echo \Html::anchor('admin/auth/users', '<i class="fa fa-user icon"></i>Users'); ?></li>
           <li><?php echo \Html::anchor('admin/auth/groups', '<i class="fa fa-group icon"></i>Groups'); ?></li>
-          <li><?php echo \Html::anchor('admin/auth/roles', '<i class="fa fa-male icon"></i>Roles'); ?></li>
-          <li><?php echo \Html::anchor('admin/auth/permissions', '<i class="fa fa-key icon"></i>Permissions'); ?></li>
+          <li><?php echo \Html::anchor('admin/auth/roles', '<i class="fa fa-shield icon"></i>Roles'); ?></li>
+          <li><?php echo \Html::anchor('admin/auth/permissions', '<i class="fa fa-legal icon"></i>Permissions'); ?></li>
         </ul>
       </li>
       <li class="<?php echo ( \Str::starts_with(\Uri::main(), \Uri::create('admin/settings')) ? 'active' : '' );  ?>">

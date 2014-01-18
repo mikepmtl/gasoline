@@ -25,7 +25,7 @@ class Auth extends \Controller\Base {
     {
         if ( \Auth::check() )
         {
-            return \Response::redirect_back(\Router::get('dashboard.user') ? : '/');
+            return \Response::redirect_back(\Input::get('redirect', \Router::get('dashboard.user') ? : '/'));
         }
         
         $form = new \Gasform\Form();
@@ -65,7 +65,7 @@ class Auth extends \Controller\Base {
     {
         if ( \Auth::check() )
         {
-            return \Response::redirect_back(\Router::get('dashboard.user') ? : '/');
+            return \Response::redirect_back(\Input::get('redirect', \Router::get('dashboard.user') ? : '/'));
         }
         
         if ( \Auth::login(\Input::post('identity'), \Input::post('password')) )

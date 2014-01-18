@@ -17,7 +17,7 @@ class Widget extends Base {
     {
         if ( ! \Request::is_hmvc() )
         {
-            return false;
+            throw new \HttpNotFoundException();
         }
         
         parent::before();

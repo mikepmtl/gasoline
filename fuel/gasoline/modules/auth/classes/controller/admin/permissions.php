@@ -38,6 +38,8 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_groups($id = null)
     {
+        static::restrict('permissions.admin[group]');
+        
         \Lang::load('navigation/admin/group', 'auth.navigation.admin.group');
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/groups', __('auth.navigation.admin.group.breadcrumb._section'));
@@ -53,6 +55,8 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_roles($id = null)
     {
+        static::restrict('permissions.admin[role]');
+        
         \Lang::load('navigation/admin/role', 'auth.navigation.admin.role');
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/roles', __('auth.navigation.admin.role.breadcrumb._section'));
@@ -68,6 +72,8 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_users($id = null)
     {
+        static::restrict('permissions.admin[user]');
+        
         \Lang::load('navigation/admin/user', 'auth.navigation.admin.user');
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/users', __('auth.navigation.admin.user.breadcrumb._section'));
@@ -83,18 +89,24 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function post_users()
     {
+        static::restrict('permissions.admin[user]');
+        
         return $this->set_permissions('user', \Input::post('user_id'));
     }
     
     
     public function post_roles()
     {
+        static::restrict('permissions.admin[role]');
+        
         return $this->set_permissions('role', \Input::post('role_id'));
     }
     
     
     public function post_groups()
     {
+        static::restrict('permissions.admin[group]');
+        
         return $this->set_permissions('group', \Input::post('group_id'));
     }
     

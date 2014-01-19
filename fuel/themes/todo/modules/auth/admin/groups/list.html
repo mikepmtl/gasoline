@@ -24,7 +24,7 @@
             
             $tools = array();
             
-            if ( \Auth::has_access('groups.admin[read]') )
+            if ( \Auth::has_access('auth.admin:groups[read]') )
             {
               $tools[] = \Html::anchor(
                 'admin/auth/groups/details/' . $group->slug,
@@ -35,7 +35,7 @@
               );
             }
             
-            if ( \Auth::has_access('groups.admin[update]') )
+            if ( \Auth::has_access('auth.admin:groups[update]') )
             {
               $tools[] = \Html::anchor(
                 'admin/auth/groups/update/' . $group->slug,
@@ -46,7 +46,7 @@
               );
             }
             
-            if ( $group->is_deletable() && \Auth::has_access('groups.admin[delete]') )
+            if ( $group->is_deletable() && \Auth::has_access('auth.admin:groups[delete]') )
             {
               $tools[] = \Html::anchor(
                 'admin/auth/groups/delete/' . $group->slug,
@@ -128,7 +128,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('groups.admin[create]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:groups[create]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/groups/create',

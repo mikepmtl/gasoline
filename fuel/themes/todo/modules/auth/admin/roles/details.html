@@ -34,7 +34,7 @@
             . __('global.by')
             . ' '
             . (
-              \Auth::has_access('users.admin[read]')
+              \Auth::has_access('auth.admin:users[read]')
               ? ( $role->auditor
                 ? \Html::anchor('admin/auth/users/details/' . $role->auditor->username, e($role->auditor->username) . '&nbsp;<i class="fa fa-share-alt"></i>', array('class' => 'text-primary'))
                 : __('global.n/a')
@@ -57,7 +57,7 @@
     <section class="panel">
       <header class="panel-heading bg-primary lter"><?php echo html_tag('h4', array('class' => 'panel-title'), __('global.navigation')); ?></header>
       <div class="list-group">
-        <?php if ( \Auth::has_access('roles.admin[list]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:roles[list]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/roles',
@@ -68,7 +68,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('roles.admin[create]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:roles[create]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/roles/create',
@@ -79,7 +79,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('roles.admin[update]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:roles[update]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/roles/update/' . $role->slug,
@@ -90,7 +90,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( $role->is_deletable() && \Auth::has_access('roles.admin[delete]') ) : ?>
+        <?php if ( $role->is_deletable() && \Auth::has_access('auth.admin:roles[delete]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/roles/delete/' . $role->slug,
@@ -101,7 +101,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('permissions.admin[role]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:permissions[role]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/permissions/roles/' . $role->slug,
@@ -118,7 +118,7 @@
 </div>
 
 <div class="row">
-  <?php if ( \Auth::has_access('users.admin[list]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:users[list]') ) : ?>
     <div class="col-md-4">
       <section class="panel">
         <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-user fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.role.users'); ?></h4></header>
@@ -146,7 +146,7 @@
     </div>
   <?php endif; ?>
   
-  <?php if ( \Auth::has_access('groups.admin[list]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:groups[list]') ) : ?>
     <div class="col-md-4">
       <section class="panel">
         <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-group fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.role.groups'); ?></h4></header>
@@ -174,7 +174,7 @@
     </div>
   <?php endif; ?>
   
-  <?php if ( \Auth::has_access('permissions.admin[role]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:permissions[role]') ) : ?>
     <div class="col-md-4">
       <section class="panel">
         <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-legal fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.role.rolepermissions'); ?></h4></header>

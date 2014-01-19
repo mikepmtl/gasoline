@@ -30,7 +30,7 @@ class Admin_Users extends \Controller\Admin {
     
     public function action_list()
     {
-        static::restrict('users.admin[list]');
+        static::restrict('auth.admin:users[list]');
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/list', __('auth.navigation.admin.user.breadcrumb.list'));
         
@@ -70,7 +70,7 @@ class Admin_Users extends \Controller\Admin {
                     ->set_meta('user', $user);
                 
                 $row['cbx']         = \Table\Cell::forge(\Gasform\Input_Checkbox::forge('user_id[]', $user->id, array()));
-                $row['username']    = \Table\Cell::forge( \Auth::has_access('users.admin[read]') ? \Html::anchor('admin/auth/users/details/' . $user->username, e($user->username)) : e($user->username) );
+                $row['username']    = \Table\Cell::forge( \Auth::has_access('auth.admin:users[read]') ? \Html::anchor('admin/auth/users/details/' . $user->username, e($user->username)) : e($user->username) );
                 $row['email']       = \Table\Cell::forge(e($user->email));
                 $row['actions']     = \Table\Cell::forge('');
                 
@@ -103,7 +103,7 @@ class Admin_Users extends \Controller\Admin {
     
     public function action_create()
     {
-        static::restrict('users.admin[create]');
+        static::restrict('auth.admin:users[create]');
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/users/create', __('auth.navigation.admin.user.breadcrumb.create'));
         
@@ -186,7 +186,7 @@ class Admin_Users extends \Controller\Admin {
     
     public function action_update($id)
     {
-        static::restrict('users.admin[update]');
+        static::restrict('auth.admin:users[update]');
         
         $query = \Model\Auth_User::query()
             ->where('id', '!=', '0')
@@ -317,7 +317,7 @@ class Admin_Users extends \Controller\Admin {
     
     public function action_delete($id)
     {
-        static::restrict('users.admin[delete]');
+        static::restrict('auth.admin:users[delete]');
         
         $query = \Model\Auth_User::query()
             ->where('id', '!=', '0')
@@ -406,7 +406,7 @@ class Admin_Users extends \Controller\Admin {
     
     public function action_details($id)
     {
-        static::restrict('users.admin[read]');
+        static::restrict('auth.admin:users[read]');
         
         $query = \Model\Auth_User::query()
             ->where('id', '!=', '0')
@@ -444,7 +444,7 @@ class Admin_Users extends \Controller\Admin {
             
             break;
             case 'delete':
-                static::restrict('users.admin[delete]');
+                static::restrict('auth.admin:users[delete]');
                 
                 if ( $ids = \Input::post('user_id', \Input::post('user_ids', false)) )
                 {

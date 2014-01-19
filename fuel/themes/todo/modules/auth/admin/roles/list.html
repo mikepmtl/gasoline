@@ -24,7 +24,7 @@
             
             $tools = array();
             
-            if ( \Auth::has_access('roles.admin[read]') )
+            if ( \Auth::has_access('auth.admin:roles[read]') )
             {
               $tools[] = \Html::anchor(
                 'admin/auth/roles/details/' . $role->slug,
@@ -35,7 +35,7 @@
               );
             }
             
-            if ( \Auth::has_access('roles.admin[update]') )
+            if ( \Auth::has_access('auth.admin:roles[update]') )
             {
               $tools[] = \Html::anchor(
                 'admin/auth/roles/update/' . $role->slug,
@@ -46,7 +46,7 @@
               );
             }
             
-            if ( $role->is_deletable() && \Auth::has_access('roles.admin[delete]') )
+            if ( $role->is_deletable() && \Auth::has_access('auth.admin:roles[delete]') )
             {
               $tools[] = \Html::anchor(
                 'admin/auth/roles/delete/' . $role->slug,
@@ -129,7 +129,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('roles.admin[create]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:roles[create]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/roles/create',

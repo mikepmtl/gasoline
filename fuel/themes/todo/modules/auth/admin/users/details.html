@@ -58,7 +58,7 @@
             . __('global.by')
             . ' '
             . (
-              \Auth::has_access('users.admin[read]')
+              \Auth::has_access('auth.admin:users[read]')
               ? ( $user->auditor
                 ? \Html::anchor('admin/auth/users/details/' . $user->auditor->username, e($user->auditor->username) . '&nbsp;<i class="fa fa-share-alt"></i>', array('class' => 'text-primary'))
                 : __('global.n/a')
@@ -81,7 +81,7 @@
     <section class="panel">
       <header class="panel-heading bg-primary lter"><?php echo html_tag('h4', array('class' => 'panel-title'), __('global.navigation')); ?></header>
       <div class="list-group">
-        <?php if ( \Auth::has_access('users.admin[list]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:users[list]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/users',
@@ -92,7 +92,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('users.admin[create]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:users[create]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/users/create',
@@ -103,7 +103,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('users.admin[update]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:users[update]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/users/update/' . $user->username,
@@ -114,7 +114,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('users.admin[delete]') && $user->is_deletable() ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:users[delete]') && $user->is_deletable() ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/users/delete/' . $user->username,
@@ -125,7 +125,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('permissions.admin[user]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:permissions[user]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/permissions/users/' . $user->username,
@@ -160,14 +160,14 @@
     </section>
   </div>
   
-  <?php if ( \Auth::has_access('roles.admin[list]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:roles[list]') ) : ?>
     <div class="col-md-4">
       <section class="panel">
         <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-group fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.user.roles'); ?></h4></header>
         <div class="list-group scrollable">
           <?php if ( $user->roles ) : ?>
             <?php foreach ( $user->roles as $role ) : ?>
-              <?php if ( \Auth::has_access('roles.admin[read]') ) : ?>
+              <?php if ( \Auth::has_access('auth.admin:roles[read]') ) : ?>
                 <?php
                 echo \Html::anchor(
                   'admin/auth/roles/details/'
@@ -200,7 +200,7 @@
     </div>
   <?php endif; ?>
   
-  <?php if ( \Auth::has_access('permissions.admin[user]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:permissions[user]') ) : ?>
     <div class="col-md-4">
       <section class="panel">
         <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-legal fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.user.userpermissions'); ?></h4></header>

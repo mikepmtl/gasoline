@@ -24,7 +24,7 @@
             
             $tools = array();
             
-            if ( \Auth::has_access('users.admin[read]') )
+            if ( \Auth::has_access('auth.admin:users[read]') )
             {
               $tools[] = \Html::anchor(
                 'admin/auth/users/details/' . $user->username,
@@ -35,7 +35,7 @@
               );
             }
             
-            if ( \Auth::has_access('users.admin[update]') )
+            if ( \Auth::has_access('auth.admin:users[update]') )
             {
               $tools[] = \Html::anchor(
                 'admin/auth/users/update/' . $user->username,
@@ -46,7 +46,7 @@
               );
             }
             
-            if ( $user->is_deletable() && \Auth::has_access('users.admin[delete]') )
+            if ( $user->is_deletable() && \Auth::has_access('auth.admin:users[delete]') )
             {
               $tools[] = \Html::anchor(
                 'admin/auth/users/delete/' . $user->username,

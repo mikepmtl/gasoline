@@ -1,7 +1,7 @@
 <?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/_partials/page-header')); ?>
 
 <div class="row">
-  <?php if ( \Auth::has_access('permissions.admin[user]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:permissions[user]') ) : ?>
     <div class="col-md-4">
       <?php
       echo \Html::anchor(
@@ -49,7 +49,7 @@
     </div>
   <?php endif; ?>
   
-  <?php if ( \Auth::has_access('permissions.admin[group]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:permissions[group]') ) : ?>
     <div class="col-md-4">
       <?php
       echo \Html::anchor(
@@ -97,7 +97,7 @@
     </div>
   <?php endif; ?>
   
-  <?php if ( \Auth::has_access('permissions.admin[roles]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:permissions[roles]') ) : ?>
     <div class="col-md-4">
       <?php
       echo \Html::anchor(

@@ -34,7 +34,7 @@
             . __('global.by')
             . ' '
             . (
-              \Auth::has_access('users.admin[read]')
+              \Auth::has_access('auth.admin:users[read]')
               ? ( $group->auditor
                 ? \Html::anchor('admin/auth/users/details/' . $group->auditor->username, e($group->auditor->username) . '&nbsp;<i class="fa fa-share-alt"></i>', array('class' => 'text-primary'))
                 : __('global.n/a')
@@ -57,7 +57,7 @@
     <section class="panel">
       <header class="panel-heading bg-primary lter"><?php echo html_tag('h4', array('class' => 'panel-title'), __('global.navigation')); ?></header>
       <div class="list-group">
-        <?php if ( \Auth::has_access('groups.admin[list]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:groups[list]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/groups',
@@ -68,7 +68,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('groups.admin[create]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:groups[create]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/groups/create',
@@ -79,7 +79,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('groups.admin[update]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:groups[update]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/groups/update/' . $group->slug,
@@ -90,7 +90,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( $group->is_deletable() && \Auth::has_access('groups.admin[delete]') ) : ?>
+        <?php if ( $group->is_deletable() && \Auth::has_access('auth.admin:groups[delete]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/groups/delete/' . $group->slug,
@@ -101,7 +101,7 @@
             );
           ?>
         <?php endif; ?>
-        <?php if ( \Auth::has_access('permissions.admin[group]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:permissions[group]') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/permissions/groups/' . $group->slug,
@@ -118,14 +118,14 @@
 </div>
 
 <div class="row">
-  <?php if ( \Auth::has_access('users.admin[list]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:users[list]') ) : ?>
     <div class="col-sm-4 col-md-4">
       <section class="panel">
         <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-user fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.group.users'); ?></h4></header>
         <div class="list-group scrollable">
           <?php if ( $group->users ) : ?>
             <?php foreach ( $group->users as $user ) : ?>
-              <?php if ( \Auth::has_access('users.admin[read]') ) : ?>
+              <?php if ( \Auth::has_access('auth.admin:users[read]') ) : ?>
                 <?php
                   echo \Html::anchor(
                     'admin/auth/users/details/'
@@ -158,14 +158,14 @@
     </div>
   <?php endif; ?>
   
-  <?php if ( \Auth::has_access('roles.admin[list]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:roles[list]') ) : ?>
     <div class="col-sm-4 col-md-4">
       <section class="panel">
         <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-group fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.group.roles'); ?></h4></header>
         <div class="list-group scrollable">
           <?php if ( $group->roles ) : ?>
             <?php foreach ( $group->roles as $role ) : ?>
-              <?php if ( \Auth::has_access('roles.admin[read]') ) : ?>
+              <?php if ( \Auth::has_access('auth.admin:roles[read]') ) : ?>
                 <?php
                   echo \Html::anchor(
                     'admin/auth/roles/details/'
@@ -198,7 +198,7 @@
     </div>
   <?php endif; ?>
   
-  <?php if ( \Auth::has_access('permissions.admin[group]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:permissions[group]') ) : ?>
     <div class="col-sm-4 col-md-4">
       <section class="panel">
         <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-legal fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.group.grouppermissions'); ?></h4></header>

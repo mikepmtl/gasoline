@@ -61,7 +61,7 @@
                 . __('global.by')
                 . ' '
                 . (
-                  \Auth::has_access('users.admin[read]')
+                  \Auth::has_access('auth.admin:users[read]')
                   ? ( $module->auditor
                     ? \Html::anchor(
                       'admin/auth/users/details/'

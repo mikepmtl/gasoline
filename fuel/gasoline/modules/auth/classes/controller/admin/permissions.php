@@ -27,7 +27,7 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function action_index()
     {
-        static::restrict('permission.admin[index]');
+        static::restrict('auth.admin:permissions');
         
         // \Breadcrumb\Container::instance()->set_crumb('admin/auth/permissions/index', __('auth.navigation.admin.permission.breadcrumb.index'));
         
@@ -38,7 +38,7 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_groups($id = null)
     {
-        static::restrict('permissions.admin[group]');
+        static::restrict('auth.admin:permissions[group]');
         
         \Lang::load('navigation/admin/group', 'auth.navigation.admin.group');
         
@@ -55,7 +55,7 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_roles($id = null)
     {
-        static::restrict('permissions.admin[role]');
+        static::restrict('auth.admin:permissions[role]');
         
         \Lang::load('navigation/admin/role', 'auth.navigation.admin.role');
         
@@ -72,7 +72,7 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function get_users($id = null)
     {
-        static::restrict('permissions.admin[user]');
+        static::restrict('auth.admin:permissions[user]');
         
         \Lang::load('navigation/admin/user', 'auth.navigation.admin.user');
         
@@ -89,7 +89,7 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function post_users()
     {
-        static::restrict('permissions.admin[user]');
+        static::restrict('auth.admin:permissions[user]');
         
         return $this->set_permissions('user', \Input::post('user_id'));
     }
@@ -97,7 +97,7 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function post_roles()
     {
-        static::restrict('permissions.admin[role]');
+        static::restrict('auth.admin:permissions[role]');
         
         return $this->set_permissions('role', \Input::post('role_id'));
     }
@@ -105,7 +105,7 @@ class Admin_Permissions extends \Controller\Admin {
     
     public function post_groups()
     {
-        static::restrict('permissions.admin[group]');
+        static::restrict('auth.admin:permissions[group]');
         
         return $this->set_permissions('group', \Input::post('group_id'));
     }

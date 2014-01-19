@@ -30,7 +30,7 @@ class Admin_Groups extends \Controller\Admin {
     
     public function action_list()
     {
-        static::restrict('groups.admin[list]');
+        static::restrict('auth.admin:groups[list]');
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/list', __('auth.navigation.admin.group.breadcrumb.list'));
         
@@ -69,7 +69,7 @@ class Admin_Groups extends \Controller\Admin {
                     ->set_meta('group', $group);
                 
                 $row['cbx']     = \Table\Cell::forge(\Gasform\Input_Checkbox::forge('group_id[]', $group->id, array()));
-                $row['name']    = \Table\Cell::forge( \Auth::has_access('groups.admin[read]') ? \Html::anchor('admin/auth/groups/details/' . $group->slug, e($group->name)) : e($group->name) );
+                $row['name']    = \Table\Cell::forge( \Auth::has_access('auth.admin:groups[read]') ? \Html::anchor('admin/auth/groups/details/' . $group->slug, e($group->name)) : e($group->name) );
                 $row['slug']    = \Table\Cell::forge(e($group->slug));
                 $row['actions'] = \Table\Cell::forge('');
                 
@@ -99,7 +99,7 @@ class Admin_Groups extends \Controller\Admin {
     
     public function action_create()
     {
-        static::restrict('groups.admin[create]');
+        static::restrict('auth.admin:groups[create]');
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/groups/create', __('auth.navigation.admin.group.breadcrumb.create'));
         
@@ -188,7 +188,7 @@ class Admin_Groups extends \Controller\Admin {
     
     public function action_update($id)
     {
-        static::restrict('groups.admin[update]');
+        static::restrict('auth.admin:groups[update]');
         
         $query = \Model\Auth_Group::query()
             ->related('auditor')
@@ -314,7 +314,7 @@ class Admin_Groups extends \Controller\Admin {
     
     public function action_delete($id)
     {
-        static::restrict('groups.admin[delete]');
+        static::restrict('auth.admin:groups[delete]');
         
         $query = \Model\Auth_Group::query()
             ->related('auditor')
@@ -396,7 +396,7 @@ class Admin_Groups extends \Controller\Admin {
     
     public function action_details($id)
     {
-        static::restrict('groups.admin[read]');
+        static::restrict('auth.admin:groups[read]');
         
         $query = \Model\Auth_Group::query()
             ->related('auditor')
@@ -432,7 +432,7 @@ class Admin_Groups extends \Controller\Admin {
             
             break;
             case 'delete':
-                static::restrict('groups.admin[delete]');
+                static::restrict('auth.admin:groups[delete]');
                 
                 if ( $ids = \Input::post('group_id', false) )
                 {

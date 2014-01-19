@@ -30,7 +30,7 @@ class Admin_Roles extends \Controller\Admin {
     
     public function action_list()
     {
-        static::restrict('roles.admin[list]');
+        static::restrict('auth.admin:roles[list]');
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/list', __('auth.navigation.admin.role.breadcrumb.list'));
         
@@ -69,7 +69,7 @@ class Admin_Roles extends \Controller\Admin {
                     ->set_meta('role', $role);
                 
                 $row['cbx']     = \Table\Cell::forge(\Gasform\Input_Checkbox::forge('role_id[]', $role->id, array()));
-                $row['name']    = \Table\Cell::forge( \Auth::has_access('roles.admin[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->slug, e($role->name)) : e($role->name) );
+                $row['name']    = \Table\Cell::forge( \Auth::has_access('auth.admin:roles[read]') ? \Html::anchor('admin/auth/roles/details/' . $role->slug, e($role->name)) : e($role->name) );
                 $row['slug']    = \Table\Cell::forge(e($role->slug));
                 $row['actions'] = \Table\Cell::forge('');
                 
@@ -97,7 +97,7 @@ class Admin_Roles extends \Controller\Admin {
     
     public function action_create()
     {
-        static::restrict('roles.admin[create]');
+        static::restrict('auth.admin:roles[create]');
         
         \Breadcrumb\Container::instance()->set_crumb('admin/auth/roles/create', __('auth.navigation.admin.role.breadcrumb.create'));
         
@@ -171,7 +171,7 @@ class Admin_Roles extends \Controller\Admin {
     
     public function action_update($id)
     {
-        static::restrict('roles.admin[update]');
+        static::restrict('auth.admin:roles[update]');
         
         $query = \Model\Auth_Role::query()
             ->related('auditor')
@@ -260,7 +260,7 @@ class Admin_Roles extends \Controller\Admin {
     
     public function action_delete($id)
     {
-        static::restrict('roles.admin[delete]');
+        static::restrict('auth.admin:roles[delete]');
         
         $query = \Model\Auth_Role::query()
             ->related('auditor')
@@ -340,7 +340,7 @@ class Admin_Roles extends \Controller\Admin {
     
     public function action_details($id)
     {
-        static::restrict('roles.admin[read]');
+        static::restrict('auth.admin:roles[read]');
         
         $query = \Model\Auth_Role::query()
             ->related('auditor')
@@ -376,7 +376,7 @@ class Admin_Roles extends \Controller\Admin {
             
             break;
             case 'delete':
-                static::restrict('roles.admin[delete]');
+                static::restrict('auth.admin:roles[delete]');
                 
                 if ( $ids = \Input::post('role_id', false) )
                 {

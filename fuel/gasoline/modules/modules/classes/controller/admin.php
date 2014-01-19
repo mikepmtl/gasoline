@@ -117,7 +117,7 @@ class Admin extends \Controller\Admin {
     
     public function action_details($id_or_slug)
     {
-        static::restrict('roles.admin[read]');
+        static::restrict('auth.admin:roles[read]');
         
         $query = \Modules\Model\Module::query()
             ->related('auditor')

@@ -26,9 +26,9 @@
               <li><?php echo \Html::anchor(\Router::get('auth.logout'), '<i class="fa fa-sign-out fa-fw"></i>Logout'); ?></li>
             </ul>
           </li>
-          <li><?php echo \Html::anchor(\Router::get('auth.logout'), '<i class="fa fa-sign-out fa-lg"></i>', array('data-toggle' => 'tooltip', 'title' => 'Logout', 'data-placement' => 'bottom')) ?></li>
+          <li><?php echo \Html::anchor(\Router::get('auth.logout'), '<i class="fa fa-sign-out fa-lg"></i>', array('data-toggle' => 'tooltip', 'title' => __('global.logout'), 'data-placement' => 'bottom')) ?></li>
         <?php else : ?>
-          <li><?php echo \Html::anchor(\Router::get('auth.login'), '<i class="fa fa-sign-in fa-fw"></i>Login', array('data-toggle' => 'modal', 'data-target' => '#modal', 'rel' => 'tooltip', 'data-placement' => 'bottom')) ?></li>
+          <li><?php echo \Html::anchor(\Router::get('auth.login'), '<i class="fa fa-sign-in fa-fw"></i>Login', array('data-toggle' => 'tooltip', 'title' => __('global.login'), 'data-placement' => 'bottom')) ?></li>
         <?php endif; ?>
       </ul>
     </div><!-- /.navbar-collapse -->

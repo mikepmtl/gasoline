@@ -17,14 +17,18 @@ return array(
      */
     'name'          => 'Name',
     'slug'          => 'Slug',
-    'user_id'       => 'Updated by',
+    'user_id'       => 'Updater ID',
     'created_at'    => 'Created',
     'updated_at'    => 'Updated',
     
     /**
      * Relational data
      */
-    'roles'     => 'Roles',
+    'auditor'           => 'Auditor',
+    'grouppermissions'  => 'Group permissions',
+    'users'             => 'Users',
+    'roles'             => 'Roles',
+    'permissions'       => 'Permissions',
     
     /**
      * Form help lines

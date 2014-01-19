@@ -18,26 +18,33 @@ return array(
     'id'                => 'User ID',
     'username'          => 'Username',
     'email'             => 'Email address',
-    'group_id'          => 'Group',
+    'group_id'          => 'Group ID',
     'password'          => 'Password',
     'last_login'        => 'Last login at',
     'previous_login'    => 'Previous login at',
     'login_hash'        => 'Login hash',
-    'user_id'           => 'Updated by',
+    'user_id'           => 'Updater ID',
     'created_at'        => 'Created',
     'updated_at'        => 'Updated',
     
     /**
      * Relational data
      */
+    'auditor'           => 'Auditor',
+    'group'             => 'Group',
+    'metadata'          => 'Metadata',
+    'userpermissions'   => 'User permissions',
     'roles'             => 'Roles',
+    'permissions'       => 'Permissions',
     
     /**
-     * Metadata
+     * 
      */
-    'metadata'  => array(
-        'fullname'  => 'Fullname',
-        'foo'       => 'Foo',
+    'eav'  => array(
+        'metadata'  => array(
+            'fullname'  => 'Fullname',
+            'foo'       => 'Foo',
+        ),
     ),
     
     /**

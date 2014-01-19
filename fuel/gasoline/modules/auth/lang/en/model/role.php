@@ -18,9 +18,18 @@ return array(
     'name'          => 'Name',
     'slug'          => 'Slug',
     'filter'        => 'Permissions filter',
-    'user_id'       => 'Updated by',
+    'user_id'       => 'Updater ID',
     'created_at'    => 'Created',
     'updated_at'    => 'Updated',
+    
+    /**
+     * Relational data
+     */
+    'auditor'           => 'Auditor',
+    'rolepermissions'   => 'Role permissions',
+    'users'             => 'Users',
+    'groups'            => 'Roles',
+    'permissions'       => 'Permissions',
     
     /**
      * Options for some properties

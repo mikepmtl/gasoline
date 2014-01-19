@@ -22,42 +22,42 @@
  */
 return array(
     'auth' => array(
-        'admin' => array(
-            'users[list]'   => 'List ',
-            'users[create]' => 'Create new user',
-            'users[read]'   => 'Show details of a user',
-            'users[update]' => 'Update a user',
-            'users[delete]' => 'Delete a user',
+        'admin:users' => array(
+            'list'      => 'List ',
+            'create'    => 'Create new user',
+            'read'      => 'Show details of a user',
+            'update'    => 'Update a user',
+            'delete'    => 'Delete a user',
+        ),
+        'admin:groups' => array(
+            'list'      => 'List ',
+            'create'    => 'Create new group',
+            'read'      => 'Show details of a group',
+            'update'    => 'Update a group',
+            'delete'    => 'Delete a group',
+        ),
+        'admin:roles'   => array(
+            'list'      => 'List ',
+            'create'    => 'Create new role',
+            'read'      => 'Show details of a role',
+            'update'    => 'Update a role',
+            'delete'    => 'Delete a role',
+        ),
+        'admin:permissions' => array(
+            'user'          => 'Manger any user permissions',
+            'user:create'   => 'Allow user access',
+            'user:update'   => 'Change user access',
+            'user:delete'   => 'Withdraw user access',
             
+            'group'         => 'Manage any group permissions',
+            'group:create'  => 'Allow group access',
+            'group:update'  => 'Change group access',
+            'group:delete'  => 'Withdraw group access',
             
-            'roles[list]'   => 'List ',
-            'roles[create]' => 'Create new role',
-            'roles[read]'   => 'Show details of a role',
-            'roles[update]' => 'Update a role',
-            'roles[delete]' => 'Delete a role',
-            
-            
-            'groups[list]'      => 'List ',
-            'groups[create]'    => 'Create new group',
-            'groups[read]'      => 'Show details of a group',
-            'groups[update]'    => 'Update a group',
-            'groups[delete]'    => 'Delete a group',
-            
-            
-            'permissions[user]'             => 'Manger any user\'s permissions',
-            'permissions[user[create]]'     => 'Allow permission for a user',
-            'permissions[user[update]]'     => 'Change permissions for a user',
-            'permissions[user[delete]]'     => 'Withdraw permissions for auser',
-            
-            'permissions[roles]'            => 'Manage any role\'s permissions',
-            'permissions[roles[create]]'    => 'Allow permission for a role',
-            'permissions[roles[update]]'    => 'Change permissions for a role',
-            'permissions[roles[delete]]'    => 'Withdraw permissions for arole',
-            
-            'permissions[groups]'           => 'Manage any group\'s permissions',
-            'permissions[groups[create]]'   => 'Allow permission for a group',
-            'permissions[groups[update]]'   => 'Change permissions for a group',
-            'permissions[groups[delete]]'   => 'Withdraw permissions for agroup',
+            'role'          => 'Manage any role permissions',
+            'role:create'   => 'Allow role access',
+            'role:update'   => 'Change role access',
+            'role:delete'   => 'Withdraw role access',
         ),
     ),
 );

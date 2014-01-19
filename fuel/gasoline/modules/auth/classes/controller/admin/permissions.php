@@ -437,10 +437,7 @@ class Admin_Permissions extends \Controller\Admin {
                 {
                     \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.permissions.user_' . $user->id);
                 }
-                catch ( \Exception $e )
-                {
-                    
-                }
+                catch ( \Exception $e ) {}
                 
                 $redirect = '/users/' . $user->username;
             break;
@@ -544,10 +541,7 @@ class Admin_Permissions extends \Controller\Admin {
                 {
                     \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
                 }
-                catch ( \Exception $e )
-                {
-                    
-                }
+                catch ( \Exception $e ) {}
                 
                 $redirect = '/groups/' . $group->name;
             break;

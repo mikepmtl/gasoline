@@ -126,12 +126,10 @@ class Admin_Roles extends \Controller\Admin {
                     
                     try
                     {
-                        \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.groups');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.roles');
                     }
-                    catch ( \Exception $e )
-                    {
-                        
-                    }
+                    catch ( \Exception $e ) {}
                     
                     return \Response::redirect('admin/auth/roles/details/' . $role->slug);
                 }
@@ -210,6 +208,13 @@ class Admin_Roles extends \Controller\Admin {
                     ));
                     
                     $role->save();
+                    
+                    try
+                    {
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.roles');
+                    }
+                    catch ( \Exception $e ) {}
                     
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.update.success.message', array('name' => e($role->name))), __('auth.messages.role.update.success.heading'))->is_flash(true));
                     
@@ -293,6 +298,13 @@ class Admin_Roles extends \Controller\Admin {
                 {
                     $name = $role->name;
                     $role->delete();
+                    
+                    try
+                    {
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.roles');
+                    }
+                    catch ( \Exception $e ) {}
                     
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.delete.success.message', array('name' => e($name))), __('auth.messages.role.delete.success.heading'))->is_flash(true));
                 }
@@ -418,12 +430,10 @@ class Admin_Roles extends \Controller\Admin {
                     
                     try
                     {
-                        \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.groups');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.roles');
                     }
-                    catch ( \Exception $e )
-                    {
-                        
-                    }
+                    catch ( \Exception $e ) {}
                     
                     $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.role.delete_batch.success.message', array('names' => implode(', ', $success))), __('auth.messages.role.delete_batch.success.heading'))->is_flash(true));
                     

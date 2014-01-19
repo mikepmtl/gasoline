@@ -211,9 +211,6 @@ class Admin_Users extends \Controller\Admin {
         
         $form = $user->to_form();
         
-        // $password_repeat = new \Gasform\Input_Password('password_repeat');
-        // $form['password_repeat'] = $password_repeat->set_label(__('auth.model.user.password_repeat'));
-        
         if ( \Input::method() === "POST" )
         {
             $val = $form->forge_validation();
@@ -273,6 +270,12 @@ class Admin_Users extends \Controller\Admin {
                     }
                     
                     $user->save();
+                    
+                    try
+                    {
+                        \Cache::delete(\Config::get('ormauth.cache_prefix', 'auth').'.permissions.user_' . $user->id);
+                    }
+                    catch ( \Exception $e ) {}
                     
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.update.success.message', array('username' => e($user->username))), __('auth.messages.user.update.success.heading'))->is_flash(true));
                     
@@ -359,21 +362,18 @@ class Admin_Users extends \Controller\Admin {
                     $user->delete();
                     
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.user.delete.success.message', array('username' => e($username))), __('auth.messages.user.delete.success.heading'))->is_flash(true));
+                    
+                    try
+                    {
+                        \Cache::delete(\Config::get('ormauth.cache_prefix', 'auth').'.permissions.user_' . $user->id);
+                    }
+                    catch ( \Exception $e ) {}
                 }
                 catch ( \Exception $e )
                 {
                     logger(\Fuel::L_INFO, $e->getMessage(), __METHOD__);
                     
                     \Message\Container::push(\Message\Item::forge('danger', __('auth.messages.user.delete.failure.message', array('username' => e($user->username))), __('auth.messages.user.delete.failure.heading'))->is_flash(true));
-                }
-                
-                try
-                {
-                    \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.roles');
-                }
-                catch ( \Exception $e )
-                {
-                    
                 }
             }
             else
@@ -496,6 +496,12 @@ class Admin_Users extends \Controller\Admin {
                             $user->delete();
                             
                             $success[] = e($username);
+                            
+                            try
+                            {
+                                \Cache::delete(\Config::get('ormauth.cache_prefix', 'auth').'.permissions.user_' . $user->id);
+                            }
+                            catch ( \Exception $e ) {}
                         }
                         catch ( \Exception $e )
                         {

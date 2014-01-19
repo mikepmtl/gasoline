@@ -142,12 +142,10 @@ class Admin_Groups extends \Controller\Admin {
                     
                     try
                     {
-                        \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.roles');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.groups');
                     }
-                    catch ( \Exception $e )
-                    {
-                        
-                    }
+                    catch ( \Exception $e ) {}
                     
                     return \Response::redirect('admin/auth/groups/details/' . $group->slug);
                 }
@@ -264,6 +262,13 @@ class Admin_Groups extends \Controller\Admin {
                     
                     $group->save();
                     
+                    try
+                    {
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.groups');
+                    }
+                    catch ( \Exception $e ) {}
+                    
                     \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.update.success.message', array('name' => e($group->name))), __('auth.messages.group.update.success.heading'))->is_flash(true));
                     
                     try
@@ -358,13 +363,11 @@ class Admin_Groups extends \Controller\Admin {
                 }
                 
                 try
-                {
-                    \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.roles');
-                }
-                catch ( \Exception $e )
-                {
-                    
-                }
+                    {
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.groups');
+                    }
+                    catch ( \Exception $e ) {}
             }
             else
             {
@@ -474,12 +477,10 @@ class Admin_Groups extends \Controller\Admin {
                     
                     try
                     {
-                        \Cache::delete(\Config::get('gasauth.cache_prefix', 'auth').'.roles');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.permissions');
+                        \Cache::delete_all(\Config::get('ormauth.cache_prefix', 'auth').'.groups');
                     }
-                    catch ( \Exception $e )
-                    {
-                        
-                    }
+                    catch ( \Exception $e ) {}
                     
                     $success && \Message\Container::push(\Message\Item::forge('success', __('auth.messages.group.delete_batch.success.message', array('names' => implode(', ', $success))), __('auth.messages.group.delete_batch.success.heading'))->is_flash(true));
                     

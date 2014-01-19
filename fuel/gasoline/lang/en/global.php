@@ -40,8 +40,10 @@ return array(
     'n/a'           => 'n/a',
     
     'loading'       => 'Loading',
-    'login'         => 'Log in',
-    'logout'        => 'Log out',
+    'login'         => 'Login',
+    'logout'        => 'Logout',
+    'log_in'        => 'Log in',
+    'log_out'       => 'Log out',
     
     'manage'        => 'Manage',
     'manage_'       => 'Manage :item',

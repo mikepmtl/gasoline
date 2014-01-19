@@ -57,122 +57,138 @@
     <section class="panel">
       <header class="panel-heading bg-primary lter"><?php echo html_tag('h4', array('class' => 'panel-title'), __('global.navigation')); ?></header>
       <div class="list-group">
-        <?php
-          echo \Html::anchor(
-            'admin/auth/roles',
-            '<i class="fa fa-angle-double-left fa-fw"></i>&nbsp;&nbsp;' . __('button.list'),
-            array(
-              'class'   => 'list-group-item',
-            )
-          );
-        ?>
-        <?php
-          echo \Html::anchor(
-            'admin/auth/roles/create',
-            '<i class="fa fa-plus fa-fw"></i>&nbsp;&nbsp;' . __('button.new'),
-            array(
-              'class'   => 'list-group-item',
-            )
-          );
-        ?>
-        <?php
-          echo \Html::anchor(
-            'admin/auth/roles/update/' . $role->slug,
-            '<i class="fa fa-pencil fa-fw"></i>&nbsp;&nbsp;' . __('button.edit'),
-            array(
-              'class'   => 'list-group-item',
-            )
-          );
-        ?>
-        <?php
-          echo \Html::anchor(
-            'admin/auth/roles/delete/' . $role->slug,
-            '<i class="fa fa-trash-o fa-fw"></i>&nbsp;&nbsp;' . __('button.delete'),
-            array(
-              'class'   => 'list-group-item',
-            )
-          );
-        ?>
-        <?php
-          echo \Html::anchor(
-            'admin/auth/permissions/roles/' . $role->slug,
-            '<i class="fa fa-legal fa-fw"></i>&nbsp;&nbsp;' . __('button.permissions'),
-            array(
-              'class'   => 'list-group-item',
-            )
-          );
-        ?>
+        <?php if ( \Auth::has_access('roles.admin[list]') ) : ?>
+          <?php
+            echo \Html::anchor(
+              'admin/auth/roles',
+              '<i class="fa fa-angle-double-left fa-fw"></i>&nbsp;&nbsp;' . __('button.list'),
+              array(
+                'class'   => 'list-group-item',
+              )
+            );
+          ?>
+        <?php endif; ?>
+        <?php if ( \Auth::has_access('roles.admin[create]') ) : ?>
+          <?php
+            echo \Html::anchor(
+              'admin/auth/roles/create',
+              '<i class="fa fa-plus fa-fw"></i>&nbsp;&nbsp;' . __('button.new'),
+              array(
+                'class'   => 'list-group-item',
+              )
+            );
+          ?>
+        <?php endif; ?>
+        <?php if ( \Auth::has_access('roles.admin[update]') ) : ?>
+          <?php
+            echo \Html::anchor(
+              'admin/auth/roles/update/' . $role->slug,
+              '<i class="fa fa-pencil fa-fw"></i>&nbsp;&nbsp;' . __('button.edit'),
+              array(
+                'class'   => 'list-group-item',
+              )
+            );
+          ?>
+        <?php endif; ?>
+        <?php if ( $role->is_deletable() && \Auth::has_access('roles.admin[delete]') ) : ?>
+          <?php
+            echo \Html::anchor(
+              'admin/auth/roles/delete/' . $role->slug,
+              '<i class="fa fa-trash-o fa-fw"></i>&nbsp;&nbsp;' . __('button.delete'),
+              array(
+                'class'   => 'list-group-item',
+              )
+            );
+          ?>
+        <?php endif; ?>
+        <?php if ( \Auth::has_access('permissions.admin[role]') ) : ?>
+          <?php
+            echo \Html::anchor(
+              'admin/auth/permissions/roles/' . $role->slug,
+              '<i class="fa fa-legal fa-fw"></i>&nbsp;&nbsp;' . __('button.permissions'),
+              array(
+                'class'   => 'list-group-item',
+              )
+            );
+          ?>
+        <?php endif; ?>
       </div>
     </section>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-4">
-    <section class="panel">
-      <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-user fa-fw"></i>&nbsp;&nbsp;Members</h4></header>
-      <div class="list-group scrollable">
-        <?php if ( $role->users ) : ?>
-          <?php foreach ( $role->users as $user ) : ?>
-            <?php
-            echo \Html::anchor(
-              'admin/auth/users/details/'
-              . $user->username,
-              '<i class="fa fa-chevron-right fa-fw"></i>'
-              . e($user->username),
-              array(
-                'class' => 'list-group-item'
-              )
-            );
-            ?>
-            
-          <?php endforeach; ?>
-        <?php else : ?>
-          <?php echo html_tag('span', array('class' => 'list-group-item',), 'No users assigned this role.'); ?>
-        <?php endif; ?>
-      </div>
-    </section>
-  </div>
+  <?php if ( \Auth::has_access('users.admin[list]') ) : ?>
+    <div class="col-md-4">
+      <section class="panel">
+        <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-user fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.role.users'); ?></h4></header>
+        <div class="list-group scrollable">
+          <?php if ( $role->users ) : ?>
+            <?php foreach ( $role->users as $user ) : ?>
+              <?php
+              echo \Html::anchor(
+                'admin/auth/users/details/'
+                . $user->username,
+                '<i class="fa fa-chevron-right fa-fw"></i>'
+                . e($user->username),
+                array(
+                  'class' => 'list-group-item'
+                )
+              );
+              ?>
+              
+            <?php endforeach; ?>
+          <?php else : ?>
+            <?php echo html_tag('span', array('class' => 'list-group-item',), 'No users assigned this role.'); ?>
+          <?php endif; ?>
+        </div>
+      </section>
+    </div>
+  <?php endif; ?>
   
-  <div class="col-md-4">
-    <section class="panel">
-      <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-group fa-fw"></i>&nbsp;&nbsp;Groups</h4></header>
-      <div class="list-group scrollable">
-        <?php if ( $role->groups ) : ?>
-          <?php foreach ( $role->groups as $group ) : ?>
-            <?php
-            echo \Html::anchor(
-              'admin/auth/groups/details/'
-              . $group->slug,
-              '<i class="fa fa-chevron-right fa-fw"></i>'
-              . e($group->name),
-              array(
-                'class' => 'list-group-item'
-              )
-            );
-            ?>
-            
-          <?php endforeach; ?>
-        <?php else : ?>
-          <?php echo html_tag('span', array('class' => 'list-group-item',), 'No groups assigned this role.'); ?>
-        <?php endif; ?>
-      </div>
-    </section>
-  </div>
+  <?php if ( \Auth::has_access('groups.admin[list]') ) : ?>
+    <div class="col-md-4">
+      <section class="panel">
+        <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-group fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.role.groups'); ?></h4></header>
+        <div class="list-group scrollable">
+          <?php if ( $role->groups ) : ?>
+            <?php foreach ( $role->groups as $group ) : ?>
+              <?php
+              echo \Html::anchor(
+                'admin/auth/groups/details/'
+                . $group->slug,
+                '<i class="fa fa-chevron-right fa-fw"></i>'
+                . e($group->name),
+                array(
+                  'class' => 'list-group-item'
+                )
+              );
+              ?>
+              
+            <?php endforeach; ?>
+          <?php else : ?>
+            <?php echo html_tag('span', array('class' => 'list-group-item',), 'No groups assigned this role.'); ?>
+          <?php endif; ?>
+        </div>
+      </section>
+    </div>
+  <?php endif; ?>
   
-  <div class="col-md-4">
-    <section class="panel">
-      <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-legal fa-fw"></i>&nbsp;&nbsp;Permissions</h4></header>
-      <div class="list-group scrollable">
-        <?php if ( $role->rolepermissions ) : ?>
-          <?php foreach ( $role->rolepermissions as $role_perm ) : ?>
-            <?php echo html_tag('span', array('class' => 'list-group-item'), e($role_perm->permission->area) . '<i class="fa fa-chevron-right fa-fw"></i>' . e($role_perm->permission->permission)); ?>
-            
-          <?php endforeach; ?>
-        <?php else : ?>
-          <?php echo html_tag('span', array('class' => 'list-group-item',), 'No permissions assigned this role.'); ?>
-        <?php endif; ?>
-      </div>
-    </section>
-  </div>
+  <?php if ( \Auth::has_access('permissions.admin[role]') ) : ?>
+    <div class="col-md-4">
+      <section class="panel">
+        <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-legal fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.role.rolepermissions'); ?></h4></header>
+        <div class="list-group scrollable">
+          <?php if ( $role->rolepermissions ) : ?>
+            <?php foreach ( $role->rolepermissions as $role_perm ) : ?>
+              <?php echo html_tag('span', array('class' => 'list-group-item'), e($role_perm->permission->area) . '<i class="fa fa-chevron-right fa-fw"></i>' . e($role_perm->permission->permission)); ?>
+              
+            <?php endforeach; ?>
+          <?php else : ?>
+            <?php echo html_tag('span', array('class' => 'list-group-item',), 'No permissions assigned this role.'); ?>
+          <?php endif; ?>
+        </div>
+      </section>
+    </div>
+  <?php endif; ?>
 </div>

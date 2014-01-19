@@ -117,24 +117,28 @@
     <section class="panel">
       <header class="panel-heading bg-primary lter"><?php echo html_tag('h4', array('class' => 'panel-title'), __('global.navigation')); ?></header>
       <div class="list-group">
-        <?php
-        echo \Html::anchor(
-            'admin/auth',
-            '<i class="fa fa-angle-double-left fa-fw"></i>&nbsp;' . __('auth.navigation.page-title._section'),
-            array(
-              'class'   => 'list-group-item',
-            )
-          );
-        ?>
-        <?php
-          echo \Html::anchor(
-            'admin/auth/groups/create',
-            '<i class="fa fa-plus fa-fw"></i>&nbsp;' . __('button.new'),
-            array(
-              'class'   => 'list-group-item',
-            )
-          );
-        ?>
+        <?php if ( \Auth::has_access('auth.admin') ) : ?>
+          <?php
+            echo \Html::anchor(
+              'admin/auth',
+              '<i class="fa fa-angle-double-left fa-fw"></i>&nbsp;' . __('auth.navigation.page-title._section'),
+              array(
+                'class'   => 'list-group-item',
+              )
+            );
+          ?>
+        <?php endif; ?>
+        <?php if ( \Auth::has_access('groups.admin[create]') ) : ?>
+          <?php
+            echo \Html::anchor(
+              'admin/auth/groups/create',
+              '<i class="fa fa-plus fa-fw"></i>&nbsp;' . __('button.new'),
+              array(
+                'class'   => 'list-group-item',
+              )
+            );
+          ?>
+        <?php endif; ?>
       </div>
     </section>
   </div>

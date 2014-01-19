@@ -1,141 +1,147 @@
 <?php \Theme::instance()->set_partial('page-header', \Theme::instance()->view('admin/_partials/page-header')); ?>
 
 <div class="row">
-  <div class="col-md-4">
-    <?php
-    echo \Html::anchor(
-      'admin/auth/permissions/users',
-      html_tag(
-        'section',
-        array(
-          'class' => 'panel no-borders hbox'
-        ),
+  <?php if ( \Auth::has_access('permissions.admin[user]') ) : ?>
+    <div class="col-md-4">
+      <?php
+      echo \Html::anchor(
+        'admin/auth/permissions/users',
         html_tag(
-          'aside',
+          'section',
           array(
-            'class' => 'bg-info dk text-center v-middle'
+            'class' => 'panel no-borders hbox'
           ),
           html_tag(
-            'div',
+            'aside',
             array(
-              'class' => 'wrapper'
-            ),
-            '<i class="fa fa-user fa-4x"></i>'
-          )
-        )
-        . html_tag(
-          'aside',
-          array(
-            'class' => 'text-center v-middle'
-          ),
-          html_tag(
-            'div',
-            array(
-              'class' => 'wrapper'
+              'class' => 'bg-info dk text-center v-middle'
             ),
             html_tag(
-              'p',
+              'div',
               array(
-                'class' => 'h4'
+                'class' => 'wrapper'
               ),
-              'User Permissions'
+              '<i class="fa fa-user fa-4x"></i>'
+            )
+          )
+          . html_tag(
+            'aside',
+            array(
+              'class' => 'text-center v-middle'
+            ),
+            html_tag(
+              'div',
+              array(
+                'class' => 'wrapper'
+              ),
+              html_tag(
+                'p',
+                array(
+                  'class' => 'h4'
+                ),
+                'User Permissions'
+              )
             )
           )
         )
-      )
-    );
-    ?>
-  </div>
+      );
+      ?>
+    </div>
+  <?php endif; ?>
   
-  <div class="col-md-4">
-    <?php
-    echo \Html::anchor(
-      'admin/auth/permissions/groups',
-      html_tag(
-        'section',
-        array(
-          'class' => 'panel no-borders hbox'
-        ),
+  <?php if ( \Auth::has_access('permissions.admin[group]') ) : ?>
+    <div class="col-md-4">
+      <?php
+      echo \Html::anchor(
+        'admin/auth/permissions/groups',
         html_tag(
-          'aside',
+          'section',
           array(
-            'class' => 'bg-info dk text-center v-middle'
+            'class' => 'panel no-borders hbox'
           ),
           html_tag(
-            'div',
+            'aside',
             array(
-              'class' => 'wrapper'
-            ),
-            '<i class="fa fa-group fa-4x"></i>'
-          )
-        )
-        . html_tag(
-          'aside',
-          array(
-            'class' => 'text-center v-middle'
-          ),
-          html_tag(
-            'div',
-            array(
-              'class' => 'wrapper'
+              'class' => 'bg-info dk text-center v-middle'
             ),
             html_tag(
-              'p',
+              'div',
               array(
-                'class' => 'h4'
+                'class' => 'wrapper'
               ),
-              'Group Permissions'
+              '<i class="fa fa-group fa-4x"></i>'
+            )
+          )
+          . html_tag(
+            'aside',
+            array(
+              'class' => 'text-center v-middle'
+            ),
+            html_tag(
+              'div',
+              array(
+                'class' => 'wrapper'
+              ),
+              html_tag(
+                'p',
+                array(
+                  'class' => 'h4'
+                ),
+                'Group Permissions'
+              )
             )
           )
         )
-      )
-    );
-    ?>
-  </div>
+      );
+      ?>
+    </div>
+  <?php endif; ?>
   
-  <div class="col-md-4">
-    <?php
-    echo \Html::anchor(
-      'admin/auth/permissions/roles',
-      html_tag(
-        'section',
-        array(
-          'class' => 'panel no-borders hbox'
-        ),
+  <?php if ( \Auth::has_access('permissions.admin[roles]') ) : ?>
+    <div class="col-md-4">
+      <?php
+      echo \Html::anchor(
+        'admin/auth/permissions/roles',
         html_tag(
-          'aside',
+          'section',
           array(
-            'class' => 'bg-info dk text-center v-middle'
+            'class' => 'panel no-borders hbox'
           ),
           html_tag(
-            'div',
+            'aside',
             array(
-              'class' => 'wrapper'
-            ),
-            '<i class="fa fa-shield fa-4x"></i>'
-          )
-        )
-        . html_tag(
-          'aside',
-          array(
-            'class' => 'text-center v-middle'
-          ),
-          html_tag(
-            'div',
-            array(
-              'class' => 'wrapper'
+              'class' => 'bg-info dk text-center v-middle'
             ),
             html_tag(
-              'p',
+              'div',
               array(
-                'class' => 'h4'
+                'class' => 'wrapper'
               ),
-              'Role Permissions'
+              '<i class="fa fa-shield fa-4x"></i>'
+            )
+          )
+          . html_tag(
+            'aside',
+            array(
+              'class' => 'text-center v-middle'
+            ),
+            html_tag(
+              'div',
+              array(
+                'class' => 'wrapper'
+              ),
+              html_tag(
+                'p',
+                array(
+                  'class' => 'h4'
+                ),
+                'Role Permissions'
+              )
             )
           )
         )
-      )
-    );
-    ?>
-  </div>
+      );
+      ?>
+    </div>
+  <?php endif; ?>
 </div>

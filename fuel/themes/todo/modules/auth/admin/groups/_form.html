@@ -19,7 +19,7 @@
     <section class="panel">
       <header class="panel-heading bg-primary bg-lighter"><?php echo html_tag('h4', array('class' => 'panel-title'), __('global.navigation')); ?></header>
       <div class="list-group">
-        <?php if ( \Auth::has_access('auth.admin:groups[list]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:groups') ) : ?>
           <?php
             echo \Html::anchor(
               \Uri::create(

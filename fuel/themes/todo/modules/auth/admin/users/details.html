@@ -81,7 +81,7 @@
     <section class="panel">
       <header class="panel-heading bg-primary lter"><?php echo html_tag('h4', array('class' => 'panel-title'), __('global.navigation')); ?></header>
       <div class="list-group">
-        <?php if ( \Auth::has_access('auth.admin:users[list]') ) : ?>
+        <?php if ( \Auth::has_access('auth.admin:users') ) : ?>
           <?php
             echo \Html::anchor(
               'admin/auth/users',
@@ -160,7 +160,7 @@
     </section>
   </div>
   
-  <?php if ( \Auth::has_access('auth.admin:roles[list]') ) : ?>
+  <?php if ( \Auth::has_access('auth.admin:roles') ) : ?>
     <div class="col-md-4">
       <section class="panel">
         <header class="panel-heading bg-light dk"><h4 class="panel-title"><i class="fa fa-group fa-fw"></i>&nbsp;&nbsp;<?php echo __('auth.model.user.roles'); ?></h4></header>

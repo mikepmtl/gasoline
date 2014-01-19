@@ -22,11 +22,7 @@
   </noscript>
   
   <div id="wrap">
-    <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <?php echo ( isset($partials['topbar']) ? $partials['topbar'] : '' ); ?>
-      </div>
-    </div>
+    <?php echo \Theme::instance()->view('_partials/default/topbar')->render(); ?>
     
     <!-- Begin page content -->
     <div class="container">

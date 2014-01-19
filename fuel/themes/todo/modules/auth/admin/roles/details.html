@@ -21,6 +21,11 @@
       ));
       
       $table[] = \Table\Row::forge(array(
+        \Table\Cell::forge(__('auth.model.role.filter'))->set_type(\Table\Cell::HEADER),
+        \Table\Cell::forge(__('auth.model.role.options.filter.' . $role->filter))
+      ));
+      
+      $table[] = \Table\Row::forge(array(
         \Table\Cell::forge(__('auth.model.role.created_at'))->set_type(\Table\Cell::HEADER),
         \Table\Cell::forge(html_tag('span', array('data-toggle' => 'tooltip', 'title' => \Date::forge($role->created_at)->format(), 'data-placement' => 'right'), \Date::time_ago($role->created_at)))
       ));

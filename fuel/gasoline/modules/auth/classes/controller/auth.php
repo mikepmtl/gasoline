@@ -103,7 +103,7 @@ class Auth extends \Controller\Base {
         
         \Auth::logout();
         
-        \Message\Container::push(\Message\Item::forge('warning', __('auth.messages.auth.logout.success.message', array('username' => $username)), __('auth.messages.auth.logout.success.heading'))->is_flash(true));
+        \Message\Container::push(\Message\Item::forge('success', __('auth.messages.auth.logout.success.message', array('username' => $username)), __('auth.messages.auth.logout.success.heading'))->is_flash(true));
         
         return \Response::redirect('/');
     }
